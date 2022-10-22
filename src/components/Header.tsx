@@ -1,10 +1,12 @@
+import { MODAL_TYPE } from "./modals";
+
 export const ReservationHeader = () => {
   return <Header title="D330" rightItem={<LoginButton />} />;
 };
 
 const LoginButton = () => {
   return (
-    <label htmlFor="modal-login" className="modal-button btn-ghost btn">
+    <label htmlFor={MODAL_TYPE.LOGIN} className="modal-button btn-ghost btn">
       로그인
     </label>
   );
