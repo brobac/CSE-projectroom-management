@@ -1,24 +1,13 @@
-import { MODAL_TYPE } from ".";
+import { Modal } from "./Modal";
 
 export const LoginModal = () => {
   return (
-    <>
-      <input type="checkbox" id={MODAL_TYPE.LOGIN} className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
-        <div className="align-center modal-box relative flex flex-col items-center">
-          <label
-            htmlFor={MODAL_TYPE.LOGIN}
-            className=" btn-outline btn-sm btn-circle btn absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="mb-8 text-center text-3xl font-bold text-base-content">
-            로그인
-          </h3>
-          <LoginForm />
-        </div>
-      </div>
-    </>
+    <Modal type="modal-login" closeButton>
+      <h3 className="mb-8 text-center text-3xl font-bold text-base-content">
+        로그인
+      </h3>
+      <LoginForm />
+    </Modal>
   );
 };
 

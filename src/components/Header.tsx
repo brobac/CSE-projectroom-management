@@ -1,3 +1,4 @@
+import { useModal } from "@/hooks/useModal";
 import { MODAL_TYPE } from "./modals";
 
 export const ReservationHeader = () => {
@@ -5,10 +6,11 @@ export const ReservationHeader = () => {
 };
 
 const LoginButton = () => {
+  const { openModal } = useModal("modal-login");
   return (
-    <label htmlFor={MODAL_TYPE.LOGIN} className="modal-button btn-ghost btn">
+    <button onClick={openModal} className="btn-ghost btn">
       로그인
-    </label>
+    </button>
   );
 };
 
