@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { IoCaretBackOutline, IoCaretForwardOutline } from "react-icons/io5";
 import { DateValue } from "@types";
 import {
   chunkArray,
@@ -6,18 +9,18 @@ import {
   getFirstDayOfPrevMonth,
   getLastDayOfMonth,
   getMonth,
+  isAfter,
+  isBefore,
+  isSameDay,
   KO_DAY,
 } from "@utils";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { IoCaretBackOutline, IoCaretForwardOutline } from "react-icons/io5";
 
 type DatePikerProps = {
   selectedDate?: DateValue;
   enableStartDate?: DateValue;
   enableEndDate?: DateValue;
   disableDates?: DateValue[];
-  onClickDate?: () => void;
+  onClickDate?: (date: Date) => void;
 };
 export const DatePicker = ({
   selectedDate,
@@ -25,7 +28,9 @@ export const DatePicker = ({
   enableEndDate,
   onClickDate,
 }: DatePikerProps) => {
-  const [currentYearMonth, setCurrentYearMonth] = useState(new Date());
+  const [currentYearMonth, setCurrentYearMonth] = useState(
+    new Date(selectedDate!),
+  );
   //서버에서 받기 전 목업용 state
   const [calendarDates, setCalendarDates] = useState(
     chunkToWeeks(getCalendarDates(currentYearMonth)),
@@ -49,6 +54,10 @@ export const DatePicker = ({
   const toNextMonth = () => {
     setCurrentYearMonth(getFirstDayOfNextMonth(currentYearMonth));
   };
+
+  useEffect(() => {
+    setCurrentYearMonth(new Date(selectedDate!));
+  }, [selectedDate]);
 
   useEffect(() => {
     setDisableToPrevMonth(!ableToPrevMonth());
@@ -99,7 +108,16 @@ export const DatePicker = ({
             key={i}
           >
             {week.map((day) => (
-              <DateCell date={day} key={day.getDate()} />
+              <DateCell
+                selected={isSameDay(selectedDate!, day)}
+                disabled={
+                  isBefore(day, enableStartDate!) ||
+                  isAfter(day, enableEndDate!)
+                }
+                date={day}
+                key={day.getDate()}
+                onClick={onClickDate}
+              />
             ))}
           </div>
         ))}
@@ -112,15 +130,16 @@ type DateCellProps = {
   date: Date;
   selected?: boolean;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (date: Date) => void;
 };
 
 const DateCell = ({ date, selected, disabled, onClick }: DateCellProps) => {
   return (
     <div
-      onClick={onClick}
+      onClick={!disabled ? () => onClick!(date) : undefined}
       className={[
         "group flex h-full cursor-pointer items-center justify-center",
+        disabled && "cursor-not-allowed",
       ].join(" ")}
       key={date.getDate()}
     >

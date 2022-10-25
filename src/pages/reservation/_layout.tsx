@@ -1,4 +1,4 @@
-import { Footer, LoginModal, ReservationHeader } from "@components";
+import { Footer, ReservationHeader } from "@components";
 
 export const ReservationPageLayout = ({
   children,
@@ -10,7 +10,6 @@ export const ReservationPageLayout = ({
       <ReservationHeader />
       {children}
       <Footer />
-      <LoginModal />
     </div>
   );
 };
