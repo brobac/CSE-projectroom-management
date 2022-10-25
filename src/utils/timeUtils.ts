@@ -30,3 +30,23 @@ export const getMonth = (date: DateValue) => {
 export const getDate = (date: DateValue) => {
   return dayjs(date).get("date");
 };
+
+export const getMinusOneDay = (date: DateValue) => {
+  return dayjs(date).subtract(1, "day").toDate();
+};
+
+export const getPlusOneDay = (date: DateValue) => {
+  return dayjs(date).add(1, "day").toDate();
+};
+
+export const isSameDay = (date1: DateValue, date2: DateValue) => {
+  return dayjs(date1).isSame(dayjs(date2), "day");
+};
+
+export const isBefore = (target: DateValue, compareDate: DateValue) => {
+  return dayjs(target).isBefore(compareDate);
+};
+
+export const isAfter = (target: DateValue, compareDate: DateValue) => {
+  return dayjs(target).isAfter(compareDate);
+};
