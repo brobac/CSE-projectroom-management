@@ -1,4 +1,5 @@
 export * from "./LoginModal";
+export * from "./ReservationDatePickerModal";
 
 export const MODAL_TYPE = {
   LOGIN: "modal-login",

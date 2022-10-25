@@ -1,10 +1,10 @@
-import { Children } from "react";
 import { MODAL_TYPE } from ".";
 
 type ModalProps = {
   type: typeof MODAL_TYPE[keyof typeof MODAL_TYPE];
   children?: React.ReactNode;
   closeButton?: boolean;
+  onClose?: () => void;
 };
 export const Modal = ({ type, closeButton, children }: ModalProps) => {
   return (

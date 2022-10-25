@@ -1,7 +1,6 @@
-import { LoginModal } from "@components";
-import { ReservationDatepickerModal } from "@components/modals/ReservationDatePickerModal";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { LoginModal, ReservationDatepickerModal } from "@components";
 import { ReservationPage } from "./pages/reservation";
 
 function App() {
