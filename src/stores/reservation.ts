@@ -1,9 +1,11 @@
 import { getMinusOneDay, getPlusOneDay } from "@utils";
 import { atom, useRecoilState } from "recoil";
 
-export const selectedProjectroom = atom({
-  key: "selectedProjectroom",
-  default: "D330",
+export const ROOM_NAME_LIST = ["D330", "DB134"] as const;
+
+export const reservationProjectroomState = atom<string>({
+  key: "reservationProjectroomState",
+  default: ROOM_NAME_LIST[0],
 });
 
 export const reservationDateState = atom({
