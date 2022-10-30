@@ -3,7 +3,12 @@ import { atom, useRecoilState } from "recoil";
 
 export const ROOM_NAME_LIST = ["D330", "DB134"] as const;
 
-export const reservationProjectroomState = atom<string>({
+export const TABLE_INFO = {
+  D330: ["1", "2", "3", "4", "5", "6"],
+  DB134: ["1", "2", "3", "4", "5", "6", "7", "8"],
+};
+
+export const reservationProjectroomState = atom<typeof ROOM_NAME_LIST[number]>({
   key: "reservationProjectroomState",
   default: ROOM_NAME_LIST[0],
 });

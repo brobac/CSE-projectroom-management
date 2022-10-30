@@ -8,7 +8,7 @@ export const ProjectroomSelect = () => {
   const [selectedRoom, setSelectedRoom] = useRecoilState(
     reservationProjectroomState,
   );
-  const onClickButton = (roomName: string) => {
+  const onClickButton = (roomName: typeof ROOM_NAME_LIST[number]) => {
     setSelectedRoom(roomName);
   };
   return (
@@ -19,8 +19,8 @@ export const ProjectroomSelect = () => {
           onClick={() => onClickButton(name)}
           className={[
             name === selectedRoom
-              ? "btn btn-primary"
-              : "btn btn-ghost border border-solid border-base-300",
+              ? "btn-primary btn"
+              : "btn-ghost btn border border-solid border-base-300",
           ].join(" ")}
         >
           {name}
