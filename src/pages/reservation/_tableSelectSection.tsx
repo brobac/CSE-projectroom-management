@@ -1,0 +1,166 @@
+import {
+  reservationDateState,
+  reservationProjectroomState,
+  ROOM_NAME_LIST,
+  TABLE_INFO,
+  useReservationDateState,
+  useReservationTimeState,
+} from "@/stores/reservation";
+import {
+  isBefore,
+  isSameOrAfter,
+  isSameOrBefore,
+  roundUp30MinuteIncrements,
+} from "@utils";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { twMerge } from "tailwind-merge";
+import { TEMP_RESERVATION_LIST } from "./_tempData";
+
+export const TableSelectSection = () => {
+  const [selectedTable, setSelectedTable] = useState();
+  const [statusItems, setStatusItems] = useState<
+    Map<string, TableStatusItemType[]>
+  >(new Map());
+  const { startTime, endTime } = useReservationTimeState();
+  const { reservationDate, firstTime, lastTime } = useReservationDateState();
+  const reservationProjectroom = useRecoilValue(reservationProjectroomState);
+
+  const generateTableStatusItems = () => {
+    const projectroomReservationList = TEMP_RESERVATION_LIST.filter(
+      (v) => v.room === reservationProjectroom,
+    );
+    const result = new Map();
+
+    for (let i = 0; i < TABLE_INFO[reservationProjectroom].length; i++) {
+      const tableName = TABLE_INFO[reservationProjectroom][i];
+      result.set(tableName, []);
+      const tableReservationList = projectroomReservationList.filter(
+        (v) => v.table === tableName,
+      );
+
+      const isReserved = (time: Date) => {
+        return tableReservationList.some(
+          (v) =>
+            isSameOrBefore(v.startDateTime, time) &&
+            isSameOrAfter(v.endDateTime, time),
+        );
+      };
+
+      const isSelected = (time: Date) => {
+        if (!startTime || !endTime) return false;
+        return (
+          isSameOrBefore(startTime, time) &&
+          isSameOrAfter(endTime, dayjs(time).add(30, "minute").toDate())
+        );
+      };
+
+      const isOverlapped = (time: Date) => {
+        return isReserved(time) && isSelected(time);
+      };
+
+      for (let i = 0; i < 48; i++) {
+        const time = dayjs(firstTime)
+          .add(30 * i, "minute")
+          .toDate();
+
+        if (isOverlapped(time)) {
+          result.get(tableName).push({ date: time, status: "overlapped" });
+        } else if (
+          isReserved(time) ||
+          isBefore(time, roundUp30MinuteIncrements(new Date()))
+        ) {
+          result.get(tableName).push({ date: time, status: "disabled" });
+        } else if (isSelected(time)) {
+          result.get(tableName).push({ date: time, status: "selected" });
+        } else {
+          result.get(tableName).push({ date: time, status: "available" });
+        }
+      }
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    const newItems = generateTableStatusItems();
+    console.log("sfsdfsfsdf");
+    console.log(newItems);
+    setStatusItems(newItems);
+  }, [reservationDate, reservationProjectroom, startTime, endTime]);
+
+  return (
+    <section className="flex flex-col items-center gap-4 px-4 py-8">
+      <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
+      <div className="flex  w-full max-w-7xl flex-col">
+        {TABLE_INFO[reservationProjectroom].map((table) => (
+          <TableStatus
+            key={table}
+            table={table}
+            items={statusItems.get(table)!}
+            disabled={statusItems
+              .get(table)
+              ?.some((v) => v.status === "overlapped")}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+type ProjectRoomType = typeof ROOM_NAME_LIST[number];
+
+type TableStatusItemType = {
+  date: Date;
+  status: "available" | "disabled" | "selected" | "overlapped";
+};
+
+type TableStatusProps = {
+  table: typeof TABLE_INFO[ProjectRoomType][number];
+  items: TableStatusItemType[];
+  selected?: boolean;
+  disabled?: boolean;
+};
+
+const TableStatus = ({
+  table,
+  items,
+  selected,
+  disabled,
+}: TableStatusProps) => {
+  return (
+    <div
+      className={twMerge([
+        "flex  w-full items-center rounded-xl p-4 transition-colors",
+        selected && "bg-info text-base-100",
+        disabled && "opacity-30",
+      ])}
+    >
+      <div className={twMerge(["w-10 text-center text-2xl font-bold"])}>
+        <span>{table}</span>
+      </div>
+      <div className="flex w-full flex-col gap-2 px-2 pt-2">
+        <div className="flex h-8 w-full overflow-hidden rounded-2xl bg-gray-200">
+          {items?.map((item, i) => (
+            <div
+              key={i}
+              className={twMerge([
+                "h-full w-full",
+                item.status === "disabled" && "bg-secondary",
+                item.status === "selected" && "bg-primary",
+                item.status === "overlapped" && "bg-warning",
+              ])}
+            ></div>
+          ))}
+        </div>
+        <div className="relative flex w-full text-[0.5rem] sm:text-base">
+          <span className="w-[calc(1/6*100%)]">08:00</span>
+          <span className="w-[calc(1/4*100%)]">12:00</span>
+          <span className="w-[calc(1/4*100%)]">18:00</span>
+          <span className="w-[calc(1/4*100%)]">00:00</span>
+          <span className="absolute right-0">08:00</span>
+        </div>
+      </div>
+    </div>
+  );
+};

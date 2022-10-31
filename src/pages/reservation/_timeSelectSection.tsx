@@ -3,6 +3,7 @@ import {
   reservationProjectroomState,
   ROOM_NAME_LIST,
   TABLE_INFO,
+  useReservationTimeState,
 } from "@/stores/reservation";
 import { DateValue } from "@types";
 import {
@@ -16,81 +17,7 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-
-const TEMP_RESERVATION_LIST = [
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:30",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:30",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:30",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:30",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 08:00",
-    endDateTime: "2022-11-01 11:30",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-  {
-    room: "D330",
-    table: "a1",
-    startDateTime: "2022-11-01 11:30",
-    endDateTime: "2022-11-01 12:00",
-  },
-];
+import { TEMP_RESERVATION_LIST } from "./_tempData";
 
 export const TimeSelectSection = () => {
   const [startTimeList, setStartTimeList] = useState<
@@ -99,17 +26,17 @@ export const TimeSelectSection = () => {
   const [endTimeList, setEndTimeList] = useState<
     { date: Date; disabled: boolean; isFirstTime?: boolean }[]
   >([]);
-  const [startTime, setstartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const { startTime, endTime, setStartTime, setEndTime } =
+    useReservationTimeState();
   const reservationDate = useRecoilValue(reservationDateState);
   const reservationProjectroom = useRecoilValue(reservationProjectroomState);
 
   const onChangeStartTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setstartTime(e.target.value);
+    setStartTime(new Date(e.target.value));
   };
 
   const onChangeEndTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEndTime(e.target.value);
+    setEndTime(new Date(e.target.value));
   };
 
   useEffect(() => {
@@ -119,12 +46,16 @@ export const TimeSelectSection = () => {
       TEMP_RESERVATION_LIST,
     );
     setStartTimeList(newStartTimeList);
-    setstartTime(
-      newStartTimeList.find((v) => v.isFirstTime)?.date.toUTCString()!,
+    setStartTime(
+      new Date(
+        newStartTimeList.find((v) => v.isFirstTime)?.date.toUTCString()!,
+      ),
     );
   }, [reservationDate, reservationProjectroom]);
 
   useEffect(() => {
+    console.log("startTime 변경");
+    console.log(startTime);
     const newEndTimeList = generateEndTimeList(
       reservationDate,
       startTime,
@@ -132,7 +63,13 @@ export const TimeSelectSection = () => {
       TEMP_RESERVATION_LIST,
     );
     setEndTimeList(newEndTimeList);
-    setEndTime(newEndTimeList.find((v) => v.isFirstTime)?.date.toUTCString()!);
+    if (startTime) {
+      setEndTime(
+        new Date(
+          newEndTimeList.find((v) => v.isFirstTime)?.date.toUTCString()!,
+        ),
+      );
+    }
   }, [startTime]);
 
   return (
@@ -142,12 +79,12 @@ export const TimeSelectSection = () => {
         <div className="flex items-center gap-4">
           <select
             className="w- select-bordered select w-32"
-            value={startTime}
+            value={startTime?.toUTCString()}
             onChange={(e) => onChangeStartTime(e)}
           >
             {startTimeList.map((t) => (
               <option
-                key={t.date.toISOString()}
+                key={t.date.toUTCString()}
                 value={t.date.toUTCString()}
                 disabled={t.disabled}
               >
@@ -160,12 +97,12 @@ export const TimeSelectSection = () => {
         <div className="flex items-center gap-4">
           <select
             className="select-bordered select w-32"
-            value={endTime}
+            value={endTime?.toUTCString()}
             onChange={onChangeEndTime}
           >
             {endTimeList.map((t) => (
               <option
-                key={t.date.toISOString()}
+                key={t.date.toUTCString()}
                 value={t.date.toUTCString()}
                 disabled={t.disabled}
               >
@@ -223,7 +160,7 @@ const generateStartTimeList = (
 
 const generateEndTimeList = (
   reservationDate: DateValue,
-  startDateTime: DateValue,
+  startDateTime: DateValue | undefined,
   projectRoom: typeof ROOM_NAME_LIST[number],
   reservationList: Reservation[],
 ) => {
@@ -237,17 +174,19 @@ const generateEndTimeList = (
 
   const filteredList = reservationList.filter((v) => v.room === projectRoom);
   const result: { date: Date; disabled: boolean; isFirstTime?: boolean }[] = [];
-
+  let blocked = false;
   for (let i = 0; i < 8; i++) {
     const time = firstEndTime.add(30 * i, "minute").toDate();
     if (isAfter(time, lastEndTime.toDate())) break;
-    if (
+    if (blocked) {
+      result.push({ date: time, disabled: true });
+    } else if (
       filteredList.filter(
         (v) =>
-          isSameOrBefore(v.startDateTime, time) &&
-          isSameOrAfter(v.endDateTime, time),
+          isBefore(v.startDateTime, time) && isSameOrAfter(v.endDateTime, time),
       ).length === TABLE_INFO[projectRoom].length
     ) {
+      blocked = true;
       result.push({ date: time, disabled: true });
     } else {
       result.push({ date: time, disabled: false });
@@ -260,5 +199,6 @@ const generateEndTimeList = (
       break;
     }
   }
+  console.log(result);
   return result;
 };
