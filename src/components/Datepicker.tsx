@@ -178,6 +178,7 @@ const getCalendarDates = (yearMonth: DateValue) => {
         .toDate(),
     );
   }
+  console.log(dates);
   return dates;
 };
 

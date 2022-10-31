@@ -3,6 +3,8 @@ import { DatePicker } from "@components";
 import { reservationDateState } from "@/stores/reservation";
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "./Modal";
+import { getMinusOneDay } from "@utils";
+import dayjs from "dayjs";
 
 export const ReservationDatepickerModal = () => {
   const [reservationDate, setReservationDate] =
@@ -20,8 +22,13 @@ export const ReservationDatepickerModal = () => {
         <DatePicker
           selectedDate={reservationDate}
           onClickDate={onClickDate}
-          enableStartDate="2022-9-1"
-          enableEndDate="2022-12-23"
+          enableStartDate={dayjs(getMinusOneDay(new Date()))
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .toDate()}
+          enableEndDate={dayjs(new Date()).add(14, "day").toDate()}
         />
       </div>
     </Modal>
