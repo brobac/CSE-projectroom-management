@@ -4,11 +4,8 @@ import { useReservationDateState } from "@/stores/reservation";
 import { getDate, getMonth } from "@utils";
 
 export const DateSelectSection = () => {
-  const {
-    state: reservationDate,
-    minusOneDay,
-    plusOneDay,
-  } = useReservationDateState();
+  const { reservationDate, minusOneDay, plusOneDay } =
+    useReservationDateState();
 
   const { openModal } = useModal("modal-reservation-date-picker");
   return (

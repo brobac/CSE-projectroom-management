@@ -4,8 +4,8 @@ import { atom, useRecoilState } from "recoil";
 export const ROOM_NAME_LIST = ["D330", "DB134"] as const;
 
 export const TABLE_INFO = {
-  D330: ["1", "2", "3", "4", "5", "6"],
-  DB134: ["1", "2", "3", "4", "5", "6", "7", "8"],
+  D330: ["1", "2", "3", "4", "5", "6"] as const,
+  DB134: ["1", "2", "3", "4", "5", "6", "7", "8"] as const,
 };
 
 export const reservationProjectroomState = atom<typeof ROOM_NAME_LIST[number]>({
@@ -19,19 +19,20 @@ export const reservationDateState = atom({
 });
 
 export const useReservationDateState = () => {
-  const [state, setState] = useRecoilState(reservationDateState);
+  const [reservationDate, setResetvationDate] =
+    useRecoilState(reservationDateState);
 
   const minusOneDay = () => {
-    setState(getMinusOneDay(state));
+    setResetvationDate(getMinusOneDay(reservationDate));
   };
 
   const plusOneDay = () => {
-    setState(getPlusOneDay(state));
+    setResetvationDate(getPlusOneDay(reservationDate));
   };
 
   return {
-    state,
-    setState,
+    reservationDate,
+    setResetvationDate,
     minusOneDay,
     plusOneDay,
   };
