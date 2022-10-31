@@ -41,7 +41,13 @@ export const getFirstDayOfPrevMonth = (date: DateValue) => {
 };
 
 export const getFirstDayOfMonth = (date: DateValue) => {
-  return dayjs(date).set("date", 1).toDate();
+  return dayjs(date)
+    .set("date", 1)
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0)
+    .toDate();
 };
 
 export const getFirstDayOfNextMonth = (date: DateValue) => {

@@ -14,6 +14,7 @@ import {
   isSameDay,
   KO_DAY,
 } from "@utils";
+import { twMerge } from "tailwind-merge";
 
 type DatePikerProps = {
   selectedDate?: DateValue;
@@ -137,19 +138,18 @@ const DateCell = ({ date, selected, disabled, onClick }: DateCellProps) => {
   return (
     <div
       onClick={!disabled ? () => onClick!(date) : undefined}
-      className={[
+      className={twMerge([
         "group flex h-full cursor-pointer items-center justify-center",
         disabled && "cursor-not-allowed",
-      ].join(" ")}
+      ])}
       key={date.getDate()}
     >
       <div
-        className={[
+        className={twMerge([
           "flex h-12 w-12 items-center justify-center rounded text-lg transition-colors group-hover:text-primary",
-          disabled && "group-hover:none text-base-200",
-          selected && "bg-primary text-primary-content",
-          // TODO tailwind 동일한 스타일 덮는법 찾아보기
-        ].join(" ")}
+          selected && "bg-primary text-base-100 group-hover:text-base-100",
+          disabled && " text-base-200 group-hover:text-base-200",
+        ])}
       >
         {date.getDate()}
       </div>
@@ -178,6 +178,7 @@ const getCalendarDates = (yearMonth: DateValue) => {
         .toDate(),
     );
   }
+  console.log(dates);
   return dates;
 };
 
