@@ -19,13 +19,17 @@ import { twMerge } from "tailwind-merge";
 import { TEMP_RESERVATION_LIST } from "./_tempData";
 
 export const TableSelectSection = () => {
-  const [selectedTable, setSelectedTable] = useState();
+  const [selectedTable, setSelectedTable] = useState("");
   const [statusItems, setStatusItems] = useState<
     Map<string, TableStatusItemType[]>
   >(new Map());
   const { startTime, endTime } = useReservationTimeState();
   const { reservationDate, firstTime, lastTime } = useReservationDateState();
   const reservationProjectroom = useRecoilValue(reservationProjectroomState);
+
+  const onChangeTable = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTable(e.target.value);
+  };
 
   const generateTableStatusItems = () => {
     const projectroomReservationList = TEMP_RESERVATION_LIST.filter(
@@ -87,6 +91,7 @@ export const TableSelectSection = () => {
     console.log("sfsdfsfsdf");
     console.log(newItems);
     setStatusItems(newItems);
+    setSelectedTable("");
   }, [reservationDate, reservationProjectroom, startTime, endTime]);
 
   return (
@@ -94,14 +99,27 @@ export const TableSelectSection = () => {
       <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
       <div className="flex  w-full max-w-7xl flex-col">
         {TABLE_INFO[reservationProjectroom].map((table) => (
-          <TableStatus
-            key={table}
-            table={table}
-            items={statusItems.get(table)!}
-            disabled={statusItems
-              .get(table)
-              ?.some((v) => v.status === "overlapped")}
-          />
+          <label className=" cursor-pointer">
+            <input
+              type="radio"
+              name="table"
+              className="hidden"
+              value={table}
+              onChange={onChangeTable}
+              disabled={statusItems
+                .get(table)
+                ?.some((v) => v.status === "overlapped")}
+            />
+            <TableStatus
+              key={table}
+              table={table}
+              items={statusItems.get(table)!}
+              disabled={statusItems
+                .get(table)
+                ?.some((v) => v.status === "overlapped")}
+              selected={selectedTable === table}
+            />
+          </label>
         ))}
       </div>
     </section>
@@ -131,7 +149,7 @@ const TableStatus = ({
   return (
     <div
       className={twMerge([
-        "flex  w-full items-center rounded-xl p-4 transition-colors",
+        "flex  w-full items-center rounded-xl p-4",
         selected && "bg-info text-base-100",
         disabled && "opacity-30",
       ])}
