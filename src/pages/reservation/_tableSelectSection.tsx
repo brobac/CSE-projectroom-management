@@ -100,6 +100,14 @@ export const TableSelectSection = () => {
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
       <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
+      <div className="flex gap-4 whitespace-nowrap p-4 ">
+        <div className=" badge  border-none bg-base-200 text-base-content">
+          예약 가능
+        </div>
+        <div className=" badge-secondary badge">예약 불가</div>
+        <div className=" badge-primary badge">선택 시간</div>
+        <div className=" badge-warning badge">겹치는 시간</div>
+      </div>
       <div className="flex  w-full max-w-7xl flex-col">
         {TABLE_INFO[reservationProjectroom].map((table) => (
           <label className=" cursor-pointer">
@@ -175,11 +183,17 @@ const TableStatus = ({
           ))}
         </div>
         <div className="relative flex w-full text-[0.5rem] sm:text-base">
-          <span className="w-[calc(1/6*100%)]">08:00</span>
-          <span className="w-[calc(1/4*100%)]">12:00</span>
-          <span className="w-[calc(1/4*100%)]">18:00</span>
-          <span className="w-[calc(1/4*100%)]">00:00</span>
-          <span className="absolute right-0">08:00</span>
+          <span className="w-[calc(1/6*100%)]">8</span>
+          <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+            12
+          </span>
+          <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+            18
+          </span>
+          <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+            0
+          </span>
+          <span className="absolute right-0">8</span>
         </div>
       </div>
     </div>
