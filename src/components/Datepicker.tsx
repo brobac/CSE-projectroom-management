@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
 import { IoCaretBackOutline, IoCaretForwardOutline } from "react-icons/io5";
+
 import { DateValue } from "@types";
 import {
   chunkArray,
@@ -14,7 +16,6 @@ import {
   isSameDay,
   KO_DAY,
 } from "@utils";
-import { twMerge } from "tailwind-merge";
 
 type DatePikerProps = {
   selectedDate?: DateValue;
@@ -178,7 +179,6 @@ const getCalendarDates = (yearMonth: DateValue) => {
         .toDate(),
     );
   }
-  console.log(dates);
   return dates;
 };
 
