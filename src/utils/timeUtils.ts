@@ -1,5 +1,5 @@
-import { DateValue } from "@types";
 import dayjs from "dayjs";
+import { DateValue } from "@types";
 
 export const KO_DAY = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
@@ -41,13 +41,7 @@ export const getFirstDayOfPrevMonth = (date: DateValue) => {
 };
 
 export const getFirstDayOfMonth = (date: DateValue) => {
-  return dayjs(date)
-    .set("date", 1)
-    .hour(0)
-    .minute(0)
-    .second(0)
-    .millisecond(0)
-    .toDate();
+  return dayjs(date).set("date", 1).toDate();
 };
 
 export const getFirstDayOfNextMonth = (date: DateValue) => {

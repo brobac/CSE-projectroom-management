@@ -1,16 +1,16 @@
 import { IoCaretBackOutline, IoCaretForwardOutline } from "react-icons/io5";
-import { useModal } from "@/hooks/useModal";
+import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
+
 import { useReservationDateState } from "@/stores/reservation";
+import { useModal } from "@/hooks/useModal";
 import {
   getDate,
-  getMinusOneDay,
   getMonth,
-  isBefore,
+  isSameDay,
   isSameOrAfter,
   isSameOrBefore,
 } from "@utils";
-import { twMerge } from "tailwind-merge";
-import dayjs from "dayjs";
 
 export const DateSelectSection = () => {
   const { reservationDate, minusOneDay, plusOneDay } =
@@ -23,7 +23,18 @@ export const DateSelectSection = () => {
       <div className="flex  w-36 items-end justify-between">
         <button
           onClick={minusOneDay}
-          disabled={isSameOrBefore(reservationDate, getMinusOneDay(new Date()))}
+          disabled={
+            isSameDay(new Date(), reservationDate) &&
+            isSameOrBefore(
+              dayjs(new Date())
+                .hour(8)
+                .minute(0)
+                .second(0)
+                .millisecond(0)
+                .toDate(),
+              reservationDate,
+            )
+          }
           className={twMerge(["disabled:text-base-200", "text-base-content"])}
         >
           <IoCaretBackOutline size={32} />

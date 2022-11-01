@@ -48,7 +48,10 @@ export const TableSelectSection = () => {
         return tableReservationList.some(
           (v) =>
             isSameOrBefore(v.startDateTime, time) &&
-            isSameOrAfter(v.endDateTime, time),
+            isSameOrAfter(
+              v.endDateTime,
+              dayjs(time).add(30, "minute").toDate(),
+            ),
         );
       };
 

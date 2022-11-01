@@ -1,10 +1,11 @@
 import { useRecoilState } from "recoil";
-import { DatePicker } from "@components";
+import dayjs from "dayjs";
+
 import { reservationDateState } from "@/stores/reservation";
 import { useModal } from "@/hooks/useModal";
+import { DatePicker } from "@components";
+
 import { Modal } from "./Modal";
-import { getMinusOneDay } from "@utils";
-import dayjs from "dayjs";
 
 export const ReservationDatepickerModal = () => {
   const [reservationDate, setReservationDate] =
@@ -22,8 +23,8 @@ export const ReservationDatepickerModal = () => {
         <DatePicker
           selectedDate={reservationDate}
           onClickDate={onClickDate}
-          enableStartDate={dayjs(getMinusOneDay(new Date()))
-            .hour(0)
+          enableStartDate={dayjs(new Date())
+            .hour(8)
             .minute(0)
             .second(0)
             .millisecond(0)
