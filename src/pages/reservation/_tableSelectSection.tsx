@@ -183,11 +183,17 @@ const TableStatus = ({
           ))}
         </div>
         <div className="relative flex w-full text-[0.5rem] sm:text-base">
-          <span className="w-[calc(1/6*100%)]">08:00</span>
-          <span className="w-[calc(1/4*100%)]">12:00</span>
-          <span className="w-[calc(1/4*100%)]">18:00</span>
-          <span className="w-[calc(1/4*100%)]">00:00</span>
-          <span className="absolute right-0">08:00</span>
+          <span className="w-[calc(1/6*100%)]">8</span>
+          <span className="relative  w-[calc(1/4*100%)] pl-3 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['↑']">
+            12
+          </span>
+          <span className="relative  w-[calc(1/4*100%)] pl-3 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['↑']">
+            18
+          </span>
+          <span className="relative  w-[calc(1/4*100%)] pl-3 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['↑']">
+            0
+          </span>
+          <span className="absolute right-0">8</span>
         </div>
       </div>
     </div>
