@@ -100,8 +100,8 @@ export const TableSelectSection = () => {
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
       <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
-      <div className="flex gap-4 p-4">
-        <div className=" badge border-none bg-base-200 text-base-content">
+      <div className="flex gap-4 whitespace-nowrap p-4 ">
+        <div className=" badge  border-none bg-base-200 text-base-content">
           예약 가능
         </div>
         <div className=" badge-secondary badge">예약 불가</div>
