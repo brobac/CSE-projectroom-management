@@ -1,5 +1,9 @@
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
+
 import {
-  reservationDateState,
   reservationProjectroomState,
   ROOM_NAME_LIST,
   TABLE_INFO,
@@ -12,10 +16,7 @@ import {
   isSameOrBefore,
   roundUp30MinuteIncrements,
 } from "@utils";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { twMerge } from "tailwind-merge";
+
 import { TEMP_RESERVATION_LIST } from "./_tempData";
 
 export const TableSelectSection = () => {
@@ -91,8 +92,6 @@ export const TableSelectSection = () => {
 
   useEffect(() => {
     const newItems = generateTableStatusItems();
-    console.log("sfsdfsfsdf");
-    console.log(newItems);
     setStatusItems(newItems);
     setSelectedTable("");
   }, [reservationDate, reservationProjectroom, startTime, endTime]);

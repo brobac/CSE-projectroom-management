@@ -1,3 +1,7 @@
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+
 import {
   reservationDateState,
   reservationProjectroomState,
@@ -14,9 +18,7 @@ import {
   roundUp30MinuteIncrements,
   toHMM,
 } from "@utils";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+
 import { TEMP_RESERVATION_LIST } from "./_tempData";
 
 export const TimeSelectSection = () => {
@@ -54,8 +56,6 @@ export const TimeSelectSection = () => {
   }, [reservationDate, reservationProjectroom]);
 
   useEffect(() => {
-    console.log("startTime 변경");
-    console.log(startTime);
     const newEndTimeList = generateEndTimeList(
       reservationDate,
       startTime,
@@ -199,6 +199,5 @@ const generateEndTimeList = (
       break;
     }
   }
-  console.log(result);
   return result;
 };

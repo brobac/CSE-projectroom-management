@@ -1,7 +1,6 @@
+import { useRecoilValue } from "recoil";
 import { useModal } from "@/hooks/useModal";
 import { reservationProjectroomState } from "@/stores/reservation";
-import { useRecoilValue } from "recoil";
-import { MODAL_TYPE } from "./modals";
 
 export const ReservationHeader = () => {
   const roomName = useRecoilValue(reservationProjectroomState);
@@ -11,7 +10,7 @@ export const ReservationHeader = () => {
 const LoginButton = () => {
   const { openModal } = useModal("modal-login");
   return (
-    <button onClick={openModal} className="btn btn-ghost">
+    <button onClick={openModal} className="btn-ghost btn">
       로그인
     </button>
   );
