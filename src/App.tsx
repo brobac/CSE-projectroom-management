@@ -1,14 +1,20 @@
-import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LoginModal, ReservationDatepickerModal } from "@components";
 import { ReservationPage } from "./pages/reservation";
+import { MyPage } from "./pages/user/mypage";
+import { ReservationServiceLayout } from "./templates/ReservationServiceLayout";
 
 function App() {
   return (
     <BrowserRouter>
       <LoginModal />
       <ReservationDatepickerModal />
-      <ReservationPage />
+      <Routes>
+        <Route path="/" element={<ReservationServiceLayout />}>
+          <Route path="/" element={<ReservationPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
