@@ -24,7 +24,7 @@ type HeaderProps = {
 
 export const Header = ({ title, leftItem, rightItem }: HeaderProps) => {
   return (
-    <header className="fixed top-0 flex w-full justify-center bg-base-100 px-4 shadow">
+    <header className="fixed top-0 z-10 flex w-full justify-center bg-base-100 px-4 shadow">
       <div className="navbar  max-w-screen-2xl">
         <div className="navbar-start">{leftItem}</div>
         <div className="navbar-center">
