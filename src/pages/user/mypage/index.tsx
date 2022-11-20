@@ -1,6 +1,7 @@
 import { MyPageHeader } from "./_header";
 import { History } from "./_history";
 import { PenaltyInfo } from "./_penaltyInfo";
+import { QRSection } from "./_qrSection";
 import {
   UnfinishedReservation,
   UnfinishedReservationProps,
@@ -59,14 +60,7 @@ export const MyPage = () => {
         </div>
         {/* <----- 진행중인 예약 -----> */}
         <History />
-        {/* <-----QR 영역 -----> */}
-        <div className="flex flex-col items-center">
-          <div className=" w-60 border-8 border-base-content p-2">
-            <img src={tempQRImageSrc} alt="큐알코드" className="w-full" />
-          </div>
-          <p>* 타인에게 QR코드가 노출되지 않도록 주의해주세요</p>
-        </div>
-        {/* <----- QR 영역 -----> */}
+        <QRSection />
       </div>
     </>
   );

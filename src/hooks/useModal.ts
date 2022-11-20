@@ -6,7 +6,7 @@ export const useModal = (type: typeof MODAL_TYPE[keyof typeof MODAL_TYPE]) => {
 
   useEffect(() => {
     setTarget(document.getElementById(type) as HTMLInputElement);
-  }, []);
+  }, [type]);
 
   const openModal = () => {
     target!.checked = true;
