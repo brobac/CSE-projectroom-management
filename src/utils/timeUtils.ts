@@ -32,8 +32,21 @@ export const getDateDataTwoDigit = (target: DateValue) => {
   };
 };
 
+/**
+ * @return {string}
+ * i.g. 2022.10.04(화)
+ */
+export const toYYYYMD_KO_DAY_DOT = (target: DateValue) => {
+  const date = dayjs(target);
+  return `${date.format("YYYY.M.D")}(${KO_DAY[date.day()]})`;
+};
+
 export const toHMM = (date: DateValue) => {
   return dayjs(date).format("H:mm");
+};
+
+export const toHHMM = (date: DateValue) => {
+  return dayjs(date).format("HH:mm");
 };
 
 export const getFirstDayOfPrevMonth = (date: DateValue) => {
