@@ -6,7 +6,7 @@ export const ReservationPageLayout = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div className="flex min-h-screen flex-col pt-16">
+    <div className="flex min-h-screen w-full flex-col pt-16">
       <ReservationHeader />
       {children}
       <Footer />
