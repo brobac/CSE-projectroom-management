@@ -54,7 +54,7 @@ export const MyPage = () => {
           <p className="text-2xl font-bold">진행중인 예약</p>
           <div className="flex w-full max-w-xs flex-col gap-2">
             {tempUnfinishedReservationList.map((reservation) => (
-              <UnfinishedReservation {...reservation} />
+              <UnfinishedReservation key={reservation.id} {...reservation} />
             ))}
           </div>
         </div>
