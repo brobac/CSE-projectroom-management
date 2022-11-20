@@ -4,6 +4,8 @@ import { atom, useRecoilState } from "recoil";
 
 export const ROOM_NAME_LIST = ["D330", "DB134"] as const;
 
+export type ProjectroomNameType = typeof ROOM_NAME_LIST[number];
+
 export const TABLE_INFO = {
   D330: ["1", "2", "3", "4", "5", "6"] as const,
   DB134: ["1", "2", "3", "4", "5", "6", "7", "8"] as const,
