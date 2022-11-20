@@ -1,4 +1,4 @@
-import { Footer, ReservationHeader } from "@components";
+import { ReservationHeader } from "@components";
 
 export const ReservationPageLayout = ({
   children,
@@ -9,7 +9,6 @@ export const ReservationPageLayout = ({
     <div className="flex min-h-screen w-full flex-col pt-16">
       <ReservationHeader />
       {children}
-      <Footer />
     </div>
   );
 };
