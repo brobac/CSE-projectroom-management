@@ -46,22 +46,19 @@ const tempUnfinishedReservationList: UnfinishedReservationProps[] = [
 export const MyPage = () => {
   return (
     <>
-      <MyPageHeader />
-      <div className="flex w-full max-w-screen-2xl flex-col items-center px-4 pt-16">
-        <PenaltyInfo />
-        {/* <----- 진행중인 예약 -----> */}
-        <div className="flex w-full flex-col items-center gap-4 pt-4">
-          <p className="text-2xl font-bold">진행중인 예약</p>
-          <div className="flex w-full max-w-xs flex-col gap-2">
-            {tempUnfinishedReservationList.map((reservation) => (
-              <UnfinishedReservation key={reservation.id} {...reservation} />
-            ))}
-          </div>
+      <PenaltyInfo />
+      {/* <----- 진행중인 예약 -----> */}
+      <div className="flex w-full flex-col items-center gap-4 pt-4">
+        <p className="text-2xl font-bold">진행중인 예약</p>
+        <div className="flex w-full max-w-xs flex-col gap-2">
+          {tempUnfinishedReservationList.map((reservation) => (
+            <UnfinishedReservation key={reservation.id} {...reservation} />
+          ))}
         </div>
-        {/* <----- 진행중인 예약 -----> */}
-        <History />
-        <QRSection />
       </div>
+      {/* <----- 진행중인 예약 -----> */}
+      <History />
+      <QRSection />
     </>
   );
 };
