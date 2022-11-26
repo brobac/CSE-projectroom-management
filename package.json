@@ -12,6 +12,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "axios": "^1.2.0",
     "daisyui": "^2.33.0",
     "dayjs": "^1.11.6",
     "react": "^18.2.0",
