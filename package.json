@@ -24,6 +24,7 @@
     "recoil": "^0.7.6",
     "tailwind-merge": "^1.7.0",
     "typescript": "^4.4.2",
+    "use-debounce": "^8.0.4",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
