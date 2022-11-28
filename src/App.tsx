@@ -6,6 +6,7 @@ import { ReservationServiceLayout } from "./templates/ReservationServiceLayout";
 import { MyReservationList } from "./pages/user/reservationList";
 import { MyPageLayout } from "./pages/user/_layout";
 import { MyPenaltyList } from "./pages/user/penaltyList";
+import { SignupPage } from "./pages/signup";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="penalty-list" element={<MyPenaltyList />} />
           </Route>
         </Route>
+        <Route path="signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
