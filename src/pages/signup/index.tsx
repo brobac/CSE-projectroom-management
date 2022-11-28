@@ -16,18 +16,16 @@ type SignupInputs = {
 };
 
 const emailRegex = /.+@kumoh.ac.kr$/;
-const loginIdRegex = /^[0-9]{8}/;
+const loginIdRegex = /^[0-9]{8}$/;
 
 export const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     setError,
     clearErrors,
     formState: { errors },
   } = useForm<SignupInputs>();
-  const { email, loginId } = getValues();
   const { mutate: signup, isLoading } = useSignup();
   const onSubmit: SubmitHandler<SignupInputs> = (data) => {
     signup(data);
@@ -35,11 +33,15 @@ export const SignupPage = () => {
 
   useEffect(() => console.log(errors), [errors]);
 
-  const deboucedEmailCheck = useDebouncedCallback(async () => {
-    if (!emailRegex.test(email)) return;
-    console.log("deboune!");
+  const deboucedEmailCheck = useDebouncedCallback(async (email) => {
+    if (!emailRegex.test(email)) {
+      console.log(email);
+      console.log("금오메일아님");
+      return;
+    }
     checkDuplicatedEmail(email)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         console.log("사용가능한 이메일");
         clearErrors("email");
       })
@@ -48,16 +50,18 @@ export const SignupPage = () => {
       });
   }, 1000);
 
-  const debouncedLoginIdCheck = useDebouncedCallback(async () => {
-    if (!loginIdRegex.test(loginId)) return;
-    console.log("deboune!");
+  const debouncedLoginIdCheck = useDebouncedCallback(async (loginId) => {
+    if (!loginIdRegex.test(loginId)) {
+      setError("loginId", { message: "8자리 학번만 가능합니다" });
+      return;
+    }
     checkDuplicatedLoginId(loginId)
       .then(() => {
         console.log("사용가능한 아이디");
-        clearErrors("email");
+        clearErrors("loginId");
       })
       .catch((err) => {
-        setError("email", { message: "이미 사용중인 아이디입니다." });
+        setError("loginId", { message: "이미 사용중인 아이디입니다." });
       });
   }, 1000);
 
@@ -111,8 +115,8 @@ export const SignupPage = () => {
                       value: emailRegex,
                       message: "메일 양식을 확인해주세요",
                     },
+                    onChange: (e) => deboucedEmailCheck(e.target.value),
                   })}
-                  onChange={deboucedEmailCheck}
                 />
                 <span className="pl-2 text-sm text-error">
                   {errors.email?.message}
@@ -135,9 +139,12 @@ export const SignupPage = () => {
                   {...register("loginId", {
                     required: true,
                     pattern: loginIdRegex,
+                    onChange: (e) => debouncedLoginIdCheck(e.target.value),
                   })}
-                  onChange={debouncedLoginIdCheck}
                 />
+                <span className="pl-2 text-sm text-error">
+                  {errors.loginId?.message}
+                </span>
               </label>
               <label className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">

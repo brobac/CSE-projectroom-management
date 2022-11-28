@@ -1,4 +1,4 @@
-import { SignupDTO } from "@types";
+import { LoginDTO, LogoutDTO, SignupDTO } from "@types";
 
 import { HTTP_METHOD } from ".";
 import { _axios } from "../axiosService";
@@ -25,10 +25,30 @@ export const checkDuplicatedEmail = async (email: string) => {
 
 export const checkDuplicatedLoginId = async (loginId: string) => {
   return _axios<boolean>({
-    url: `${membersURL}duplicated-loginId`,
+    url: `${membersURL}/duplicated-loginid`,
     method: HTTP_METHOD.GET,
     params: { loginId },
   });
 };
 
 // ----- 회원가입 관련 API ----->
+
+// <----- 로그인 관련 API -----
+
+export const login = async (data: LoginDTO) => {
+  return _axios<boolean>({
+    url: `${membersURL}/login`,
+    method: HTTP_METHOD.POST,
+    data,
+  });
+};
+
+export const logout = async (data: LogoutDTO) => {
+  return _axios<boolean>({
+    url: `${membersURL}/logout`,
+    method: HTTP_METHOD.DELETE,
+    data,
+  });
+};
+
+// ----- 로그인 관련 API ----->

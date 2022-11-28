@@ -1,12 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { SignupDTO } from "@types";
+import { LoginDTO, LogoutDTO, SignupDTO } from "@types";
 import {
   checkDuplicatedEmail,
   checkDuplicatedLoginId,
   signup,
+  login,
+  logout,
 } from "@services";
+
+// <----- 회원가입 관련 -----
 
 export const useSignup = () => {
   const navigate = useNavigate();
@@ -39,3 +43,21 @@ export const useCheckDuplicatedLoginId = () => {
 
   return mutate;
 };
+
+// ----- 회원가입 관련 ----->
+
+// <----- 로그인 관련 -----
+
+export const useLogin = () => {
+  const { mutate } = useMutation((data: LoginDTO) => login(data));
+
+  return { mutate };
+};
+
+export const useLogout = () => {
+  const { mutate } = useMutation((data: LogoutDTO) => logout(data));
+
+  return { mutate };
+};
+
+// ----- 로그인 관련 ----->
