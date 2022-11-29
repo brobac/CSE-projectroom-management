@@ -1,4 +1,5 @@
 import { Header } from "@components";
+import { useLogout } from "@services";
 import { IoCalendarOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
@@ -22,5 +23,10 @@ const ToReservation = () => {
 };
 
 const LogoutButton = () => {
-  return <button>로그아웃</button>;
+  const { mutate: logout } = useLogout();
+  return (
+    <button onClick={() => logout()} className="btn-ghost btn">
+      로그아웃
+    </button>
+  );
 };

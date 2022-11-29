@@ -1,17 +1,35 @@
 import { useRecoilValue } from "recoil";
 import { useModal } from "@/hooks/useModal";
 import { reservationProjectroomState } from "@/stores/reservation";
+import { useLogout } from "@services";
+import { useUserState } from "@/stores/user";
+import { useNavigate } from "react-router-dom";
 
 export const ReservationHeader = () => {
   const roomName = useRecoilValue(reservationProjectroomState);
-  return <Header title={roomName} rightItem={<LoginButton />} />;
+  const { hasAuth } = useUserState();
+  return (
+    <Header
+      title={roomName}
+      rightItem={hasAuth ? <MyPageButton /> : <LoginButton />}
+    />
+  );
 };
 
 const LoginButton = () => {
   const { openModal } = useModal("modal-login");
   return (
-    <button onClick={openModal} className="btn btn-ghost">
+    <button onClick={openModal} className="btn-ghost btn">
       로그인
+    </button>
+  );
+};
+
+const MyPageButton = () => {
+  const navigate = useNavigate();
+  return (
+    <button onClick={() => navigate("/mypage")} className="btn-ghost btn">
+      MY
     </button>
   );
 };
