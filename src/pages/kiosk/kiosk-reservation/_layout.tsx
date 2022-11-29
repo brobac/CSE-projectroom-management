@@ -4,7 +4,7 @@ import { KioskHeader } from "../_header";
 export const KioskReservationLayout = () => {
   return (
     <>
-      <KioskHeader />
+      <KioskHeader title="D330" />
       <div className="h-full w-full pt-24">
         <Outlet />
       </div>

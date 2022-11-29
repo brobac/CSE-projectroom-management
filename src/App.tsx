@@ -12,12 +12,15 @@ import { KioskLayout } from "./pages/kiosk/_layout";
 import { KioskReservationPage } from "./pages/kiosk/kiosk-reservation";
 import { KioskReservationLayout } from "./pages/kiosk/kiosk-reservation/_layout";
 import { KioskReservationTimeSelectPage } from "./pages/kiosk/kiosk-reservation/_timeSelectPage";
+import { ReservationConfirmPage } from "./pages/kiosk/reservation-confirm";
+import { ReservationConfirmResultModal } from "@components/modals/ReservationConfirmResultModal";
 
 function App() {
   return (
     <BrowserRouter>
       <LoginModal />
       <ReservationDatepickerModal />
+      <ReservationConfirmResultModal />
       <Routes>
         <Route path="/" element={<ReservationServiceLayout />}>
           <Route path="/" element={<ReservationPage />} />
@@ -37,7 +40,10 @@ function App() {
               element={<KioskReservationTimeSelectPage />}
             />
           </Route>
-          <Route path="reservation-confirm" element={<div>예약확인</div>} />
+          <Route
+            path="reservation-confirm"
+            element={<ReservationConfirmPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
