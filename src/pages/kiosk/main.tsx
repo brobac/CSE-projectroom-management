@@ -7,7 +7,7 @@ export const KioskMainPage = () => {
   const toReservationConfirm = () => navigate("reservation-confirm");
 
   return (
-    <div className="flex h-screen w-full items-center justify-center gap-20 bg-gray-800 p-40">
+    <div className="flex h-screen w-full items-center justify-center gap-20">
       <button
         onClick={toReservation}
         className="btn-primary btn relative flex flex-1 items-center justify-center overflow-hidden pb-1/2"
