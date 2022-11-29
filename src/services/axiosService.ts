@@ -36,13 +36,17 @@ instance.interceptors.response.use(
 );
 
 export type APIResponse<T> = {
-  data: T;
+  code: string;
+  message: string;
+  result: T;
   error?: string;
 };
 
 export const _axios = async <T>(
   props: AxiosRequestConfig,
 ): Promise<APIResponse<T>> => {
-  const { data } = await instance(props);
-  return { data };
+  const {
+    data: { code, message, result },
+  } = await instance(props);
+  return { code, message, result };
 };

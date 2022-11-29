@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { LoginDTO, LogoutDTO, SignupDTO } from "@types";
+import { LoginDTO, SignupDTO } from "@types";
 import {
   checkDuplicatedEmail,
   checkDuplicatedLoginId,
@@ -9,6 +9,10 @@ import {
   login,
   logout,
 } from "@services";
+import { storageService } from "../storageService";
+import { useModal } from "@/hooks/useModal";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/stores/user";
 
 // <----- 회원가입 관련 -----
 
@@ -49,13 +53,45 @@ export const useCheckDuplicatedLoginId = () => {
 // <----- 로그인 관련 -----
 
 export const useLogin = () => {
-  const { mutate } = useMutation((data: LoginDTO) => login(data));
+  const setUser = useSetRecoilState(userState);
+  const { closeModal } = useModal("modal-login");
 
-  return { mutate };
+  const { mutate, isLoading, isError } = useMutation(
+    (data: LoginDTO) => login(data),
+    {
+      onSuccess: (res) => {
+        const user = res.result.memberInfo;
+        const token = res.result.tokenInfo;
+        storageService.setStoredUser(user);
+        storageService.setStoredToken(token);
+        setUser(user);
+        closeModal();
+      },
+    },
+  );
+
+  return { mutate, isLoading, isError };
 };
 
 export const useLogout = () => {
-  const { mutate } = useMutation((data: LogoutDTO) => logout(data));
+  const setUser = useSetRecoilState(userState);
+  const token = storageService.getStoredToken();
+
+  const navigate = useNavigate();
+  const { mutate } = useMutation(() => logout(token!), {
+    onSuccess: () => {
+      storageService.clearStoredToken();
+      storageService.clearStoredUser();
+      setUser(undefined);
+      navigate("/");
+    },
+    onError: () => {
+      storageService.clearStoredToken();
+      storageService.clearStoredUser();
+      setUser(undefined);
+      navigate("/");
+    },
+  });
 
   return { mutate };
 };

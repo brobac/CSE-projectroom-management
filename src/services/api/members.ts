@@ -1,4 +1,4 @@
-import { LoginDTO, LogoutDTO, SignupDTO } from "@types";
+import { LoginDTO, LogoutDTO, SignupDTO, Tokens, User } from "@types";
 
 import { HTTP_METHOD } from ".";
 import { _axios } from "../axiosService";
@@ -36,15 +36,15 @@ export const checkDuplicatedLoginId = async (loginId: string) => {
 // <----- 로그인 관련 API -----
 
 export const login = async (data: LoginDTO) => {
-  return _axios<boolean>({
+  return _axios<{ memberInfo: User; tokenInfo: Tokens }>({
     url: `${membersURL}/login`,
     method: HTTP_METHOD.POST,
     data,
   });
 };
 
-export const logout = async (data: LogoutDTO) => {
-  return _axios<boolean>({
+export const logout = async (data: Tokens) => {
+  return _axios<void>({
     url: `${membersURL}/logout`,
     method: HTTP_METHOD.DELETE,
     data,

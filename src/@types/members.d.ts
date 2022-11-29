@@ -5,4 +5,14 @@ declare module "@types" {
     loginId: string;
     password: string;
   };
+
+  type LoginDTO = {
+    loginId: string;
+    password: string;
+  };
+
+  type LogoutDTO = {
+    accessToken: "string";
+    refreshToken: "string";
+  };
 }
