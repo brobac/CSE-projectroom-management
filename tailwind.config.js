@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
-    extend: {},
+    extend: {
+      padding: {
+        "1/2": "50%",
+        full: "100%",
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

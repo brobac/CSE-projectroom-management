@@ -7,6 +7,7 @@ import { MyReservationList } from "./pages/user/reservationList";
 import { MyPageLayout } from "./pages/user/_layout";
 import { MyPenaltyList } from "./pages/user/penaltyList";
 import { SignupPage } from "./pages/signup";
+import { KioskMainPage } from "./pages/kiosk/main";
 
 function App() {
   return (
@@ -23,6 +24,12 @@ function App() {
           </Route>
         </Route>
         <Route path="signup" element={<SignupPage />} />
+        <Route path="kiosk" element={<KioskMainPage />} />
+        <Route
+          path="kiosk/reservation"
+          element={<div className="w-full bg-slate-300">현장예약</div>}
+        />
+        <Route path="kiosk/reservation-confirm" element={<div>예약확인</div>} />
       </Routes>
     </BrowserRouter>
   );
