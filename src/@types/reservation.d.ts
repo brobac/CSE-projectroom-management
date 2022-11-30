@@ -21,4 +21,6 @@ declare module "@types" {
     projectTableId: number;
     accountQRContents: string;
   };
+
+  type ReservationConfirmWithQRRequestDTO = { qrContent: string };
 }

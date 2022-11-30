@@ -1,4 +1,8 @@
-import { KioskReservationRequestDTO, ReservationRequestDTO } from "@types";
+import {
+  KioskReservationRequestDTO,
+  ReservationConfirmWithQRRequestDTO,
+  ReservationRequestDTO,
+} from "@types";
 import { HTTP_METHOD } from ".";
 import { getJWTHeader, _axios } from "../axiosService";
 
@@ -29,7 +33,9 @@ export const cancelReservation = async (reservationId: number) => {
   });
 };
 
-export const reservationConfirmWithQR = async (data: { qrContent: string }) => {
+export const reservationConfirmWithQR = async (
+  data: ReservationConfirmWithQRRequestDTO,
+) => {
   return _axios<void>({
     url: `${reservationURL}/auth/qr`,
     method: HTTP_METHOD.PATCH,
