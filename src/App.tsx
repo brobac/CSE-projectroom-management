@@ -14,6 +14,7 @@ import { KioskReservationLayout } from "./pages/kiosk/kiosk-reservation/_layout"
 import { KioskReservationTimeSelectPage } from "./pages/kiosk/kiosk-reservation/_timeSelectPage";
 import { ReservationConfirmPage } from "./pages/kiosk/reservation-confirm";
 import { ReservationConfirmResultModal } from "@components/modals/ReservationConfirmResultModal";
+import { PageNotFound } from "./pages/404";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             element={<ReservationConfirmPage />}
           />
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
