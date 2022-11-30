@@ -1,4 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { storageService } from "./storageService";
+
+export function getJWTHeader(): Record<string, string> {
+  const tokens = storageService.getStoredToken();
+  return { Authorization: tokens?.accessToken ?? "" };
+}
 
 const instance: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,

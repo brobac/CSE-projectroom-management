@@ -1,4 +1,4 @@
-import { LoginDTO, LogoutDTO, SignupDTO, Tokens, User } from "@types";
+import { LoginDTO, SignupDTO, Tokens, User } from "@types";
 
 import { HTTP_METHOD } from ".";
 import { _axios } from "../axiosService";
