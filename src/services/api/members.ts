@@ -51,4 +51,12 @@ export const logout = async (data: Tokens) => {
   });
 };
 
+export const tokenReissue = async (refreshToken: string) => {
+  return _axios<Tokens>({
+    url: `${membersURL}/logout`,
+    method: HTTP_METHOD.DELETE,
+    data: refreshToken,
+  });
+};
+
 // ----- 로그인 관련 API ----->
