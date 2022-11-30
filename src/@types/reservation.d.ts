@@ -23,4 +23,9 @@ declare module "@types" {
   };
 
   type ReservationConfirmWithQRRequestDTO = { qrContent: string };
+
+  type FetchReservationPeriod = {
+    firstDateTime: string;
+    lastDateTime: strings;
+  };
 }

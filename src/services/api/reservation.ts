@@ -1,4 +1,5 @@
 import {
+  FetchReservationPeriod,
   KioskReservationRequestDTO,
   ReservationConfirmWithQRRequestDTO,
   ReservationRequestDTO,
@@ -40,5 +41,17 @@ export const reservationConfirmWithQR = async (
     url: `${reservationURL}/auth/qr`,
     method: HTTP_METHOD.PATCH,
     data,
+  });
+};
+
+export const fetchReservationListByProjectroomId = async (
+  id: number,
+  period: FetchReservationPeriod,
+) => {
+  return _axios<void>({
+    url: `${reservationURL}/projectroom/${id}`,
+    method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
+    params: { period },
   });
 };
