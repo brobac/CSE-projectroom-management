@@ -114,16 +114,22 @@ export const TableSelectSection = () => {
           <div className=" badge  border-none bg-base-200 text-base-content">
             예약 가능
           </div>
-          <div className=" badge badge-secondary">예약 불가</div>
+          <div className=" badge-secondary badge">예약 불가</div>
         </div>
         <div className="flex items-center gap-4">
-          <div className=" badge badge-primary">선택 시간</div>
-          <div className=" badge badge-warning">겹치는 시간</div>
+          <div className=" badge-primary badge">선택 시간</div>
+          <div className=" badge-warning badge">겹치는 시간</div>
         </div>
       </div>
       <div className="flex  w-full max-w-7xl flex-col">
         {reservationProjectroom?.projectTableList.map((table) => (
-          <button onClick={() => onClickTable(table.tableId)}>
+          <button
+            disabled={statusItems
+              .get(table)
+              ?.some((v) => v.status === "overlapped")}
+            onClick={() => onClickTable(table.tableId)}
+            className="disabled:cursor-not-allowed"
+          >
             <TableStatus
               key={table.tableId}
               table={table}
@@ -184,7 +190,7 @@ const TableStatus = ({
             ></div>
           ))}
         </div>
-        <div className="relative flex w-full text-[0.5rem] sm:text-base">
+        <div className="relative flex w-full text-left text-[0.5rem] sm:text-base">
           <span className="w-[calc(1/6*100%)]">8</span>
           <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
             12
