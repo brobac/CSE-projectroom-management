@@ -35,7 +35,10 @@ export const useCancelReservation = () => {
     (reservationId: number) => cancelReservation(reservationId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.reservation]);
+        queryClient.invalidateQueries([
+          queryKeys.reservation,
+          queryKeys.currentReservation,
+        ]);
       },
     },
   );
@@ -63,7 +66,7 @@ export const useFetchCurrentReservationList = () => {
   const { user, hasAuth } = useUserState();
 
   const { data, isLoading } = useQuery(
-    [queryKeys.user, user?.memberId],
+    [queryKeys.reservation, queryKeys.currentReservation],
     () => fetchCurrentReservationList(user?.memberId!),
     { enabled: hasAuth, select: (data) => data.result },
   );

@@ -1,3 +1,4 @@
+import { useCancelReservation } from "@services";
 import {
   CurrentResetvation,
   DateValue,
@@ -28,6 +29,8 @@ export const CurrentReservation = ({
   roomName,
   tableName,
 }: CurrentResetvation) => {
+  const { mutate: cancleReservation } = useCancelReservation();
+
   const ableToCancel = () => {
     return reservationStatus.status === "예약완료";
   };
@@ -59,6 +62,7 @@ export const CurrentReservation = ({
       <div className="collapse-content flex flex-col items-center gap-4">
         <div className="flex gap-4">
           <button
+            onClick={() => cancleReservation(reservationId)}
             disabled={!ableToCancel()}
             className="btn-outline btn-error btn-sm btn px-8"
           >
