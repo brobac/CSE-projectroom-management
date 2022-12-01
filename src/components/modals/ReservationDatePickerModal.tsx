@@ -29,9 +29,7 @@ export const ReservationDatepickerModal = () => {
               ? dayjs(new Date()).subtract(1, "day").toDate()
               : new Date()
           }
-          enableEndDate={dayjs(new Date())
-            .add(isBeforeHour(new Date(), 8) ? 15 : 14, "day")
-            .toDate()}
+          enableEndDate={dayjs(new Date()).add(14, "day").toDate()}
         />
       </div>
     </Modal>
