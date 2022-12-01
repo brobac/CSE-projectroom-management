@@ -8,6 +8,7 @@ import {
   signup,
   login,
   logout,
+  tokenReissue,
 } from "@services";
 import { storageService } from "../storageService";
 import { useModal } from "@/hooks/useModal";
@@ -92,6 +93,14 @@ export const useLogout = () => {
       navigate("/");
     },
   });
+
+  return { mutate };
+};
+
+export const useTokenReissue = () => {
+  const token = storageService.getStoredToken();
+
+  const { mutate } = useMutation(() => tokenReissue(token?.refreshToken!));
 
   return { mutate };
 };

@@ -7,7 +7,10 @@ import { useModal } from "@/hooks/useModal";
 import {
   getDate,
   getMonth,
+  isBefore,
+  isBeforeHour,
   isSameDay,
+  isSameDayOrAfter,
   isSameOrAfter,
   isSameOrBefore,
 } from "@utils";
@@ -24,16 +27,9 @@ export const DateSelectSection = () => {
         <button
           onClick={minusOneDay}
           disabled={
-            isSameDay(new Date(), reservationDate) &&
-            isSameOrBefore(
-              dayjs(new Date())
-                .hour(8)
-                .minute(0)
-                .second(0)
-                .millisecond(0)
-                .toDate(),
-              reservationDate,
-            )
+            isBeforeHour(new Date(), 8)
+              ? isBefore(reservationDate, new Date())
+              : isSameDay(reservationDate, new Date())
           }
           className={twMerge(["disabled:text-base-200", "text-base-content"])}
         >
@@ -46,12 +42,13 @@ export const DateSelectSection = () => {
           <span className="font-bold">{`${getMonth(reservationDate)}월`}</span>
           <span className="text-3xl font-bold">{getDate(reservationDate)}</span>
         </div>
+        {/* TODO: 12.1(목) 학교와서 15일에서 16일 못넘어가게 멈추는지 확인하자 */}
         <button
           onClick={plusOneDay}
-          disabled={isSameOrAfter(
+          disabled={isSameDayOrAfter(
             reservationDate,
             dayjs(new Date())
-              .add(14, "day")
+              .add(isBeforeHour(new Date(), 8) ? 14 : 13, "day")
               .hour(0)
               .minute(0)
               .second(0)

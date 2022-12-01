@@ -1,52 +1,100 @@
-import { getMinusOneDay, getPlusOneDay } from "@utils";
+import { queryKeys } from "@/services/react-query/queryKeys";
+import { fetchReservationListByProjectroomId, reservation } from "@services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ProjectRoom, Reservation, ReservationRequestDTO } from "@types";
+import {
+  getMinusOneDay,
+  getPlusOneDay,
+  isBeforeHour,
+  toFullDateTime_SLASH,
+} from "@utils";
 import dayjs from "dayjs";
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
+import { useUserState } from "./user";
 
-export const ROOM_NAME_LIST = ["D330", "DB134"] as const;
+export const reservationListState = atom<Reservation[]>({
+  key: "reservationListState",
+  default: [],
+});
 
-export type ProjectroomNameType = typeof ROOM_NAME_LIST[number];
+export const useReservationListState = () => {
+  const [reservationList, setReservationList] =
+    useRecoilState(reservationListState);
+  const reservationProjectRoom = useRecoilValue(reservationProjectRoomState);
+  const { reservationDate, firstDateTime, lastDateTime } =
+    useReservationDateState();
 
-export const TABLE_INFO = {
-  D330: ["1", "2", "3", "4", "5", "6"] as const,
-  DB134: ["1", "2", "3", "4", "5", "6", "7", "8"] as const,
+  const { isLoading } = useQuery(
+    [
+      queryKeys.reservation,
+      reservationProjectRoom?.projectRoomId,
+      reservationDate,
+    ],
+    () =>
+      fetchReservationListByProjectroomId(
+        reservationProjectRoom?.projectRoomId!,
+        {
+          firstDateTime: toFullDateTime_SLASH(firstDateTime),
+          lastDateTime: toFullDateTime_SLASH(lastDateTime),
+        },
+      ),
+    {
+      enabled: reservationProjectRoom !== undefined,
+      onSuccess: (res) => {
+        setReservationList(res.result);
+      },
+    },
+  );
+
+  return { reservationList, isLoading };
 };
 
-export const reservationProjectroomState = atom<typeof ROOM_NAME_LIST[number]>({
-  key: "reservationProjectroomState",
-  default: ROOM_NAME_LIST[0],
+// <----- 예약하기 위해 선택한 정보들 -----
+export const reservationProjectRoomState = atom<ProjectRoom | undefined>({
+  key: "reservationProjectRoomState",
+  default: undefined,
 });
 
 export const reservationDateState = atom({
   key: "reservationDateState",
-  default: new Date(),
+  default: isBeforeHour(new Date(), 8)
+    ? dayjs(new Date())
+        .hour(8)
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+        .subtract(1, "day")
+        .toDate()
+    : new Date(),
 });
 
 export const useReservationDateState = () => {
-  const [reservationDate, setResetvationDate] =
+  const [reservationDate, setReservationDate] =
     useRecoilState(reservationDateState);
 
-  const firstTime = dayjs(reservationDate)
+  const firstDateTime = dayjs(reservationDate)
     .hour(8)
     .minute(0)
     .second(0)
     .millisecond(0)
     .toDate();
 
-  const lastTime = getPlusOneDay(firstTime);
+  const lastDateTime = getPlusOneDay(firstDateTime);
+  const yesterDay = getMinusOneDay(firstDateTime);
 
   const minusOneDay = () => {
-    setResetvationDate(getMinusOneDay(reservationDate));
+    setReservationDate(getMinusOneDay(reservationDate));
   };
 
   const plusOneDay = () => {
-    setResetvationDate(getPlusOneDay(reservationDate));
+    setReservationDate(getPlusOneDay(reservationDate));
   };
 
   return {
     reservationDate,
-    setResetvationDate,
-    firstTime,
-    lastTime,
+    setReservationDate,
+    firstDateTime,
+    lastDateTime,
     minusOneDay,
     plusOneDay,
   };
@@ -81,4 +129,38 @@ export const useReservationTimeState = () => {
     setStartTime,
     setEndTime,
   };
+};
+
+export const reservationTableState = atom<number>({
+  key: "reservationTableState",
+  default: -1,
+});
+
+// ----- 예약하기 위해 선택한 정보들 ----->
+
+export const useReservation = () => {
+  const queryClient = useQueryClient();
+
+  const { user, hasAuth } = useUserState();
+  const reservationTableId = useRecoilValue(reservationTableState);
+  const { startTime, endTime } = useReservationTimeState();
+
+  const isValid = startTime && endTime && reservationTableId !== -1;
+
+  const reservationData: ReservationRequestDTO = {
+    endDateTime: toFullDateTime_SLASH(endTime!),
+    startDateTime: toFullDateTime_SLASH(startTime!),
+    projectTableId: reservationTableId,
+    memberId: user?.memberId!,
+  };
+
+  const { mutate, isLoading, isError } = useMutation(
+    () => reservation(reservationData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.reservation]);
+      },
+    },
+  );
+  return { mutate, isLoading, isValid, isError };
 };

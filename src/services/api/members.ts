@@ -1,4 +1,4 @@
-import { LoginDTO, LogoutDTO, SignupDTO, Tokens, User } from "@types";
+import { LoginDTO, SignupDTO, Tokens, User } from "@types";
 
 import { HTTP_METHOD } from ".";
 import { _axios } from "../axiosService";
@@ -48,6 +48,14 @@ export const logout = async (data: Tokens) => {
     url: `${membersURL}/logout`,
     method: HTTP_METHOD.DELETE,
     data,
+  });
+};
+
+export const tokenReissue = async (refreshToken: string) => {
+  return _axios<Tokens>({
+    url: `${membersURL}/logout`,
+    method: HTTP_METHOD.DELETE,
+    data: refreshToken,
   });
 };
 

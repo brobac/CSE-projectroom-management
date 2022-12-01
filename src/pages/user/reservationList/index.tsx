@@ -1,61 +1,6 @@
 import { Reservation, ReservationProps } from "./_reservation";
 
-const tempReservationList: ReservationProps[] = [
-  {
-    id: 1,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "반납 대기중",
-  },
-  {
-    id: 2,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "예약완료",
-  },
-  {
-    id: 3,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "미사용",
-  },
-  {
-    id: 3,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "미반납",
-  },
-  {
-    id: 3,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "취소됨",
-  },
-  {
-    id: 3,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    reservationState: "반납 완료",
-  },
-];
+const tempReservationList: ReservationProps[] = [];
 
 export const MyReservationList = () => {
   return (

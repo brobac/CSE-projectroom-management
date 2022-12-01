@@ -12,7 +12,9 @@ import {
   getLastDayOfMonth,
   getMonth,
   isAfter,
+  isAfterDay,
   isBefore,
+  isBeforeDay,
   isSameDay,
   KO_DAY,
 } from "@utils";
@@ -113,8 +115,8 @@ export const DatePicker = ({
               <DateCell
                 selected={isSameDay(selectedDate!, day)}
                 disabled={
-                  isBefore(day, enableStartDate!) ||
-                  isAfter(day, enableEndDate!)
+                  isBeforeDay(day, enableStartDate!) ||
+                  isAfterDay(day, enableEndDate!)
                 }
                 date={day}
                 key={day.getDate()}

@@ -8,7 +8,6 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       onError: queryErrorHandler,
-      suspense: true,
     },
     mutations: {
       onError: queryErrorHandler,

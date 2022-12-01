@@ -1,4 +1,3 @@
-import { storageService } from "@services";
 import { User } from "@types";
 import { atom, useRecoilState } from "recoil";
 
@@ -10,5 +9,5 @@ export const userState = atom<User | undefined>({
 export const useUserState = () => {
   const [user, setUser] = useRecoilState(userState);
 
-  return { hasAuth: !!user };
+  return { user, hasAuth: !!user };
 };

@@ -14,6 +14,8 @@ import { KioskReservationLayout } from "./pages/kiosk/kiosk-reservation/_layout"
 import { KioskReservationTimeSelectPage } from "./pages/kiosk/kiosk-reservation/_timeSelectPage";
 import { ReservationConfirmPage } from "./pages/kiosk/reservation-confirm";
 import { ReservationConfirmResultModal } from "@components/modals/ReservationConfirmResultModal";
+import { PageNotFound } from "./pages/404";
+import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
 
 function App() {
   return (
@@ -22,15 +24,18 @@ function App() {
       <ReservationDatepickerModal />
       <ReservationConfirmResultModal />
       <Routes>
+        {/* 웹 예약 */}
         <Route path="/" element={<ReservationServiceLayout />}>
           <Route path="/" element={<ReservationPage />} />
-          <Route path="/mypage" element={<MyPageLayout />}>
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="reservation-list" element={<MyReservationList />} />
-            <Route path="penalty-list" element={<MyPenaltyList />} />
+          <Route element={<Memberlayout />}>
+            <Route path="/mypage" element={<MyPageLayout />}>
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="reservation-list" element={<MyReservationList />} />
+              <Route path="penalty-list" element={<MyPenaltyList />} />
+            </Route>
           </Route>
         </Route>
-        <Route path="signup" element={<SignupPage />} />
+        {/* 키오스크 */}
         <Route path="kiosk" element={<KioskLayout />}>
           <Route path="" element={<KioskMainPage />} />
           <Route path="reservation" element={<KioskReservationLayout />}>
@@ -45,6 +50,10 @@ function App() {
             element={<ReservationConfirmPage />}
           />
         </Route>
+        <Route element={<RestrictedAuthLayout />}>
+          <Route path="signup" element={<SignupPage />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
