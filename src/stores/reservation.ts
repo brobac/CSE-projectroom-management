@@ -1,7 +1,7 @@
 import { queryKeys } from "@/services/react-query/queryKeys";
-import { fetchReservationListByProjectroomId } from "@services";
-import { useQuery } from "@tanstack/react-query";
-import { ProjectRoom, Reservation } from "@types";
+import { fetchReservationListByProjectroomId, reservation } from "@services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ProjectRoom, Reservation, ReservationRequestDTO } from "@types";
 import {
   getMinusOneDay,
   getPlusOneDay,
@@ -10,6 +10,7 @@ import {
 } from "@utils";
 import dayjs from "dayjs";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
+import { useUserState } from "./user";
 
 export const reservationListState = atom<Reservation[]>({
   key: "reservationListState",
@@ -48,7 +49,7 @@ export const useReservationListState = () => {
   return { reservationList, isLoading };
 };
 
-//예약하려고 선택한 프로젝트룸 정보
+// <----- 예약하기 위해 선택한 정보들 -----
 export const reservationProjectRoomState = atom<ProjectRoom | undefined>({
   key: "reservationProjectRoomState",
   default: undefined,
@@ -128,4 +129,38 @@ export const useReservationTimeState = () => {
     setStartTime,
     setEndTime,
   };
+};
+
+export const reservationTableState = atom<number>({
+  key: "reservationTableState",
+  default: -1,
+});
+
+// ----- 예약하기 위해 선택한 정보들 ----->
+
+export const useReservation = () => {
+  const queryClient = useQueryClient();
+
+  const { user, hasAuth } = useUserState();
+  const reservationTableId = useRecoilValue(reservationTableState);
+  const { startTime, endTime } = useReservationTimeState();
+
+  const isValid = startTime && endTime && reservationTableId !== -1;
+
+  const reservationData: ReservationRequestDTO = {
+    endDateTime: toFullDateTime_SLASH(endTime!),
+    startDateTime: toFullDateTime_SLASH(startTime!),
+    projectTableId: reservationTableId,
+    memberId: user?.memberId!,
+  };
+
+  const { mutate, isLoading, isError } = useMutation(
+    () => reservation(reservationData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.reservation]);
+      },
+    },
+  );
+  return { mutate, isLoading, isValid, isError };
 };

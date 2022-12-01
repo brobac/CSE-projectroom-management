@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 
 import {
   reservationProjectRoomState,
+  reservationTableState,
   useReservationDateState,
   useReservationListState,
   useReservationTimeState,
@@ -19,7 +20,11 @@ import {
 import { ProjectTable } from "@types";
 
 export const TableSelectSection = () => {
-  const [selectedTable, setSelectedTable] = useState<number>();
+  const [reservationTableId, setReservationTableId] = useRecoilState(
+    reservationTableState,
+  );
+  const resetResetvationTable = useResetRecoilState(reservationTableState);
+
   const [statusItems, setStatusItems] = useState<
     Map<ProjectTable, TableStatusItemType[]>
   >(new Map());
@@ -28,10 +33,11 @@ export const TableSelectSection = () => {
   const { reservationDate, firstDateTime, lastDateTime } =
     useReservationDateState();
 
-  const { reservationList } = useReservationListState();
+  const { reservationList, isLoading: isReservationListLoading } =
+    useReservationListState();
 
   const onChangeTable = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTable(+e.target.value);
+    setReservationTableId(+e.target.value);
   };
 
   const generateTableStatusItems = () => {
@@ -95,8 +101,10 @@ export const TableSelectSection = () => {
   useEffect(() => {
     const newItems = generateTableStatusItems();
     setStatusItems(newItems);
-    setSelectedTable(-1);
+    resetResetvationTable();
   }, [reservationDate, reservationProjectroom, startTime, endTime]);
+
+  if (isReservationListLoading) return <div>로딩</div>;
 
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
@@ -132,7 +140,7 @@ export const TableSelectSection = () => {
               disabled={statusItems
                 .get(table)
                 ?.some((v) => v.status === "overlapped")}
-              selected={selectedTable === table.tableId}
+              selected={reservationTableId === table.tableId}
             />
           </label>
         ))}
