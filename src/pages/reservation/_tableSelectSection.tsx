@@ -36,8 +36,8 @@ export const TableSelectSection = () => {
   const { reservationList, isLoading: isReservationListLoading } =
     useReservationListState();
 
-  const onChangeTable = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReservationTableId(+e.target.value);
+  const onClickTable = (tableId: number) => {
+    setReservationTableId(tableId);
   };
 
   const generateTableStatusItems = () => {
@@ -123,18 +123,9 @@ export const TableSelectSection = () => {
       </div>
       <div className="flex  w-full max-w-7xl flex-col">
         {reservationProjectroom?.projectTableList.map((table) => (
-          <label key={table.tableId} className=" cursor-pointer">
-            <input
-              type="radio"
-              name="table"
-              className="hidden"
-              value={table.tableId}
-              onChange={onChangeTable}
-              disabled={statusItems
-                .get(table)
-                ?.some((v) => v.status === "overlapped")}
-            />
+          <button onClick={() => onClickTable(table.tableId)}>
             <TableStatus
+              key={table.tableId}
               table={table}
               items={statusItems.get(table)!}
               disabled={statusItems
@@ -142,7 +133,7 @@ export const TableSelectSection = () => {
                 ?.some((v) => v.status === "overlapped")}
               selected={reservationTableId === table.tableId}
             />
-          </label>
+          </button>
         ))}
       </div>
     </section>
