@@ -36,4 +36,29 @@ declare module "@types" {
     firstDateTime: DateValue;
     lastDateTime: DateValue;
   };
+
+  type ReservationStatus = {
+    status: string;
+    statusCode: string;
+  };
+
+  type CurrentResetvation = {
+    startDateTime: DateValue;
+    endDateTime: DateValue;
+    imageName: string;
+    imageURL: string;
+    reservationId: number;
+    reservationStatus: ReservationStatus;
+    roomName: string;
+    tableName;
+  };
+
+  type PastResetvation = {
+    startDateTime: DateValue;
+    endDateTime: DateValue;
+    reservationId: number;
+    reservationStatus: ReservationStatus;
+    roomName: string;
+    tableName;
+  };
 }

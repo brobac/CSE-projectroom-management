@@ -1,6 +1,8 @@
 import {
+  CurrentResetvation,
   FetchReservationPeriod,
   KioskReservationRequestDTO,
+  PastResetvation,
   Reservation,
   ReservationConfirmWithQRRequestDTO,
   ReservationRequestDTO,
@@ -45,6 +47,7 @@ export const reservationConfirmWithQR = async (
   });
 };
 
+//프로젝트실별 예약내역 조회
 export const fetchReservationListByProjectroomId = async (
   id: number,
   period: FetchReservationPeriod,
@@ -55,3 +58,20 @@ export const fetchReservationListByProjectroomId = async (
     params: { ...period },
   });
 };
+
+//<----- 유저 예약 내역 조회 -----
+export const fetchCurrentReservationList = async (userId: number) => {
+  return _axios<CurrentResetvation[]>({
+    url: `${reservationURL}/current/members/${userId}`,
+    method: HTTP_METHOD.GET,
+  });
+};
+
+export const fetchPastResetvationList = async (userId: number) => {
+  return _axios<PastResetvation[]>({
+    url: `${reservationURL}/past/members/${userId}`,
+    method: HTTP_METHOD.GET,
+  });
+};
+
+//----- 유저 예약 내역 조회 ----->

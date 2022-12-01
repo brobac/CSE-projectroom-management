@@ -1,18 +1,15 @@
-import { MyPageHeader } from "./_header";
+import { useFetchCurrentReservationList } from "@services";
 import { History } from "./_history";
 import { PenaltyInfo } from "./_penaltyInfo";
 import { QRSection } from "./_qrSection";
-import {
-  UnfinishedReservation,
-  UnfinishedReservationProps,
-} from "./_reservationInfo";
-
-const tempQRImageSrc =
-  "https://ironsoftware.com/img/tutorials/creating-qr-barcodes-in-dot-net/csharp-rendered-qrcode.png";
-
-const tempUnfinishedReservationList: UnfinishedReservationProps[] = [];
+import { CurrentReservation } from "./_reservationInfo";
 
 export const MyPage = () => {
+  const { data: currentReservationList, isLoading } =
+    useFetchCurrentReservationList();
+
+  if (isLoading) return <div>로딩중</div>;
+
   return (
     <>
       <PenaltyInfo />
@@ -20,8 +17,11 @@ export const MyPage = () => {
       <div className="flex w-full flex-col items-center gap-4 pt-4">
         <p className="text-2xl font-bold">진행중인 예약</p>
         <div className="flex w-full max-w-xs flex-col gap-2">
-          {tempUnfinishedReservationList.map((reservation) => (
-            <UnfinishedReservation key={reservation.id} {...reservation} />
+          {currentReservationList!.map((reservation) => (
+            <CurrentReservation
+              key={reservation.reservationId}
+              {...reservation}
+            />
           ))}
         </div>
       </div>
