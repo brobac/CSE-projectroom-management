@@ -4,10 +4,9 @@ import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 
 import {
-  reservationProjectroomState,
-  ROOM_NAME_LIST,
-  TABLE_INFO,
+  reservationProjectRoomState,
   useReservationDateState,
+  useReservationListState,
   useReservationTimeState,
 } from "@/stores/reservation";
 import {
@@ -17,32 +16,32 @@ import {
   roundUp30MinuteIncrements,
 } from "@utils";
 
-import { TEMP_RESERVATION_LIST } from "./_tempData";
+import { ProjectTable } from "@types";
 
 export const TableSelectSection = () => {
-  const [selectedTable, setSelectedTable] = useState("");
+  const [selectedTable, setSelectedTable] = useState<number>();
   const [statusItems, setStatusItems] = useState<
-    Map<string, TableStatusItemType[]>
+    Map<ProjectTable, TableStatusItemType[]>
   >(new Map());
+  const reservationProjectroom = useRecoilValue(reservationProjectRoomState);
   const { startTime, endTime } = useReservationTimeState();
-  const { reservationDate, firstTime, lastTime } = useReservationDateState();
-  const reservationProjectroom = useRecoilValue(reservationProjectroomState);
+  const { reservationDate, firstDateTime, lastDateTime } =
+    useReservationDateState();
+
+  const { reservationList } = useReservationListState();
 
   const onChangeTable = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTable(e.target.value);
+    setSelectedTable(+e.target.value);
   };
 
   const generateTableStatusItems = () => {
-    const projectroomReservationList = TEMP_RESERVATION_LIST.filter(
-      (v) => v.room === reservationProjectroom,
-    );
-    const result = new Map();
+    const result = new Map<ProjectTable, TableStatusItemType[]>();
 
-    for (let i = 0; i < TABLE_INFO[reservationProjectroom].length; i++) {
-      const tableName = TABLE_INFO[reservationProjectroom][i];
-      result.set(tableName, []);
-      const tableReservationList = projectroomReservationList.filter(
-        (v) => v.table === tableName,
+    reservationProjectroom?.projectTableList.forEach((table) => {
+      result.set(table, []);
+
+      const tableReservationList = reservationList.filter(
+        (reservaion) => reservaion.projectTableId === table.tableId,
       );
 
       const isReserved = (time: Date) => {
@@ -68,32 +67,35 @@ export const TableSelectSection = () => {
         return isReserved(time) && isSelected(time);
       };
 
+      const tableStatusItems = result.get(table);
+
       for (let i = 0; i < 48; i++) {
-        const time = dayjs(firstTime)
+        const time = dayjs(firstDateTime)
           .add(30 * i, "minute")
           .toDate();
 
         if (isOverlapped(time)) {
-          result.get(tableName).push({ date: time, status: "overlapped" });
+          tableStatusItems?.push({ date: time, status: "overlapped" });
         } else if (
           isReserved(time) ||
           isBefore(time, roundUp30MinuteIncrements(new Date()))
         ) {
-          result.get(tableName).push({ date: time, status: "disabled" });
+          tableStatusItems?.push({ date: time, status: "disabled" });
         } else if (isSelected(time)) {
-          result.get(tableName).push({ date: time, status: "selected" });
+          tableStatusItems?.push({ date: time, status: "selected" });
         } else {
-          result.get(tableName).push({ date: time, status: "available" });
+          tableStatusItems?.push({ date: time, status: "available" });
         }
       }
-    }
+    });
+
     return result;
   };
 
   useEffect(() => {
     const newItems = generateTableStatusItems();
     setStatusItems(newItems);
-    setSelectedTable("");
+    setSelectedTable(-1);
   }, [reservationDate, reservationProjectroom, startTime, endTime]);
 
   return (
@@ -104,34 +106,33 @@ export const TableSelectSection = () => {
           <div className=" badge  border-none bg-base-200 text-base-content">
             예약 가능
           </div>
-          <div className=" badge-secondary badge">예약 불가</div>
+          <div className=" badge badge-secondary">예약 불가</div>
         </div>
         <div className="flex items-center gap-4">
-          <div className=" badge-primary badge">선택 시간</div>
-          <div className=" badge-warning badge">겹치는 시간</div>
+          <div className=" badge badge-primary">선택 시간</div>
+          <div className=" badge badge-warning">겹치는 시간</div>
         </div>
       </div>
       <div className="flex  w-full max-w-7xl flex-col">
-        {TABLE_INFO[reservationProjectroom].map((table) => (
-          <label className=" cursor-pointer">
+        {reservationProjectroom?.projectTableList.map((table) => (
+          <label key={table.tableId} className=" cursor-pointer">
             <input
               type="radio"
               name="table"
               className="hidden"
-              value={table}
+              value={table.tableId}
               onChange={onChangeTable}
               disabled={statusItems
                 .get(table)
                 ?.some((v) => v.status === "overlapped")}
             />
             <TableStatus
-              key={table}
               table={table}
               items={statusItems.get(table)!}
               disabled={statusItems
                 .get(table)
                 ?.some((v) => v.status === "overlapped")}
-              selected={selectedTable === table}
+              selected={selectedTable === table.tableId}
             />
           </label>
         ))}
@@ -140,20 +141,19 @@ export const TableSelectSection = () => {
   );
 };
 
-type ProjectRoomType = typeof ROOM_NAME_LIST[number];
-
 type TableStatusItemType = {
   date: Date;
   status: "available" | "disabled" | "selected" | "overlapped";
 };
 
 type TableStatusProps = {
-  table: typeof TABLE_INFO[ProjectRoomType][number];
+  table: ProjectTable;
   items: TableStatusItemType[];
   selected?: boolean;
   disabled?: boolean;
 };
 
+//막대기
 const TableStatus = ({
   table,
   items,
@@ -164,12 +164,12 @@ const TableStatus = ({
     <div
       className={twMerge([
         "flex  w-full items-center rounded-xl p-4",
-        selected && "bg-info text-base-100",
+        selected && " bg-info text-base-100",
         disabled && "opacity-30",
       ])}
     >
       <div className={twMerge(["w-10 text-center text-2xl font-bold"])}>
-        <span>{table}</span>
+        <span>{table.tableName}</span>
       </div>
       <div className="flex w-full flex-col gap-2 px-2 pt-2">
         <div className="flex h-8 w-full overflow-hidden rounded-2xl bg-gray-200">

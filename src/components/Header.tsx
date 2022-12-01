@@ -1,16 +1,16 @@
 import { useRecoilValue } from "recoil";
 import { useModal } from "@/hooks/useModal";
-import { reservationProjectroomState } from "@/stores/reservation";
+import { reservationProjectRoomState } from "@/stores/reservation";
 import { useLogout } from "@services";
 import { useUserState } from "@/stores/user";
 import { useNavigate } from "react-router-dom";
 
 export const ReservationHeader = () => {
-  const roomName = useRecoilValue(reservationProjectroomState);
+  const room = useRecoilValue(reservationProjectRoomState);
   const { hasAuth } = useUserState();
   return (
     <Header
-      title={roomName}
+      title={room?.roomName}
       rightItem={hasAuth ? <MyPageButton /> : <LoginButton />}
     />
   );
@@ -35,7 +35,7 @@ const MyPageButton = () => {
 };
 
 type HeaderProps = {
-  title: string;
+  title: string | undefined;
   leftItem?: React.ReactNode;
   rightItem?: React.ReactNode;
 };

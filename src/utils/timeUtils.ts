@@ -54,6 +54,11 @@ export const toHHMM = (date: DateValue) => {
   return dayjs(date).format("HH:mm");
 };
 
+export const toFullDateTime_SLASH = (target: DateValue) => {
+  const date = dayjs(target);
+  return date.format("YYYY/MM/DD HH:mm:ss");
+};
+
 export const getFirstDayOfPrevMonth = (date: DateValue) => {
   return dayjs(date).subtract(1, "month").set("date", 1).toDate();
 };
@@ -110,6 +115,28 @@ export const isBefore = (target: DateValue, compareDate: DateValue) => {
   return dayjs(target).isBefore(compareDate);
 };
 
+/**
+ * 날짜까지만 비교한다. 시간은 고려하지 않는다.
+ */
+export const isBeforeDay = (target: DateValue, compareDate: DateValue) => {
+  return dayjs(target).isBefore(compareDate, "day");
+};
+
+/**
+ * 날짜까지만 비교한다. 시간은 고려하지 않는다.
+ */
+export const isAfterDay = (target: DateValue, compareDate: DateValue) => {
+  return dayjs(target).isAfter(compareDate, "day");
+};
+
+export const isBeforeNow = (target: DateValue) => {
+  return dayjs(target).isBefore(new Date());
+};
+
+export const isBeforeHour = (target: DateValue, hour: number) => {
+  return new Date(target).getHours() < hour;
+};
+
 export const isAfter = (target: DateValue, compareDate: DateValue) => {
   return dayjs(target).isAfter(compareDate);
 };
@@ -126,6 +153,27 @@ export const isSameOrAfter = (target: DateValue, compareDate: DateValue) => {
   );
 };
 
+export const isSameDayOrBefore = (
+  target: DateValue,
+  compareDate: DateValue,
+) => {
+  return (
+    dayjs(target).isSame(compareDate, "day") ||
+    dayjs(target).isBefore(compareDate, "day")
+  );
+};
+
+export const isSameDayOrAfter = (target: DateValue, compareDate: DateValue) => {
+  return (
+    dayjs(target).isSame(compareDate, "day") ||
+    dayjs(target).isAfter(compareDate, "day")
+  );
+};
+
+/**
+ *
+ * i.g. 11:03 => 11:30, 11:43 => 12:00
+ */
 export const roundUp30MinuteIncrements = (target: DateValue) => {
   const date = dayjs(target).second(0).millisecond(0);
   if (date.get("minute") <= 30) return date.set("minute", 30).toDate();

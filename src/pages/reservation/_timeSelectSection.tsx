@@ -4,34 +4,32 @@ import { useRecoilValue } from "recoil";
 
 import {
   reservationDateState,
-  reservationProjectroomState,
-  ROOM_NAME_LIST,
-  TABLE_INFO,
+  reservationProjectRoomState,
+  useReservationListState,
   useReservationTimeState,
 } from "@/stores/reservation";
-import { DateValue } from "@types";
+import { DateValue, ProjectRoom, Reservation } from "@types";
 import {
   isAfter,
   isBefore,
+  isBeforeNow,
   isSameOrAfter,
   isSameOrBefore,
   roundUp30MinuteIncrements,
   toHMM,
 } from "@utils";
 
-import { TEMP_RESERVATION_LIST } from "./_tempData";
-
 export const TimeSelectSection = () => {
-  const [startTimeList, setStartTimeList] = useState<
-    { date: Date; disabled: boolean; isFirstTime?: boolean }[]
-  >([]);
-  const [endTimeList, setEndTimeList] = useState<
-    { date: Date; disabled: boolean; isFirstTime?: boolean }[]
-  >([]);
+  // 예약에 사용되는 상태들
+  const reservationDate = useRecoilValue(reservationDateState);
+  const reservationProjectroom = useRecoilValue(reservationProjectRoomState);
   const { startTime, endTime, setStartTime, setEndTime } =
     useReservationTimeState();
-  const reservationDate = useRecoilValue(reservationDateState);
-  const reservationProjectroom = useRecoilValue(reservationProjectroomState);
+  const { reservationList } = useReservationListState();
+
+  //select에 option으로 들어갈 시간리스트
+  const [startTimeList, setStartTimeList] = useState<ReservationTime[]>([]);
+  const [endTimeList, setEndTimeList] = useState<ReservationTime[]>([]);
 
   const onChangeStartTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStartTime(new Date(e.target.value));
@@ -42,10 +40,11 @@ export const TimeSelectSection = () => {
   };
 
   useEffect(() => {
+    if (!reservationProjectroom) return;
     const newStartTimeList = generateStartTimeList(
       reservationDate,
       reservationProjectroom,
-      TEMP_RESERVATION_LIST,
+      reservationList,
     );
     setStartTimeList(newStartTimeList);
     setStartTime(
@@ -53,14 +52,16 @@ export const TimeSelectSection = () => {
         newStartTimeList.find((v) => v.isFirstTime)?.date.toUTCString()!,
       ),
     );
-  }, [reservationDate, reservationProjectroom]);
+  }, [reservationDate, reservationList, reservationProjectroom]);
 
   useEffect(() => {
+    if (!reservationProjectroom) return;
+
     const newEndTimeList = generateEndTimeList(
       reservationDate,
       startTime,
       reservationProjectroom,
-      TEMP_RESERVATION_LIST,
+      reservationList,
     );
     setEndTimeList(newEndTimeList);
     if (startTime) {
@@ -70,7 +71,7 @@ export const TimeSelectSection = () => {
         ),
       );
     }
-  }, [startTime]);
+  }, [reservationDate, reservationList, reservationProjectroom, startTime]);
 
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
@@ -117,31 +118,40 @@ export const TimeSelectSection = () => {
   );
 };
 
-type Reservation = {
-  room: string;
-  table: string;
-  startDateTime: DateValue;
-  endDateTime: DateValue;
+type ReservationTime = {
+  date: Date;
+  disabled: boolean;
+  isFirstTime?: boolean;
+};
+
+const isFullReservedTime = (
+  time: Date,
+  projectRoom: ProjectRoom,
+  reservationList: Reservation[],
+) => {
+  return (
+    reservationList.filter(
+      (v) =>
+        isSameOrBefore(v.startDateTime, time) &&
+        isSameOrAfter(v.endDateTime, time),
+    ).length >= projectRoom.projectTableList.length
+  );
 };
 
 const generateStartTimeList = (
   date: DateValue,
-  projectRoom: typeof ROOM_NAME_LIST[number],
+  projectRoom: ProjectRoom,
   reservationList: Reservation[],
 ) => {
   const start = dayjs(date).set("hour", 8).set("minute", 0).set("second", 0);
-  const filteredList = reservationList.filter((v) => v.room === projectRoom);
-  const result: { date: Date; disabled: boolean; isFirstTime?: boolean }[] = [];
+  const result: ReservationTime[] = [];
 
+  //48의 의미 하루 24시간 / 예약시간단위(30분) = 48;
   for (let i = 0; i < 48; i++) {
     const time = start.add(30 * i, "minute").toDate();
     if (
-      isBefore(time, roundUp30MinuteIncrements(new Date())) ||
-      filteredList.filter(
-        (v) =>
-          isSameOrBefore(v.startDateTime, time) &&
-          isSameOrAfter(v.endDateTime, time),
-      ).length >= TABLE_INFO[projectRoom].length
+      isBeforeNow(time) ||
+      isFullReservedTime(time, projectRoom, reservationList)
     ) {
       result.push({ date: time, disabled: true });
     } else {
@@ -149,6 +159,7 @@ const generateStartTimeList = (
     }
   }
 
+  // 08:00 부터 시작해서 선택 가능한 첫시간에 isFirstTime을 true로 설정
   for (let i = 0; i < result.length; i++) {
     if (!result[i].disabled) {
       result[i].isFirstTime = true;
@@ -161,7 +172,7 @@ const generateStartTimeList = (
 const generateEndTimeList = (
   reservationDate: DateValue,
   startDateTime: DateValue | undefined,
-  projectRoom: typeof ROOM_NAME_LIST[number],
+  projectRoom: ProjectRoom,
   reservationList: Reservation[],
 ) => {
   if (!startDateTime) return [];
@@ -172,19 +183,19 @@ const generateEndTimeList = (
     .set("minute", 0)
     .set("second", 0);
 
-  const filteredList = reservationList.filter((v) => v.room === projectRoom);
-  const result: { date: Date; disabled: boolean; isFirstTime?: boolean }[] = [];
+  const result: ReservationTime[] = [];
   let blocked = false;
+  //8의 의미 : 최대예약시간 = 4시간, 예약은 30분 단위 4시간 / 30분 = 8
   for (let i = 0; i < 8; i++) {
     const time = firstEndTime.add(30 * i, "minute").toDate();
     if (isAfter(time, lastEndTime.toDate())) break;
     if (blocked) {
       result.push({ date: time, disabled: true });
     } else if (
-      filteredList.filter(
+      reservationList.filter(
         (v) =>
           isBefore(v.startDateTime, time) && isSameOrAfter(v.endDateTime, time),
-      ).length === TABLE_INFO[projectRoom].length
+      ).length === projectRoom.projectTableList.length
     ) {
       blocked = true;
       result.push({ date: time, disabled: true });

@@ -1,5 +1,4 @@
-import { ProjectroomNameType } from "@/stores/reservation";
-import { DateValue, ReservationStateType } from "@types";
+import { DateValue, ProjectRoom, ReservationStateType } from "@types";
 import { toHHMM, toYYYYMD_KO_DAY_DOT } from "@utils";
 import { twMerge } from "tailwind-merge";
 
@@ -8,7 +7,7 @@ export type UnfinishedReservationProps = {
   reservationDate: DateValue;
   startDateTime: DateValue;
   endDateTime: DateValue;
-  projectroom: ProjectroomNameType;
+  projectroom: ProjectRoom;
   table: string;
   qrCode: string;
   reservationState: ReservationStateType;
@@ -46,7 +45,7 @@ export const UnfinishedReservation = ({
         </div>
         <div>
           <div className="flex flex-col items-center pl-4">
-            <span>{projectroom}</span>
+            <span>{projectroom.roomName}</span>
             <span className="font-bold">{table}테이블</span>
           </div>
         </div>

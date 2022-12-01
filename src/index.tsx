@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "./services/react-query";
 
 const root = ReactDOM.createRoot(
@@ -15,6 +16,7 @@ root.render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <App />
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>,

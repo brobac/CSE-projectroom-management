@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { DateSelectSection } from "./_dateSelectSection";
 import { ReservationPageLayout } from "./_layout";
 import { ProjectroomSelect } from "./_projectroomSelect";
@@ -8,7 +9,9 @@ export const ReservationPage = () => {
   return (
     <ReservationPageLayout>
       <DateSelectSection />
-      <ProjectroomSelect />
+      <Suspense fallback={<div>로딩</div>}>
+        <ProjectroomSelect />
+      </Suspense>
       <TimeSelectSection />
       <TableSelectSection />
     </ReservationPageLayout>

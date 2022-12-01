@@ -1,6 +1,7 @@
 import {
   FetchReservationPeriod,
   KioskReservationRequestDTO,
+  Reservation,
   ReservationConfirmWithQRRequestDTO,
   ReservationRequestDTO,
 } from "@types";
@@ -48,10 +49,9 @@ export const fetchReservationListByProjectroomId = async (
   id: number,
   period: FetchReservationPeriod,
 ) => {
-  return _axios<void>({
-    url: `${reservationURL}/projectroom/${id}`,
+  return _axios<Reservation[]>({
+    url: `${reservationURL}/projectrooms/${id}`,
     method: HTTP_METHOD.GET,
-    headers: getJWTHeader(),
-    params: { period },
+    params: { ...period },
   });
 };

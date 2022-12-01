@@ -6,6 +6,7 @@ import { useModal } from "@/hooks/useModal";
 import { DatePicker } from "@components";
 
 import { Modal } from "./Modal";
+import { isBefore, isBeforeHour } from "@utils";
 
 export const ReservationDatepickerModal = () => {
   const [reservationDate, setReservationDate] =
@@ -23,13 +24,14 @@ export const ReservationDatepickerModal = () => {
         <DatePicker
           selectedDate={reservationDate}
           onClickDate={onClickDate}
-          enableStartDate={dayjs(new Date())
-            .hour(8)
-            .minute(0)
-            .second(0)
-            .millisecond(0)
+          enableStartDate={
+            isBeforeHour(new Date(), 8)
+              ? dayjs(new Date()).subtract(1, "day").toDate()
+              : new Date()
+          }
+          enableEndDate={dayjs(new Date())
+            .add(isBeforeHour(new Date(), 8) ? 15 : 14, "day")
             .toDate()}
-          enableEndDate={dayjs(new Date()).add(14, "day").toDate()}
         />
       </div>
     </Modal>

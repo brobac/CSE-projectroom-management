@@ -8,6 +8,14 @@ declare module "@types" {
     | "미반납"
     | "반납 완료";
 
+  type Reservation = {
+    tableName: string;
+    projectTableId: number;
+    startDateTime: DateValue;
+    endDateTime: DateValue;
+    returnedDateTime: DateValue | null;
+  };
+
   type ReservationRequestDTO = {
     endDateTime: DateValue;
     startDateTime: DateValue;
@@ -25,7 +33,7 @@ declare module "@types" {
   type ReservationConfirmWithQRRequestDTO = { qrContent: string };
 
   type FetchReservationPeriod = {
-    firstDateTime: string;
-    lastDateTime: strings;
+    firstDateTime: DateValue;
+    lastDateTime: DateValue;
   };
 }

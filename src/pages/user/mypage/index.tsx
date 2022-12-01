@@ -10,38 +10,7 @@ import {
 const tempQRImageSrc =
   "https://ironsoftware.com/img/tutorials/creating-qr-barcodes-in-dot-net/csharp-rendered-qrcode.png";
 
-const tempUnfinishedReservationList: UnfinishedReservationProps[] = [
-  {
-    id: 1,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    qrCode: tempQRImageSrc,
-    reservationState: "반납 대기중",
-  },
-  {
-    id: 2,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    qrCode: tempQRImageSrc,
-    reservationState: "예약완료",
-  },
-  {
-    id: 3,
-    reservationDate: "2022-11-24",
-    startDateTime: "2022-11-24 11:00",
-    endDateTime: "2022-11-24 13:00",
-    projectroom: "D330",
-    table: "A1",
-    qrCode: tempQRImageSrc,
-    reservationState: "예약완료",
-  },
-];
+const tempUnfinishedReservationList: UnfinishedReservationProps[] = [];
 
 export const MyPage = () => {
   return (
