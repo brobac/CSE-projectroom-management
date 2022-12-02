@@ -104,8 +104,6 @@ export const TableSelectSection = () => {
     resetResetvationTable();
   }, [reservationDate, reservationProjectroom, startTime, endTime]);
 
-  if (isReservationListLoading) return <div>로딩</div>;
-
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
       <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
@@ -114,33 +112,38 @@ export const TableSelectSection = () => {
           <div className=" badge  border-none bg-base-200 text-base-content">
             예약 가능
           </div>
-          <div className=" badge-secondary badge">예약 불가</div>
+          <div className=" badge badge-secondary">예약 불가</div>
         </div>
         <div className="flex items-center gap-4">
-          <div className=" badge-primary badge">선택 시간</div>
-          <div className=" badge-warning badge">겹치는 시간</div>
+          <div className=" badge badge-primary">선택 시간</div>
+          <div className=" badge badge-warning">겹치는 시간</div>
         </div>
       </div>
       <div className="flex  w-full max-w-7xl flex-col">
-        {reservationProjectroom?.projectTableList.map((table) => (
-          <button
-            disabled={statusItems
-              .get(table)
-              ?.some((v) => v.status === "overlapped")}
-            onClick={() => onClickTable(table.tableId)}
-            className="disabled:cursor-not-allowed"
-          >
-            <TableStatus
+        {isReservationListLoading ? (
+          <TableSkeleton />
+        ) : (
+          reservationProjectroom?.projectTableList.map((table) => (
+            <button
               key={table.tableId}
-              table={table}
-              items={statusItems.get(table)!}
               disabled={statusItems
                 .get(table)
                 ?.some((v) => v.status === "overlapped")}
-              selected={reservationTableId === table.tableId}
-            />
-          </button>
-        ))}
+              onClick={() => onClickTable(table.tableId)}
+              className="disabled:cursor-not-allowed"
+            >
+              <TableStatus
+                key={table.tableId}
+                table={table}
+                items={statusItems.get(table)!}
+                disabled={statusItems
+                  .get(table)
+                  ?.some((v) => v.status === "overlapped")}
+                selected={reservationTableId === table.tableId}
+              />
+            </button>
+          ))
+        )}
       </div>
     </section>
   );
@@ -173,7 +176,7 @@ const TableStatus = ({
         disabled && "opacity-30",
       ])}
     >
-      <div className={twMerge(["w-10 text-center text-2xl font-bold"])}>
+      <div className={twMerge(["w-12 text-center text-2xl font-bold"])}>
         <span>{table.tableName}</span>
       </div>
       <div className="flex w-full flex-col gap-2 px-2 pt-2">
@@ -204,6 +207,39 @@ const TableStatus = ({
           <span className="absolute right-0">8</span>
         </div>
       </div>
+    </div>
+  );
+};
+
+const TableSkeleton = () => {
+  return (
+    <div>
+      {[1, 2, 3, 4, 5, 6].map((t) => (
+        <div
+          key={t}
+          className={twMerge([
+            "flex h-[104px] w-full items-center rounded-xl p-4",
+          ])}
+        >
+          <div className="h-10 w-12 rounded-2xl bg-gray-200 text-opacity-0"></div>
+          <div className="flex w-full flex-col gap-2 px-2 pt-2">
+            <div className="flex h-8 w-full overflow-hidden rounded-2xl bg-gray-200"></div>
+            <div className="relative flex w-full text-left text-[0.5rem] sm:text-base">
+              <span className="w-[calc(1/6*100%)]">8</span>
+              <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+                12
+              </span>
+              <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+                18
+              </span>
+              <span className="relative  w-[calc(1/4*100%)] pl-2 before:absolute  before:top-[-0.5rem] before:left-0 before:content-['│']">
+                0
+              </span>
+              <span className="absolute right-0">8</span>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

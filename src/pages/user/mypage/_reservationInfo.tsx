@@ -75,9 +75,9 @@ export const CurrentReservation = ({
             반납하기
           </button>
         </div>
-        <div className="w-32">
+        <div className=" w-60">
           <img
-            src={`http://192.158.0.58:8050${imageURL}`}
+            src={`http://192.158.0.58:8050${imageURL}${imageName}`}
             alt=""
             className="w-full"
           />

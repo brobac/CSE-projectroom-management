@@ -16,8 +16,22 @@ import { ReservationConfirmPage } from "./pages/kiosk/reservation-confirm";
 import { ReservationConfirmResultModal } from "@components/modals/ReservationConfirmResultModal";
 import { PageNotFound } from "./pages/404";
 import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
+import { useUserState } from "./stores/user";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [isAppLoading, setIsAppLoading] = useState(true);
+  const { refreshUser } = useUserState();
+
+  useEffect(() => {
+    const loadApp = async () => {
+      await refreshUser();
+      setIsAppLoading(false);
+    };
+    loadApp();
+  }, []);
+
+  if (isAppLoading) return <div className="h-screen w-full bg-base-100"></div>;
   return (
     <BrowserRouter>
       <LoginModal />

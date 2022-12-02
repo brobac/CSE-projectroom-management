@@ -1,7 +1,7 @@
 import { LoginDTO, SignupDTO, Tokens, User } from "@types";
 
 import { HTTP_METHOD } from ".";
-import { _axios } from "../axiosService";
+import { getJWTHeader, _axios } from "../axiosService";
 
 const membersURL = "/members";
 
@@ -55,7 +55,15 @@ export const tokenReissue = async (refreshToken: string) => {
   return _axios<Tokens>({
     url: `${membersURL}/logout`,
     method: HTTP_METHOD.DELETE,
-    data: refreshToken,
+    params: refreshToken,
+  });
+};
+
+export const userReissue = async () => {
+  return _axios<User>({
+    url: `${membersURL}/reissue`,
+    method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
   });
 };
 
