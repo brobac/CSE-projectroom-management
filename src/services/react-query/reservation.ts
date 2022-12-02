@@ -35,10 +35,7 @@ export const useCancelReservation = () => {
     (reservationId: number) => cancelReservation(reservationId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          queryKeys.reservation,
-          queryKeys.currentReservation,
-        ]);
+        queryClient.invalidateQueries([queryKeys.reservation]);
       },
     },
   );

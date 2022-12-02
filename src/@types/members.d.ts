@@ -15,4 +15,21 @@ declare module "@types" {
     accessToken: "string";
     refreshToken: "string";
   };
+
+  type MemberComplexInfo = {
+    pastReservationCount: number;
+    penaltyInfo: PenaltyInfo | null;
+    qrImage: QRImageInfo | null;
+    violationCount: number;
+  };
+
+  type PenaltyInfo = {
+    endDateTime: string;
+    startDateTime: string;
+  };
+
+  type QRImageInfo = {
+    imageName: string;
+    imageURL: string;
+  };
 }

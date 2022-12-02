@@ -176,6 +176,6 @@ export const isSameDayOrAfter = (target: DateValue, compareDate: DateValue) => {
  */
 export const roundUp30MinuteIncrements = (target: DateValue) => {
   const date = dayjs(target).second(0).millisecond(0);
-  if (date.get("minute") <= 30) return date.set("minute", 30).toDate();
+  if (date.get("minute") < 30) return date.set("minute", 30).toDate();
   else return date.add(1, "hour").set("minute", 0).toDate();
 };

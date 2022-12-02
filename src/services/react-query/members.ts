@@ -9,11 +9,13 @@ import {
   login,
   logout,
   tokenReissue,
+  fetchMemberComplexInfo,
 } from "@services";
 import { storageService } from "../storageService";
 import { useModal } from "@/hooks/useModal";
 import { useSetRecoilState } from "recoil";
-import { userState } from "@/stores/user";
+import { userState, useUserState } from "@/stores/user";
+import { queryKeys } from "./queryKeys";
 
 // <----- 회원가입 관련 -----
 

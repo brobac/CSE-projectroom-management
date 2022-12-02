@@ -64,6 +64,7 @@ export const fetchCurrentReservationList = async (userId: number) => {
   return _axios<CurrentResetvation[]>({
     url: `${reservationURL}/current/members/${userId}`,
     method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
   });
 };
 
@@ -71,6 +72,7 @@ export const fetchPastResetvationList = async (userId: number) => {
   return _axios<PastResetvation[]>({
     url: `${reservationURL}/past/members/${userId}`,
     method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
   });
 };
 
