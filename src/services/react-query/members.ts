@@ -108,18 +108,3 @@ export const useTokenReissue = () => {
 };
 
 // ----- 로그인 관련 ----->
-
-export const useFetchMemberComplexInfo = () => {
-  const { user, hasAuth } = useUserState();
-
-  const { data, isLoading } = useQuery(
-    [queryKeys.user],
-    () => fetchMemberComplexInfo(user?.memberId!),
-    {
-      enabled: hasAuth,
-      select: (res) => res.result,
-    },
-  );
-
-  return { data, isLoading };
-};

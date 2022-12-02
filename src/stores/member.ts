@@ -22,7 +22,7 @@ export const useMemberComplexInfoState = () => {
   const { user, hasAuth } = useUserState();
 
   const { isLoading } = useQuery(
-    [queryKeys.user],
+    [queryKeys.reservation, queryKeys.user],
     () => fetchMemberComplexInfo(user?.memberId!),
     {
       enabled: hasAuth,
