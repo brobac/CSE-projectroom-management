@@ -1,4 +1,4 @@
-import { LoginDTO, SignupDTO, Tokens, User } from "@types";
+import { LoginDTO, MemberComplexInfo, SignupDTO, Tokens, User } from "@types";
 
 import { HTTP_METHOD } from ".";
 import { getJWTHeader, _axios } from "../axiosService";
@@ -68,3 +68,11 @@ export const userReissue = async () => {
 };
 
 // ----- 로그인 관련 API ----->
+
+export const fetchMemberComplexInfo = async (userId: number) => {
+  return _axios<MemberComplexInfo>({
+    url: `${membersURL}/${userId}`,
+    method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
+  });
+};

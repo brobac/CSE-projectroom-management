@@ -1,15 +1,14 @@
+import { useMemberComplexInfoState } from "@/stores/member";
+import { useUserState } from "@stores";
 import { toYYYYMD_KO_DAY_DOT } from "@utils";
 
 export const PenaltyInfo = () => {
-  const unusedCount = 1;
-  const notReturnedCount = 2;
-  const penalty = {
-    startDate: "2022-11-22",
-    endDate: "2022-11-24",
-  };
+  const { user } = useUserState();
+  const { memberComplexInfo } = useMemberComplexInfoState();
+
   return (
     <div className="flex w-full max-w-xs flex-col items-center gap-4 pt-4">
-      <p className="text-2xl font-bold">박형준님</p>
+      <p className="text-2xl font-bold">{user?.name}님</p>
       {/* <----- 제재관련 -----> */}
       <div className="flex w-full flex-col items-center">
         <p className=" text-xs">
@@ -23,18 +22,26 @@ export const PenaltyInfo = () => {
           <div className="flex flex-col items-center p-4">
             <span className="whitespace-nowrap font-bold">미반납 + 미사용</span>
             <span className="flex grow items-center text-2xl font-bold text-error">
-              {unusedCount + notReturnedCount}회
+              {memberComplexInfo.violationCount}회
             </span>
           </div>
           <div className="flex  w-full max-w-xs flex-col items-center p-4">
             <span className="font-bold">예약 제한</span>
-            {penalty == null ? (
+            {!memberComplexInfo.penaltyInfo ? (
               <span>없습니다</span>
             ) : (
               <p className="flex flex-col items-center">
-                <span>{toYYYYMD_KO_DAY_DOT(penalty.startDate)}</span>
+                <span>
+                  {toYYYYMD_KO_DAY_DOT(
+                    memberComplexInfo.penaltyInfo.startDateTime,
+                  )}
+                </span>
                 <span>~</span>
-                <span>{toYYYYMD_KO_DAY_DOT(penalty.endDate)}</span>
+                <span>
+                  {toYYYYMD_KO_DAY_DOT(
+                    memberComplexInfo.penaltyInfo.endDateTime,
+                  )}
+                </span>
               </p>
             )}
           </div>

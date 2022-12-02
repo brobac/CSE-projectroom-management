@@ -77,7 +77,7 @@ export const CurrentReservation = ({
         </div>
         <div className=" w-60">
           <img
-            src={`http://192.158.0.58:8050${imageURL}${imageName}`}
+            src={`${process.env.REACT_APP_IMAGE_ENDPOINT}${imageURL}${imageName}`}
             alt=""
             className="w-full"
           />
