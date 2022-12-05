@@ -19,6 +19,7 @@ import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
 import { useUserState } from "./stores/user";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { ReservationReturnPage } from "./pages/user/reservationReturn";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -52,6 +53,7 @@ function App() {
                   element={<MyReservationList />}
                 />
                 <Route path="penalty-list" element={<MyPenaltyList />} />
+                <Route path="return" element={<ReservationReturnPage />} />
               </Route>
             </Route>
           </Route>

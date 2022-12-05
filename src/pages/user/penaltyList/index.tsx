@@ -60,9 +60,9 @@ export const MyPenaltyList = () => {
         <p className="text-xl font-bold sm:text-2xl">예약 제한 내역</p>
       </div>
       <div className="flex  flex-col gap-2 pb-8">
-        {tempPenaltyList.map((penalty) => (
+        {/* {tempPenaltyList.map((penalty) => (
           <Penalty key={penalty.id} {...penalty} />
-        ))}
+        ))} */}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useCancelReservation } from "@services";
+import { returnReservationIdState } from "@stores";
 import {
   CurrentResetvation,
   DateValue,
@@ -6,6 +7,8 @@ import {
   ReservationStateType,
 } from "@types";
 import { toHHMM, toYYYYMD_KO_DAY_DOT } from "@utils";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
 
 export type UnfinishedReservationProps = {
@@ -29,6 +32,8 @@ export const CurrentReservation = ({
   roomName,
   tableName,
 }: CurrentResetvation) => {
+  const navigate = useNavigate();
+  const setReturnReservationId = useSetRecoilState(returnReservationIdState);
   const { mutate: cancleReservation } = useCancelReservation();
 
   const ableToCancel = () => {
@@ -37,6 +42,11 @@ export const CurrentReservation = ({
 
   const ableToReturn = () => {
     return ["사용중", "반납 대기중"].includes(reservationStatus.status);
+  };
+
+  const onClickReturnButton = () => {
+    navigate(`/mypage/return`);
+    setReturnReservationId(reservationId);
   };
 
   return (
@@ -71,6 +81,7 @@ export const CurrentReservation = ({
           <button
             disabled={!ableToReturn()}
             className={twMerge(["btn-outline btn-primary btn-sm btn px-8"])}
+            onClick={onClickReturnButton}
           >
             반납하기
           </button>

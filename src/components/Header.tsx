@@ -1,7 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { useModal } from "@/hooks/useModal";
 import { reservationProjectRoomState } from "@/stores/reservation";
-import { useLogout } from "@services";
 import { useUserState } from "@/stores/user";
 import { useNavigate } from "react-router-dom";
 

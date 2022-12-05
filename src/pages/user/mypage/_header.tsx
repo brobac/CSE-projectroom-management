@@ -1,12 +1,23 @@
 import { Header } from "@components";
 import { useLogout } from "@services";
+import { useEffect } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+const titles: Record<string, string> = {
+  "/mypage": "마이페이지",
+  "/mypage/reservation-list": "예약 내역",
+  "/mypage/penalty-list": "제한 내역",
+  "/mypage/return": "반납하기",
+};
 
 export const MyPageHeader = () => {
+  const location = useLocation();
+
+  useEffect(() => console.log(location), [location]);
   return (
     <Header
-      title="마이페이지"
+      title={titles[location.pathname] ?? ""}
       leftItem={<ToReservation />}
       rightItem={<LogoutButton />}
     />

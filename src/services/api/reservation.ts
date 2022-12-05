@@ -47,6 +47,23 @@ export const reservationConfirmWithQR = async (
   });
 };
 
+export const reservationReturn = async (
+  reservationId: number,
+  data: FormData,
+) => {
+  return _axios<void>({
+    url: `returns`,
+    method: HTTP_METHOD.POST,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    params: {
+      reservationId,
+    },
+    data,
+  });
+};
+
 //프로젝트실별 예약내역 조회
 export const fetchReservationListByProjectroomId = async (
   id: number,

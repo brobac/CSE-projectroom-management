@@ -178,3 +178,8 @@ export const useReservation = () => {
   });
   return { mutate, isLoading, isValid, isError };
 };
+
+export const returnReservationIdState = atom<number | null>({
+  key: "returnReservationIdState",
+  default: null,
+});
