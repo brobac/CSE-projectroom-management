@@ -18,6 +18,7 @@ import { PageNotFound } from "./pages/404";
 import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
 import { useUserState } from "./stores/user";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -33,43 +34,49 @@ function App() {
 
   if (isAppLoading) return <div className="h-screen w-full bg-base-100"></div>;
   return (
-    <BrowserRouter>
-      <LoginModal />
-      <ReservationDatepickerModal />
-      <ReservationConfirmResultModal />
-      <Routes>
-        {/* 웹 예약 */}
-        <Route path="/" element={<ReservationServiceLayout />}>
-          <Route path="/" element={<ReservationPage />} />
-          <Route element={<Memberlayout />}>
-            <Route path="/mypage" element={<MyPageLayout />}>
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="reservation-list" element={<MyReservationList />} />
-              <Route path="penalty-list" element={<MyPenaltyList />} />
+    <>
+      <ToastContainer position="top-left" autoClose={3000} />
+      <BrowserRouter>
+        <LoginModal />
+        <ReservationDatepickerModal />
+        <ReservationConfirmResultModal />
+        <Routes>
+          {/* 웹 예약 */}
+          <Route path="/" element={<ReservationServiceLayout />}>
+            <Route path="/" element={<ReservationPage />} />
+            <Route element={<Memberlayout />}>
+              <Route path="/mypage" element={<MyPageLayout />}>
+                <Route path="/mypage" element={<MyPage />} />
+                <Route
+                  path="reservation-list"
+                  element={<MyReservationList />}
+                />
+                <Route path="penalty-list" element={<MyPenaltyList />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
-        {/* 키오스크 */}
-        <Route path="kiosk" element={<KioskLayout />}>
-          <Route path="" element={<KioskMainPage />} />
-          <Route path="reservation" element={<KioskReservationLayout />}>
-            <Route path="" element={<KioskReservationPage />} />
+          {/* 키오스크 */}
+          <Route path="kiosk" element={<KioskLayout />}>
+            <Route path="" element={<KioskMainPage />} />
+            <Route path="reservation" element={<KioskReservationLayout />}>
+              <Route path="" element={<KioskReservationPage />} />
+              <Route
+                path="time-select"
+                element={<KioskReservationTimeSelectPage />}
+              />
+            </Route>
             <Route
-              path="time-select"
-              element={<KioskReservationTimeSelectPage />}
+              path="reservation-confirm"
+              element={<ReservationConfirmPage />}
             />
           </Route>
-          <Route
-            path="reservation-confirm"
-            element={<ReservationConfirmPage />}
-          />
-        </Route>
-        <Route element={<RestrictedAuthLayout />}>
-          <Route path="signup" element={<SignupPage />} />
-        </Route>
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route element={<RestrictedAuthLayout />}>
+            <Route path="signup" element={<SignupPage />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

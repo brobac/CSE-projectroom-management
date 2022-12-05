@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { LoginDTO, SignupDTO } from "@types";
+import { CommonAPIError, LoginDTO, SignupDTO, Tokens, User } from "@types";
 import {
   checkDuplicatedEmail,
   checkDuplicatedLoginId,
@@ -9,13 +9,13 @@ import {
   login,
   logout,
   tokenReissue,
-  fetchMemberComplexInfo,
+  APIResponse,
 } from "@services";
 import { storageService } from "../storageService";
 import { useModal } from "@/hooks/useModal";
 import { useSetRecoilState } from "recoil";
-import { userState, useUserState } from "@/stores/user";
-import { queryKeys } from "./queryKeys";
+import { userState } from "@/stores/user";
+import { toast } from "react-toastify";
 
 // <----- 회원가입 관련 -----
 
@@ -59,21 +59,24 @@ export const useLogin = () => {
   const setUser = useSetRecoilState(userState);
   const { closeModal } = useModal("modal-login");
 
-  const { mutate, isLoading, isError } = useMutation(
-    (data: LoginDTO) => login(data),
-    {
-      onSuccess: (res) => {
-        const user = res.result.memberInfo;
-        const token = res.result.tokenInfo;
-        storageService.setStoredUser(user);
-        storageService.setStoredToken(token);
-        setUser(user);
-        closeModal();
-      },
+  const { mutate, isLoading, isError, error } = useMutation<
+    APIResponse<{ memberInfo: User; tokenInfo: Tokens }>,
+    CommonAPIError,
+    LoginDTO
+  >((data: LoginDTO) => login(data), {
+    onSuccess: (res) => {
+      const user = res.result.memberInfo;
+      const token = res.result.tokenInfo;
+      storageService.setStoredUser(user);
+      storageService.setStoredToken(token);
+      setUser(user);
+      closeModal();
+      toast.success(res.message);
     },
-  );
+    onError: (err) => toast.error(err.message),
+  });
 
-  return { mutate, isLoading, isError };
+  return { mutate, isLoading, isError, error };
 };
 
 export const useLogout = () => {

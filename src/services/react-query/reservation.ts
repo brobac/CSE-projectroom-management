@@ -1,9 +1,11 @@
 import { useUserState } from "@stores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  CommonAPIError,
   KioskReservationRequestDTO,
   ReservationConfirmWithQRRequestDTO,
 } from "@types";
+import { toast } from "react-toastify";
 import {
   cancelReservation,
   fetchCurrentReservationList,
@@ -11,6 +13,7 @@ import {
   KioskReservation,
   reservationConfirmWithQR,
 } from "../api";
+import { APIResponse } from "../axiosService";
 import { queryKeys } from "./queryKeys";
 
 export const useKioskReservation = () => {
@@ -31,14 +34,19 @@ export const useKioskReservation = () => {
 export const useCancelReservation = () => {
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading, isError } = useMutation(
-    (reservationId: number) => cancelReservation(reservationId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.reservation]);
-      },
+  const { mutate, isLoading, isError } = useMutation<
+    APIResponse<void>,
+    CommonAPIError,
+    number
+  >((reservationId: number) => cancelReservation(reservationId), {
+    onSuccess: (res) => {
+      queryClient.invalidateQueries([queryKeys.reservation]);
+      toast.success(res.message);
     },
-  );
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
 
   return { mutate, isLoading, isError };
 };
