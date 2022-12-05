@@ -53,7 +53,10 @@ function App() {
                   element={<MyReservationList />}
                 />
                 <Route path="penalty-list" element={<MyPenaltyList />} />
-                <Route path="return" element={<ReservationReturnPage />} />
+                <Route
+                  path="return/:reservationId"
+                  element={<ReservationReturnPage />}
+                />
               </Route>
             </Route>
           </Route>

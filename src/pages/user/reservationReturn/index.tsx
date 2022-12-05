@@ -1,13 +1,12 @@
 import { useReservationReturn } from "@services";
-import { returnReservationIdState } from "@stores";
 import { useState } from "react";
 import { BsPlusCircle } from "react-icons/bs";
-import { useRecoilValue } from "recoil";
+import { useParams } from "react-router-dom";
 
 export const ReservationReturnPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string>();
-  const reservationId = useRecoilValue(returnReservationIdState);
+  const { reservationId } = useParams();
 
   const onChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
@@ -33,7 +32,7 @@ export const ReservationReturnPage = () => {
     const formData = new FormData();
     formData.append("cleanupPhoto", imageFile!);
     e.preventDefault();
-    reservationReturn({ reservationId: reservationId!, data: formData });
+    reservationReturn({ reservationId: +reservationId!, data: formData });
   };
 
   return (

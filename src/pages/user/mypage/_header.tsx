@@ -5,10 +5,15 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 
 const titles: Record<string, string> = {
-  "/mypage": "마이페이지",
-  "/mypage/reservation-list": "예약 내역",
-  "/mypage/penalty-list": "제한 내역",
-  "/mypage/return": "반납하기",
+  "reservation-list": "예약 내역",
+  "penalty-list": "제한 내역",
+  return: "반납하기",
+};
+
+const getTitles = (path: string) => {
+  const pathList = path.split("/").filter((v) => v !== "");
+  if (pathList.length === 1) return "마이페이지";
+  return titles[pathList[1]];
 };
 
 export const MyPageHeader = () => {
@@ -17,7 +22,7 @@ export const MyPageHeader = () => {
   useEffect(() => console.log(location), [location]);
   return (
     <Header
-      title={titles[location.pathname] ?? ""}
+      title={getTitles(location.pathname) ?? ""}
       leftItem={<ToReservation />}
       rightItem={<LogoutButton />}
     />

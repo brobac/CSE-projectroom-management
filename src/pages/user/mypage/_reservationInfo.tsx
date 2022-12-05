@@ -45,7 +45,7 @@ export const CurrentReservation = ({
   };
 
   const onClickReturnButton = () => {
-    navigate(`/mypage/return`);
+    navigate(`/mypage/return/${reservationId}`);
     setReturnReservationId(reservationId);
   };
 
