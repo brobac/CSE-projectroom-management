@@ -183,3 +183,8 @@ export const returnReservationIdState = atom<number | null>({
   key: "returnReservationIdState",
   default: null,
 });
+
+export const qrScanResultState = atom<string>({
+  key: "qrSanResultState",
+  default: "",
+});

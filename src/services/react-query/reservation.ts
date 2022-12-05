@@ -19,6 +19,7 @@ import {
   reservationConfirmWithQR,
   reservationReturn,
 } from "../api";
+import { useModal } from "@/hooks/useModal";
 
 export const useKioskReservation = () => {
   const queryClient = useQueryClient();
@@ -57,18 +58,31 @@ export const useCancelReservation = () => {
 
 export const useReservationConfirmWithQR = () => {
   const queryClient = useQueryClient();
+  const { closeModal } = useModal("modal-reservation-confirm-result");
 
-  const { mutate, isLoading, isError } = useMutation(
-    (reservationId: ReservationConfirmWithQRRequestDTO) =>
-      reservationConfirmWithQR(reservationId),
+  return useMutation<
+    APIResponse<void>,
+    CommonAPIError,
+    ReservationConfirmWithQRRequestDTO
+  >(
+    (data: ReservationConfirmWithQRRequestDTO) =>
+      reservationConfirmWithQR(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([queryKeys.reservation]);
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 5000);
+      },
+      onError: () => {
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 5000);
       },
     },
   );
-
-  return { mutate, isLoading, isError };
 };
 
 export const useFetchCurrentReservationList = () => {
