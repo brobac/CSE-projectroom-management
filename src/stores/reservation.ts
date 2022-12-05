@@ -1,7 +1,16 @@
 import { queryKeys } from "@/services/react-query/queryKeys";
-import { fetchReservationListByProjectroomId, reservation } from "@services";
+import {
+  APIResponse,
+  fetchReservationListByProjectroomId,
+  reservation,
+} from "@services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ProjectRoom, Reservation, ReservationRequestDTO } from "@types";
+import {
+  CommonAPIError,
+  ProjectRoom,
+  Reservation,
+  ReservationRequestDTO,
+} from "@types";
 import {
   getMinusOneDay,
   getPlusOneDay,
@@ -9,6 +18,7 @@ import {
   toFullDateTime_SLASH,
 } from "@utils";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { useUserState } from "./user";
 
@@ -154,13 +164,17 @@ export const useReservation = () => {
     memberId: user?.memberId!,
   };
 
-  const { mutate, isLoading, isError } = useMutation(
-    () => reservation(reservationData),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.reservation]);
-      },
+  const { mutate, isLoading, isError } = useMutation<
+    APIResponse<void>,
+    CommonAPIError
+  >(() => reservation(reservationData), {
+    onSuccess: (res) => {
+      queryClient.invalidateQueries([queryKeys.reservation]);
+      toast.success(res.message);
     },
-  );
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
   return { mutate, isLoading, isValid, isError };
 };

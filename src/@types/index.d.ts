@@ -6,4 +6,6 @@ declare module "@types" {
     message: string;
     result: T;
   };
+
+  type CommonAPIError = { code: string; message: string };
 }
