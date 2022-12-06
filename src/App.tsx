@@ -20,6 +20,7 @@ import { useUserState } from "./stores/user";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { ReservationReturnPage } from "./pages/user/reservationReturn";
+import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -41,6 +42,7 @@ function App() {
         <LoginModal />
         <ReservationDatepickerModal />
         <ReservationConfirmResultModal />
+        <KioskReservationResultModal />
         <Routes>
           {/* 웹 예약 */}
           <Route path="/" element={<ReservationServiceLayout />}>

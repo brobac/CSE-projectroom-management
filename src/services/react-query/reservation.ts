@@ -23,17 +23,27 @@ import { useModal } from "@/hooks/useModal";
 
 export const useKioskReservation = () => {
   const queryClient = useQueryClient();
+  const { closeModal } = useModal("modal-kiosk-reservation-result");
 
-  const { mutate, isLoading, isError } = useMutation(
-    (data: KioskReservationRequestDTO) => KioskReservation(data),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.reservation]);
-      },
+  return useMutation<
+    APIResponse<void>,
+    CommonAPIError,
+    KioskReservationRequestDTO
+  >((data: KioskReservationRequestDTO) => KioskReservation(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKeys.reservation]);
+      setTimeout(() => {
+        closeModal();
+        window.location.reload();
+      }, 5000);
     },
-  );
-
-  return { mutate, isLoading, isError };
+    onError: () => {
+      setTimeout(() => {
+        closeModal();
+        window.location.reload();
+      }, 5000);
+    },
+  });
 };
 
 export const useCancelReservation = () => {

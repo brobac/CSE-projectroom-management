@@ -1,7 +1,7 @@
 import { reservationProjectRoomState, useProjectRoomListState } from "@stores";
 import { ProjectRoom } from "@types";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { KioskHeader } from "../_header";
 
@@ -12,6 +12,7 @@ export const KioskReservationLayout = () => {
   const [reservationProjectRoom, setReservationProjectRoom] = useRecoilState(
     reservationProjectRoomState,
   );
+  const location = useLocation();
 
   const onClickotherRoom = () => {
     setReservationProjectRoom(unSelectedProjectRoom);
@@ -29,12 +30,14 @@ export const KioskReservationLayout = () => {
   return (
     <>
       <KioskHeader title={reservationProjectRoom?.roomName!}>
-        <button
-          onClick={onClickotherRoom}
-          className="btn-warning btn-lg btn text-2xl font-bold text-base-100"
-        >
-          {unSelectedProjectRoom?.roomName}
-        </button>
+        {location.pathname === "/kiosk/reservation" && (
+          <button
+            onClick={onClickotherRoom}
+            className="btn-warning btn-lg btn text-2xl font-bold text-base-100"
+          >
+            {unSelectedProjectRoom?.roomName}
+          </button>
+        )}
       </KioskHeader>
       <div className="h-full w-full pt-24">
         <Outlet />

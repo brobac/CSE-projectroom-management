@@ -1,3 +1,4 @@
+import { RoomTableProps } from "@/pages/kiosk/kiosk-reservation/_roomTable";
 import { queryKeys } from "@/services/react-query/queryKeys";
 import {
   APIResponse,
@@ -7,6 +8,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CommonAPIError,
+  KioskReservationRequestDTO,
   ProjectRoom,
   Reservation,
   ReservationRequestDTO,
@@ -188,3 +190,24 @@ export const qrScanResultState = atom<string>({
   key: "qrSanResultState",
   default: "",
 });
+
+export const kioskReservationTableState = atom<RoomTableProps | undefined>({
+  key: "kioskReservationTableState",
+  default: undefined,
+});
+
+export const kioskReservationState = atom<
+  KioskReservationRequestDTO | undefined
+>({ key: "kioskReservationState", default: undefined });
+
+export const useKioskReservationState = () => {
+  const [state, setState] = useRecoilState(kioskReservationState);
+
+  const isValid =
+    state?.accountQRContents &&
+    state?.projectTableId &&
+    state.startDateTime &&
+    state.endDateTime;
+
+  return { state, setState, isValid };
+};
