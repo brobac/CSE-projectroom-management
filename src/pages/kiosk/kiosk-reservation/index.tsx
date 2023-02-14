@@ -2,6 +2,7 @@ import { RoomTable, RoomTableProps } from "./_roomTable";
 import {
   chunkArray,
   isAfter,
+  isBefore,
   isSameOrBefore,
   roundUp30MinuteIncrements,
 } from "@utils";
@@ -36,16 +37,24 @@ export const KioskReservationPage = () => {
         tableName: table.tableName,
         availableTime: 0,
       };
-      const afterReservationList = reservationList.filter(
-        (reservation) =>
-          isAfter(reservation.endDateTime, now) &&
-          reservation.projectTableId === table.tableId,
-      );
+      const afterReservationList = reservationList
+        .filter((reservation) => reservation.projectTableId === table.tableId)
+        .filter((reservation) => {
+          if (reservation.returnedDateTime) {
+            if (isBefore(reservation.returnedDateTime, now)) {
+              return false;
+            } else {
+              return true;
+            }
+          } else {
+            return isAfter(reservation.endDateTime, now);
+          }
+        });
 
       // 첫시간부터 막히면
       if (
         afterReservationList.some((reservation) =>
-          isSameOrBefore(reservation.startDateTime, firstEndTime),
+          isSameOrBefore(reservation.startDateTime, now),
         )
       ) {
         afterReservationList.sort(
@@ -69,7 +78,7 @@ export const KioskReservationPage = () => {
 
           if (
             afterReservationList.some((reservation) =>
-              isSameOrBefore(reservation.startDateTime, endTime),
+              isBefore(reservation.startDateTime, endTime),
             )
           ) {
             break;
@@ -100,6 +109,7 @@ export const KioskReservationPage = () => {
   useEffect(() => {
     const props = reservationListTransformToKioskTableProps();
     setTableProps(props);
+    console.log(props);
   }, [reservationProjectroom, reservationList]);
 
   return (
