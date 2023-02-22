@@ -71,7 +71,6 @@ export const useLogin = () => {
       storageService.setStoredToken(token);
       setUser(user);
       closeModal();
-      toast.success(res.message);
     },
     onError: (err) => toast.error(err.message),
   });

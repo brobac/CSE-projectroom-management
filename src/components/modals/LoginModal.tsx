@@ -1,6 +1,8 @@
+import { useModal } from "@/hooks/useModal";
 import { useLogin } from "@services";
 import { LoginDTO } from "@types";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { Modal } from "./Modal";
 
@@ -21,11 +23,13 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginDTO>();
-  const { mutate: login, isLoading } = useLogin();
+  const { mutate: login, isLoading, isError, error } = useLogin();
 
   const onSubmit: SubmitHandler<LoginDTO> = (data) => {
     login(data);
   };
+
+  const { closeModal } = useModal("modal-login");
 
   return (
     <form
@@ -50,14 +54,29 @@ const LoginForm = () => {
           {...register("password")}
         />
       </label>
+      {isError && (
+        <p className="text-center text-sm text-error">
+          아이디와 비밀번호를 확인해주세요
+        </p>
+      )}
       <button
         className={twMerge([
-          "btn-primary btn mb-8 text-lg font-bold text-primary-content",
+          "btn-primary btn mb-4 text-lg font-bold text-primary-content",
           isLoading && "loading",
         ])}
       >
         로그인
       </button>
+      <p className="flex w-full justify-center gap-4">
+        <span>회원이 아니신가요?</span>
+        <Link
+          onClick={closeModal}
+          to={"/signup"}
+          className="text-primary hover:underline"
+        >
+          회원가입
+        </Link>
+      </p>
     </form>
   );
 };

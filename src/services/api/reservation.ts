@@ -23,7 +23,7 @@ export const reservation = async (data: ReservationRequestDTO) => {
 
 export const KioskReservation = async (data: KioskReservationRequestDTO) => {
   return _axios<void>({
-    url: `${reservationURL}/onsite`,
+    url: `${reservationURL}/onsite/qr`,
     method: HTTP_METHOD.POST,
     data,
   });
@@ -43,6 +43,23 @@ export const reservationConfirmWithQR = async (
   return _axios<void>({
     url: `${reservationURL}/auth/qr`,
     method: HTTP_METHOD.PATCH,
+    data,
+  });
+};
+
+export const reservationReturn = async (
+  reservationId: number,
+  data: FormData,
+) => {
+  return _axios<void>({
+    url: `returns`,
+    method: HTTP_METHOD.POST,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    params: {
+      reservationId,
+    },
     data,
   });
 };

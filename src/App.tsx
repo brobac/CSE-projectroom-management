@@ -19,6 +19,8 @@ import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
 import { useUserState } from "./stores/user";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { ReservationReturnPage } from "./pages/user/reservationReturn";
+import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -40,6 +42,7 @@ function App() {
         <LoginModal />
         <ReservationDatepickerModal />
         <ReservationConfirmResultModal />
+        <KioskReservationResultModal />
         <Routes>
           {/* 웹 예약 */}
           <Route path="/" element={<ReservationServiceLayout />}>
@@ -52,6 +55,10 @@ function App() {
                   element={<MyReservationList />}
                 />
                 <Route path="penalty-list" element={<MyPenaltyList />} />
+                <Route
+                  path="return/:reservationId"
+                  element={<ReservationReturnPage />}
+                />
               </Route>
             </Route>
           </Route>

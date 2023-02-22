@@ -6,7 +6,7 @@ export const History = () => {
 
   return (
     <div className="flex w-full max-w-xs flex-col gap-2 pt-8">
-      <p className="px-2 font-bold">사용정보</p>
+      <p className="px-2 text-center text-lg font-bold">사용정보</p>
       <div className="flex w-full gap-2">
         <div className="group w-1/2 p-4 shadow">
           <Link to="reservation-list" className="flex flex-col items-center ">
