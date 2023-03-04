@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 export const SideBar = () => {
   return (
-    <div className="fixed flex h-screen w-80 flex-col items-center bg-base-200 px-6">
+    <div className="fixed flex h-screen w-64 flex-col items-center bg-base-200 px-6">
       <div className=" py-10">
         <h1 className="flex flex-col text-center text-xl font-bold text-base-content">
           <span>컴퓨터소프트웨어공학과</span>
@@ -13,6 +13,7 @@ export const SideBar = () => {
       </div>
       {ADMIN_NAVIGAITON_ITEMS.map((item) => (
         <NavLink
+          key={item.title}
           to={item.path}
           className={({ isActive }) =>
             twMerge([
