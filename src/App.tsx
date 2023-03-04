@@ -27,6 +27,7 @@ import { AdminPenaltyPage } from "./pages/admin/penalty/AdminPenaltyPage";
 import { AdminPolicyPage } from "./pages/admin/policy/AdminPolicyPage";
 import { ReservationReturnPage } from "./pages/user/reservationReturn";
 import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
+import { AdminLoginPage } from "./pages/admin/login";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -83,6 +84,7 @@ function App() {
               element={<ReservationConfirmPage />}
             />
           </Route>
+          {/* 관리자 */}
           <Route path="admin" element={<AdminLayout />}>
             <Route path="" element={<Navigate to="reservations" />} />
             <Route path="reservations" element={<AdminReservationPage />} />
@@ -94,6 +96,7 @@ function App() {
             <Route path="penalty" element={<AdminPenaltyPage />} />
             <Route path="reservation-policy" element={<AdminPolicyPage />} />
           </Route>
+          <Route path="admin/login" element={<AdminLoginPage />} />
           <Route element={<RestrictedAuthLayout />}>
             <Route path="signup" element={<SignupPage />} />
           </Route>

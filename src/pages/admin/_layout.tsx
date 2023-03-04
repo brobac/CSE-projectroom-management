@@ -1,13 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { useUserState } from "@stores";
+import { Navigate, Outlet } from "react-router-dom";
 import { SideBar } from "./_sidebar";
 
 export const AdminLayout = () => {
-  return (
+  const { user } = useUserState();
+
+  const isAdmin = user?.roleType === "ROLE_ADMIN";
+  console.log(isAdmin);
+  console.log(user?.roleType);
+  return isAdmin ? (
     <div className="relative flex h-screen w-full bg-white">
       <SideBar />
-      <div className="ml-[320px] p-10">
+      <div className="ml-64 p-10">
         <Outlet />
       </div>
     </div>
+  ) : (
+    <Navigate to="/admin/login" />
   );
 };
