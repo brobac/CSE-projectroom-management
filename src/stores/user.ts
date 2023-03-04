@@ -1,6 +1,4 @@
-import { queryKeys } from "@/services/react-query/queryKeys";
 import { storageService, userReissue } from "@services";
-import { useQuery } from "@tanstack/react-query";
 import { User } from "@types";
 import { atom, useRecoilState } from "recoil";
 
@@ -21,7 +19,7 @@ export const useUserState = () => {
         storageService.setStoredUser(res.result);
         setUser(res.result);
       })
-      .catch((err) => console.log("시발"));
+      .catch((err) => storageService.clearStoredToken());
   };
 
   return { user, hasAuth: !!user, refreshUser };

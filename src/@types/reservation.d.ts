@@ -61,4 +61,9 @@ declare module "@types" {
     roomName: string;
     tableName;
   };
+
+  type ReservationReturnDTO = {
+    cleanUpPhoto: File;
+    reservationId: number;
+  };
 }

@@ -1,21 +1,47 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { QrReader } from "react-qr-reader";
 
-import { DateValue } from "@types";
-import { toHHMM } from "@utils";
+import { DateValue, KioskReservationRequestDTO } from "@types";
+import { toFullDateTime_SLASH, toHHMM } from "@utils";
 import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
 import { useModal } from "@/hooks/useModal";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { kioskReservationState, kioskReservationTableState } from "@stores";
+import { useDebouncedCallback } from "use-debounce";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 export const KioskReservationTimeSelectPage = () => {
   const [selectedEndTime, setSelectedEndTime] = useState<DateValue>();
   const [qrReaderOpen, setQrReaderOpen] = useState(false);
-
+  const tableprops = useRecoilValue(kioskReservationTableState);
+  const setKioskReservationState = useSetRecoilState(kioskReservationState);
+  const navigate = useNavigate();
   const { openModal } = useModal("modal-kiosk-reservation-result");
+  const cameraWrapRef = useRef<HTMLDivElement>(null);
 
   const onClickEndTime = (endTime: DateValue) => {
     setSelectedEndTime(endTime);
   };
+
+  const onScanSuccess = useDebouncedCallback((result: string) => {
+    const reservationState: KioskReservationRequestDTO = {
+      startDateTime: toFullDateTime_SLASH(
+        dayjs(tableprops?.availableTimelist![0])
+          .subtract(30, "minute")
+          .toDate(),
+      ),
+      endDateTime: toFullDateTime_SLASH(selectedEndTime!),
+      projectTableId: tableprops?.projectTableId!,
+      accountQRContents: result,
+    };
+
+    setKioskReservationState(reservationState);
+    navigate("/kiosk");
+    cameraWrapRef.current?.remove();
+    openModal();
+  }, 300);
 
   return (
     <div className="flex h-full w-full">
@@ -24,16 +50,14 @@ export const KioskReservationTimeSelectPage = () => {
           종료시간 선택
         </h3>
         <div className="grid grid-cols-2 gap-8">
-          <EndTimeButton
-            onClick={() => onClickEndTime("2022-02-02 12:00")}
-            endTime={"2022-02-02 12:00"}
-            selected={selectedEndTime === "2022-02-02 12:00"}
-          />
-          <EndTimeButton
-            onClick={() => onClickEndTime("2022-02-02 12:30")}
-            selected={selectedEndTime === "2022-02-02 12:30"}
-            endTime={"2022-02-02 12:30"}
-          />
+          {tableprops?.availableTimelist?.map((time, i) => (
+            <EndTimeButton
+              key={i}
+              onClick={() => onClickEndTime(time)}
+              endTime={time}
+              selected={selectedEndTime === time}
+            />
+          ))}
         </div>
       </div>
       <div className="h-full border-4 border-base-100"></div>
@@ -51,22 +75,23 @@ export const KioskReservationTimeSelectPage = () => {
           </button>
         )}
         {qrReaderOpen && (
-          <QrReader
-            constraints={{ facingMode: "user" }}
-            onResult={(result, error) => {
-              if (!!result) {
-                openModal();
-              }
+          <div className="w-full" ref={cameraWrapRef}>
+            <QrReader
+              constraints={{ facingMode: "user" }}
+              onResult={(result, error) => {
+                if (!!result) {
+                  onScanSuccess(result.getText());
+                }
 
-              if (!!error) {
-                console.info(error);
-              }
-            }}
-            className="w-full rounded-3xl transition"
-          />
+                if (!!error) {
+                  console.info(error);
+                }
+              }}
+              className="w-full rounded-3xl transition"
+            />
+          </div>
         )}
       </div>
-      <KioskReservationResultModal />
     </div>
   );
 };

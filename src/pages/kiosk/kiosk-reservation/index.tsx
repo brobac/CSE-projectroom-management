@@ -1,30 +1,128 @@
-import { RoomTable } from "./_roomTable";
-import { chunkArray } from "@utils";
+import { RoomTable, RoomTableProps } from "./_roomTable";
+import {
+  chunkArray,
+  isAfter,
+  isBefore,
+  isSameOrBefore,
+  roundUp30MinuteIncrements,
+} from "@utils";
 import { useNavigate } from "react-router-dom";
-
-const tempTables = [
-  { id: 1, name: "A1", availableTime: 180 },
-  { id: 2, name: "A2", availableTime: 190 },
-  { id: 3, name: "A3", availableTime: 0, remainingTime: 57, disabled: true },
-  { id: 4, name: "A4", availableTime: 0, remainingTime: 157, disabled: true },
-  { id: 5, name: "B1", availableTime: 214 },
-  { id: 6, name: "B2", availableTime: 44 },
-];
+import {
+  kioskReservationTableState,
+  reservationProjectRoomState,
+  useReservationListState,
+} from "@stores";
+import dayjs from "dayjs";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
 export const KioskReservationPage = () => {
   const navigate = useNavigate();
+  const [tableProps, setTableProps] = useState<RoomTableProps[]>([]);
+  const { reservationList, isLoading } = useReservationListState();
+  const reservationProjectroom = useRecoilValue(reservationProjectRoomState);
+  const setKioskReservationState = useSetRecoilState(
+    kioskReservationTableState,
+  );
+
+  //예약 내역을 받아와서 키오스크 테이블 선택화면에 필요한 형식으로 변환합니다
+  const reservationListTransformToKioskTableProps = () => {
+    const result: RoomTableProps[] = [];
+
+    const now = new Date();
+    const firstEndTime = roundUp30MinuteIncrements(now);
+    reservationProjectroom?.projectTableList.forEach((table) => {
+      const props: RoomTableProps = {
+        projectTableId: table.tableId,
+        tableName: table.tableName,
+        availableTime: 0,
+      };
+      const afterReservationList = reservationList
+        .filter((reservation) => reservation.projectTableId === table.tableId)
+        .filter((reservation) => {
+          if (reservation.returnedDateTime) {
+            if (isBefore(reservation.returnedDateTime, now)) {
+              return false;
+            } else {
+              return true;
+            }
+          } else {
+            return isAfter(reservation.endDateTime, now);
+          }
+        });
+
+      // 첫시간부터 막히면
+      if (
+        afterReservationList.some((reservation) =>
+          isSameOrBefore(reservation.startDateTime, now),
+        )
+      ) {
+        afterReservationList.sort(
+          (a, b) =>
+            new Date(a.startDateTime).getTime() -
+            new Date(b.startDateTime).getTime(),
+        );
+        const remainingTime =
+          (new Date(afterReservationList[0].endDateTime).getTime() -
+            now.getTime()) /
+          (1000 * 60);
+        props.remainingTime = Math.ceil(remainingTime);
+        props.disabled = true;
+      } else {
+        const availableEndTimeList = [];
+        availableEndTimeList.push(firstEndTime);
+        for (let i = 1; i < 8; i++) {
+          const endTime = dayjs(firstEndTime)
+            .add(i * 30, "minute")
+            .toDate();
+
+          if (
+            afterReservationList.some((reservation) =>
+              isBefore(reservation.startDateTime, endTime),
+            )
+          ) {
+            break;
+          } else {
+            availableEndTimeList.push(endTime);
+          }
+        }
+
+        const availableTime =
+          (availableEndTimeList[availableEndTimeList.length - 1].getTime() -
+            now.getTime()) /
+          (1000 * 60);
+
+        props.availableTime = Math.ceil(availableTime);
+        props.availableTimelist = availableEndTimeList;
+      }
+
+      result.push(props);
+    });
+    return result;
+  };
+
+  const onClickTable = (tableProps: RoomTableProps) => {
+    setKioskReservationState(tableProps);
+    navigate("time-select");
+  };
+
+  useEffect(() => {
+    const props = reservationListTransformToKioskTableProps();
+    setTableProps(props);
+    console.log(props);
+  }, [reservationProjectroom, reservationList]);
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
       {/* tailwind grid-rows-2 가 적용안되서 2줄로 분리 */}
-      {chunkArray(tempTables, Math.ceil(tempTables.length / 2)).map(
-        (tables) => (
-          <div className="flex h-full w-full gap-4">
+      {chunkArray(tableProps, Math.ceil(tableProps.length / 2)).map(
+        (tables, i) => (
+          <div key={i} className="flex h-full w-full gap-4">
             {tables.map((table) => (
               <RoomTable
-                key={table.id}
+                key={table.projectTableId}
                 {...table}
-                onClick={() => navigate("time-select")}
+                onClick={() => onClickTable(table)}
               />
             ))}
           </div>

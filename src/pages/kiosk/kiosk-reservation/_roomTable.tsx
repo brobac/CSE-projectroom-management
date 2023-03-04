@@ -1,17 +1,18 @@
 import { twMerge } from "tailwind-merge";
 
-type RoomTableProps = {
-  id: number;
-  name: string;
+export type RoomTableProps = {
+  projectTableId: number;
+  tableName: string;
   availableTime: number;
+  availableTimelist?: Date[];
   remainingTime?: number;
   disabled?: boolean;
   onClick?: () => void;
 };
 
 export const RoomTable = ({
-  id,
-  name,
+  projectTableId,
+  tableName,
   availableTime,
   remainingTime,
   disabled,
@@ -65,7 +66,7 @@ export const RoomTable = ({
           </p>
         )}
         <p className=" absolute bottom-10 text-5xl font-bold text-white">
-          {name}
+          {tableName}
         </p>
       </div>
     </button>

@@ -1,34 +1,49 @@
 import { useUserState } from "@stores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import {
   CommonAPIError,
   KioskReservationRequestDTO,
   ReservationConfirmWithQRRequestDTO,
 } from "@types";
-import { toast } from "react-toastify";
+
+import { APIResponse } from "../axiosService";
+import { queryKeys } from "./queryKeys";
 import {
   cancelReservation,
   fetchCurrentReservationList,
   fetchPastResetvationList,
   KioskReservation,
   reservationConfirmWithQR,
+  reservationReturn,
 } from "../api";
-import { APIResponse } from "../axiosService";
-import { queryKeys } from "./queryKeys";
+import { useModal } from "@/hooks/useModal";
 
 export const useKioskReservation = () => {
   const queryClient = useQueryClient();
+  const { closeModal } = useModal("modal-kiosk-reservation-result");
 
-  const { mutate, isLoading, isError } = useMutation(
-    (data: KioskReservationRequestDTO) => KioskReservation(data),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.reservation]);
-      },
+  return useMutation<
+    APIResponse<void>,
+    CommonAPIError,
+    KioskReservationRequestDTO
+  >((data: KioskReservationRequestDTO) => KioskReservation(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKeys.reservation]);
+      setTimeout(() => {
+        closeModal();
+        window.location.reload();
+      }, 5000);
     },
-  );
-
-  return { mutate, isLoading, isError };
+    onError: () => {
+      setTimeout(() => {
+        closeModal();
+        window.location.reload();
+      }, 5000);
+    },
+  });
 };
 
 export const useCancelReservation = () => {
@@ -53,18 +68,31 @@ export const useCancelReservation = () => {
 
 export const useReservationConfirmWithQR = () => {
   const queryClient = useQueryClient();
+  const { closeModal } = useModal("modal-reservation-confirm-result");
 
-  const { mutate, isLoading, isError } = useMutation(
-    (reservationId: ReservationConfirmWithQRRequestDTO) =>
-      reservationConfirmWithQR(reservationId),
+  return useMutation<
+    APIResponse<void>,
+    CommonAPIError,
+    ReservationConfirmWithQRRequestDTO
+  >(
+    (data: ReservationConfirmWithQRRequestDTO) =>
+      reservationConfirmWithQR(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([queryKeys.reservation]);
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 5000);
+      },
+      onError: () => {
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 5000);
       },
     },
   );
-
-  return { mutate, isLoading, isError };
 };
 
 export const useFetchCurrentReservationList = () => {
@@ -89,4 +117,21 @@ export const useFetchPastReservationList = () => {
   );
 
   return { data, isLoading };
+};
+
+export const useReservationReturn = () => {
+  const client = useQueryClient();
+  const navigate = useNavigate();
+  return useMutation(
+    ({ reservationId, data }: { reservationId: number; data: FormData }) =>
+      reservationReturn(reservationId, data),
+    {
+      onSuccess: (res) => {
+        client.invalidateQueries([queryKeys.reservation]);
+        navigate("/mypage");
+        toast.success("반납완료");
+      },
+      onError: () => toast.error("반납에 실패했습니다"),
+    },
+  );
 };

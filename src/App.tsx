@@ -25,6 +25,8 @@ import { AdminReservationDeactivationPage } from "./pages/admin/reservation-deac
 import { AdminComplaintPage } from "./pages/admin/complaint/AdminComplaintPage";
 import { AdminPenaltyPage } from "./pages/admin/penalty/AdminPenaltyPage";
 import { AdminPolicyPage } from "./pages/admin/policy/AdminPolicyPage";
+import { ReservationReturnPage } from "./pages/user/reservationReturn";
+import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -46,6 +48,7 @@ function App() {
         <LoginModal />
         <ReservationDatepickerModal />
         <ReservationConfirmResultModal />
+        <KioskReservationResultModal />
         <Routes>
           {/* 웹 예약 */}
           <Route path="/" element={<ReservationServiceLayout />}>
@@ -58,6 +61,10 @@ function App() {
                   element={<MyReservationList />}
                 />
                 <Route path="penalty-list" element={<MyPenaltyList />} />
+                <Route
+                  path="return/:reservationId"
+                  element={<ReservationReturnPage />}
+                />
               </Route>
             </Route>
           </Route>

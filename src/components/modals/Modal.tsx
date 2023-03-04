@@ -6,7 +6,7 @@ type ModalProps = {
   closeButton?: boolean;
   onClose?: () => void;
 };
-export const Modal = ({ type, closeButton, children }: ModalProps) => {
+export const Modal = ({ type, closeButton, children, onClose }: ModalProps) => {
   return (
     <>
       <input type="checkbox" id={type} className="modal-toggle" />
@@ -15,6 +15,7 @@ export const Modal = ({ type, closeButton, children }: ModalProps) => {
           {closeButton && (
             <label
               htmlFor={type}
+              onClick={onClose}
               className=" btn-outline btn-sm btn-circle btn absolute right-2 top-2"
             >
               ✕
