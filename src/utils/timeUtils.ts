@@ -46,6 +46,13 @@ export const toYYYYMD_DOT = (target: DateValue) => {
   return date.format("YYYY.M.D");
 };
 
+export const toYYMMDD_KO_DAY_DOT_hhmm = (target: DateValue) => {
+  const date = dayjs(target);
+  return `${date.format("YY.MM.DD")}(${KO_DAY[date.day()]}) ${date.format(
+    "hh:mm",
+  )}`;
+};
+
 export const toHMM = (date: DateValue) => {
   return dayjs(date).format("H:mm");
 };

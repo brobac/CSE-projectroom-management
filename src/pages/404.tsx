@@ -12,7 +12,7 @@ export const PageNotFound = () => {
           Page Not Found
         </h1>
         <img
-          src="./images/404Error.png"
+          src="../images/404Error.png"
           alt="404 error"
           className="w-full object-contain"
         />

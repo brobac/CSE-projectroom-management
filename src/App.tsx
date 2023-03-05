@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginModal, ReservationDatepickerModal } from "@components";
 import { ReservationPage } from "./pages/reservation";
 import { MyPage } from "./pages/user/mypage";
@@ -19,8 +19,16 @@ import { Memberlayout, RestrictedAuthLayout } from "./templates/routes";
 import { useUserState } from "./stores/user";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { AdminLayout } from "./pages/admin/_layout";
+import { AdminReservationPage } from "./pages/admin/reservation/AdminReservationpage";
+import { AdminReservationDeactivationPage } from "./pages/admin/reservation-deactivation/AdminReservationDeactivationPage";
+import { AdminComplaintPage } from "./pages/admin/complaint/AdminComplaintPage";
+import { AdminPenaltyPage } from "./pages/admin/penalty/AdminPenaltyPage";
+import { AdminPolicyPage } from "./pages/admin/policy/AdminPolicyPage";
 import { ReservationReturnPage } from "./pages/user/reservationReturn";
 import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
+import { AdminLoginPage } from "./pages/admin/login";
+import { AdminReservationModal } from "@components/modals/AdminReservationModal";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -43,6 +51,7 @@ function App() {
         <ReservationDatepickerModal />
         <ReservationConfirmResultModal />
         <KioskReservationResultModal />
+        <AdminReservationModal />
         <Routes>
           {/* 웹 예약 */}
           <Route path="/" element={<ReservationServiceLayout />}>
@@ -77,6 +86,19 @@ function App() {
               element={<ReservationConfirmPage />}
             />
           </Route>
+          {/* 관리자 */}
+          <Route path="admin" element={<AdminLayout />}>
+            <Route path="" element={<Navigate to="reservations" />} />
+            <Route path="reservations" element={<AdminReservationPage />} />
+            <Route
+              path="reservation-deactivation"
+              element={<AdminReservationDeactivationPage />}
+            />
+            <Route path="complaints" element={<AdminComplaintPage />} />
+            <Route path="penalty" element={<AdminPenaltyPage />} />
+            <Route path="reservation-policy" element={<AdminPolicyPage />} />
+          </Route>
+          <Route path="admin/login" element={<AdminLoginPage />} />
           <Route element={<RestrictedAuthLayout />}>
             <Route path="signup" element={<SignupPage />} />
           </Route>
