@@ -28,6 +28,7 @@ import { AdminPolicyPage } from "./pages/admin/policy/AdminPolicyPage";
 import { ReservationReturnPage } from "./pages/user/reservationReturn";
 import { KioskReservationResultModal } from "@components/modals/KioskReservationResultModal";
 import { AdminLoginPage } from "./pages/admin/login";
+import { AdminReservationModal } from "@components/modals/AdminReservationModal";
 
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
@@ -50,6 +51,7 @@ function App() {
         <ReservationDatepickerModal />
         <ReservationConfirmResultModal />
         <KioskReservationResultModal />
+        <AdminReservationModal />
         <Routes>
           {/* 웹 예약 */}
           <Route path="/" element={<ReservationServiceLayout />}>

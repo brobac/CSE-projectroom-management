@@ -1,35 +1,41 @@
 declare module "@types" {
-  type SignupDTO = {
+  interface SignupDTO {
     name: string;
     email: string;
     loginId: string;
     password: string;
-  };
+  }
 
-  type LoginDTO = {
+  interface LoginDTO {
     loginId: string;
     password: string;
-  };
+  }
 
-  type LogoutDTO = {
+  interface LogoutDTO {
     accessToken: "string";
     refreshToken: "string";
-  };
+  }
 
-  type MemberComplexInfo = {
+  interface MemberSimpleInfo {
+    loginId: string;
+    memberId: number;
+    name: string;
+  }
+
+  interface MemberComplexInfo {
     pastReservationCount: number;
     penaltyInfo: PenaltyInfo | null;
     qrImage: QRImageInfo | null;
     violationCount: number;
-  };
+  }
 
-  type PenaltyInfo = {
+  interface PenaltyInfo {
     endDateTime: string;
     startDateTime: string;
-  };
+  }
 
-  type QRImageInfo = {
+  interface QRImageInfo {
     imageName: string;
     imageURL: string;
-  };
+  }
 }

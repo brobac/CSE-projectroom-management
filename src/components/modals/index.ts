@@ -8,4 +8,5 @@ export const MODAL_TYPE = {
   QR_CODE: "modal-qrcode",
   RESERVATION_CONFIRM_RESULT: "modal-reservation-confirm-result",
   KIOSK_RESERVATION_RESULT: "modal-kiosk-reservation-result",
+  ADMIN_RESERVATION: "modal-admin-reservation",
 } as const;

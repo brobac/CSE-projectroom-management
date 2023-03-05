@@ -8,41 +8,42 @@ declare module "@types" {
     | "미반납"
     | "반납 완료";
 
-  type Reservation = {
+  interface Reservation {
     tableName: string;
     projectTableId: number;
     startDateTime: DateValue;
     endDateTime: DateValue;
     returnedDateTime: DateValue | null;
-  };
+  }
 
-  type ReservationRequestDTO = {
+  interface ReservationRequestDTO {
     endDateTime: DateValue;
     startDateTime: DateValue;
     projectTableId: number;
     memberId: number;
-  };
+  }
 
-  type KioskReservationRequestDTO = {
+  interface KioskReservationRequestDTO {
     endDateTime: DateValue;
     startDateTime: DateValue;
     projectTableId: number;
     accountQRContents: string;
-  };
+  }
 
-  type ReservationConfirmWithQRRequestDTO = { qrContent: string };
+  interface ReservationConfirmWithQRRequestDTO {
+    qrContent: string;
+  }
 
-  type FetchReservationPeriod = {
+  interface FetchReservationPeriod {
     firstDateTime: DateValue;
     lastDateTime: DateValue;
-  };
+  }
 
-  type ReservationStatus = {
+  interface ReservationStatus {
     status: string;
     statusCode: string;
-  };
-
-  type CurrentResetvation = {
+  }
+  interface CurrentResetvation {
     startDateTime: DateValue;
     endDateTime: DateValue;
     imageName: string;
@@ -51,19 +52,57 @@ declare module "@types" {
     reservationStatus: ReservationStatus;
     roomName: string;
     tableName;
-  };
-
-  type PastResetvation = {
+  }
+  interface PastResetvation {
     startDateTime: DateValue;
     endDateTime: DateValue;
     reservationId: number;
     reservationStatus: ReservationStatus;
     roomName: string;
     tableName;
-  };
+  }
 
-  type ReservationReturnDTO = {
+  interface ReservationReturnDTO {
     cleanUpPhoto: File;
     reservationId: number;
-  };
+  }
+
+  interface AdminReservationDTO {
+    member: MemberSimpleInfo;
+    reservation: ReservationSimpleInfo;
+    tableReturn: ReservationReturnSimpleInfo;
+  }
+
+  interface FetchAdminReservationListOptions {
+    pageNumber?: number;
+    size?: number;
+    offset?: number;
+    stardDt?: DateValue;
+    endDt?: DateValue;
+    loginId?: number;
+    memberName?: number;
+    reservationStatus?: ReservationStateType;
+    roomName?: string;
+  }
+
+  interface ReservationSimpleInfo {
+    startAt: DateValue;
+    endAt: DateValue;
+    reservationId: number;
+    reservationStatus: ReservationStatus;
+    roomName: string;
+    tableName: string;
+  }
+
+  interface Image {
+    fileLocalName: string;
+    fileOriName: string;
+    fileUrl: string;
+  }
+
+  interface ReservationReturnSimpleInfo {
+    cleanupPhoto: Image;
+    returnAt: string;
+    tableReturnId: number;
+  }
 }

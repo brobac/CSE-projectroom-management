@@ -11,7 +11,7 @@ export const AdminLayout = () => {
   return isAdmin ? (
     <div className="relative flex h-screen w-full bg-white">
       <SideBar />
-      <div className="ml-64 p-10">
+      <div className="ml-64 w-full p-10">
         <Outlet />
       </div>
     </div>
