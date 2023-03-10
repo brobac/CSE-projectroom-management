@@ -27,12 +27,12 @@ export const KioskReservationTimeSelectPage = () => {
 
   const onScanSuccess = useDebouncedCallback((result: string) => {
     const reservationState: KioskReservationRequestDTO = {
-      startDateTime: toFullDateTime_SLASH(
+      startAt: toFullDateTime_SLASH(
         dayjs(tableprops?.availableTimelist![0])
           .subtract(30, "minute")
           .toDate(),
       ),
-      endDateTime: toFullDateTime_SLASH(selectedEndTime!),
+      endAt: toFullDateTime_SLASH(selectedEndTime!),
       projectTableId: tableprops?.projectTableId!,
       accountQRContents: result,
     };

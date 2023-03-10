@@ -17,15 +17,15 @@ declare module "@types" {
   }
 
   interface ReservationRequestDTO {
-    endDateTime: DateValue;
-    startDateTime: DateValue;
+    endAt: DateValue;
+    startAt: DateValue;
     projectTableId: number;
     memberId: number;
   }
 
   interface KioskReservationRequestDTO {
-    endDateTime: DateValue;
-    startDateTime: DateValue;
+    endAt: DateValue;
+    startAt: DateValue;
     projectTableId: number;
     accountQRContents: string;
   }
@@ -35,8 +35,8 @@ declare module "@types" {
   }
 
   interface FetchReservationPeriod {
-    firstDateTime: DateValue;
-    lastDateTime: DateValue;
+    firstAt: DateValue;
+    lastAt: DateValue;
   }
 
   interface ReservationStatus {
