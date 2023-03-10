@@ -1,4 +1,11 @@
-import { LoginDTO, MemberComplexInfo, SignupDTO, Tokens, User } from "@types";
+import {
+  LoginDTO,
+  MemberComplexInfo,
+  SignupDTO,
+  Tokens,
+  User,
+  VerifyEmailAuthCodeDTO,
+} from "@types";
 
 import { HTTP_METHOD } from ".";
 import { getJWTHeader, _axios } from "../axiosService";
@@ -9,6 +16,7 @@ const signupURL = "signup";
 
 // <----- 회원가입 관련 API -----
 
+//회원가입
 export const signup = async (data: SignupDTO) => {
   return _axios<boolean>({
     url: `${versionURL}/${membersURL}/${signupURL}`,
@@ -17,6 +25,7 @@ export const signup = async (data: SignupDTO) => {
   });
 };
 
+//이메일 중복 체크
 export const checkDuplicatedEmail = async (email: string) => {
   return _axios<boolean>({
     url: `${versionURL}/${membersURL}/${signupURL}/check-email`,
@@ -25,6 +34,7 @@ export const checkDuplicatedEmail = async (email: string) => {
   });
 };
 
+//아이디 중복체크
 export const checkDuplicatedLoginId = async (loginId: string) => {
   return _axios<boolean>({
     url: `${versionURL}/${membersURL}/${signupURL}/check-id`,
@@ -33,9 +43,23 @@ export const checkDuplicatedLoginId = async (loginId: string) => {
   });
 };
 
-//TODO: sendAuthCodeToEmail 이메일로 인증 코드 요청
+//이메일로 인증코드 보내기
+export const sendAuthCodeToEmail = async (email: string) => {
+  return _axios<boolean>({
+    url: `${versionURL}/${membersURL}/${signupURL}/authcode`,
+    method: HTTP_METHOD.GET,
+    params: { email },
+  });
+};
 
-//TODO: verifyAuthCodeToEmail 인증코드 확인
+//이메일 인증코드 확인
+export const verifyEmailAuthCode = async (data: VerifyEmailAuthCodeDTO) => {
+  return _axios<boolean>({
+    url: `${versionURL}/${membersURL}/${signupURL}/authcode`,
+    method: HTTP_METHOD.GET,
+    data,
+  });
+};
 
 // ----- 회원가입 관련 API ----->
 
