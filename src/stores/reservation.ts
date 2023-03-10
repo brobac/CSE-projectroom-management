@@ -46,8 +46,8 @@ export const useReservationListState = () => {
       fetchReservationListByProjectroomId(
         reservationProjectRoom?.projectRoomId!,
         {
-          firstDateTime: toFullDateTime_SLASH(firstDateTime),
-          lastDateTime: toFullDateTime_SLASH(lastDateTime),
+          firstAt: toFullDateTime_SLASH(firstDateTime),
+          lastAt: toFullDateTime_SLASH(lastDateTime),
         },
       ),
     {
@@ -160,8 +160,8 @@ export const useReservation = () => {
   const isValid = startTime && endTime && reservationTableId !== -1;
 
   const reservationData: ReservationRequestDTO = {
-    endDateTime: toFullDateTime_SLASH(endTime!),
-    startDateTime: toFullDateTime_SLASH(startTime!),
+    endAt: toFullDateTime_SLASH(endTime!),
+    startAt: toFullDateTime_SLASH(startTime!),
     projectTableId: reservationTableId,
     memberId: user?.memberId!,
   };
@@ -206,8 +206,8 @@ export const useKioskReservationState = () => {
   const isValid =
     state?.accountQRContents &&
     state?.projectTableId &&
-    state.startDateTime &&
-    state.endDateTime;
+    state.startAt &&
+    state.endAt;
 
   return { state, setState, isValid };
 };

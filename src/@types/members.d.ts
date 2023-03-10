@@ -6,6 +6,11 @@ declare module "@types" {
     password: string;
   }
 
+  interface VerifyEmailAuthCodeDTO {
+    code: string;
+    email: string;
+  }
+
   interface LoginDTO {
     loginId: string;
     password: string;
