@@ -56,7 +56,7 @@ export const sendAuthCodeToEmail = async (email: string) => {
 export const verifyEmailAuthCode = async (data: VerifyEmailAuthCodeDTO) => {
   return _axios<boolean>({
     url: `/${versionURL}/${membersURL}/${signupURL}/authcode`,
-    method: HTTP_METHOD.GET,
+    method: HTTP_METHOD.POST,
     data,
   });
 };

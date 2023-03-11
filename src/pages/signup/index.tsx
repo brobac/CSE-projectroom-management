@@ -4,7 +4,9 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   checkDuplicatedEmail,
   checkDuplicatedLoginId,
+  sendAuthCodeToEmail,
   useSignup,
+  verifyEmailAuthCode,
 } from "@services";
 import { useEffect, useState } from "react";
 
@@ -19,30 +21,48 @@ const emailRegex = /.+@kumoh.ac.kr$/;
 const loginIdRegex = /^[0-9]{8}$/;
 
 export const SignupPage = () => {
+  const [authCode, setAuthCode] = useState("");
+  const [authCodeSent, setAuthCodeSent] = useState(false);
+  const [authCodeVerified, setAuthCodeVerified] = useState(false);
+  const [authCodeVerifyMessage, setAuthCodeVerifyMessage] = useState("");
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
-    formState: { errors },
+    getValues,
+    formState: { errors, isValid },
   } = useForm<SignupInputs>();
   const { mutate: signup, isLoading } = useSignup();
   const onSubmit: SubmitHandler<SignupInputs> = (data) => {
     signup(data);
   };
 
-  useEffect(() => console.log(errors), [errors]);
+  const onChangeAuthCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthCode(e.target.value);
+  };
+
+  const onClickSendAuthCodeButton = () => {
+    sendAuthCodeToEmail(getValues("email"));
+    setAuthCodeSent(true);
+  };
+
+  const onClickVerifyAuthCodeButton = () => {
+    verifyEmailAuthCode({ email: getValues("email"), code: authCode })
+      .then(() => {
+        setAuthCodeVerified(true);
+        setAuthCodeVerifyMessage("인증되었습니다");
+      })
+      .catch((error) => setAuthCodeVerifyMessage(error.message));
+  };
 
   const deboucedEmailCheck = useDebouncedCallback(async (email) => {
     if (!emailRegex.test(email)) {
-      console.log(email);
-      console.log("금오메일아님");
+      setError("email", { message: "금오공과대학교 메일을 사용해주세요" });
       return;
     }
     checkDuplicatedEmail(email)
       .then((res) => {
-        console.log(res);
-        console.log("사용가능한 이메일");
         clearErrors("email");
       })
       .catch((err) => {
@@ -102,26 +122,72 @@ export const SignupPage = () => {
                     금오공과대학교 이메일만 사용할 수 있습니다
                   </span>
                 </div>
-                <input
-                  type="text"
-                  placeholder="user@kumoh.ac.kr"
-                  className={twMerge([
-                    "input w-full border border-base-300",
-                    errors.email && "input-error bg-error-content",
-                  ])}
-                  {...register("email", {
-                    required: true,
-                    pattern: {
-                      value: emailRegex,
-                      message: "메일 양식을 확인해주세요",
-                    },
-                    onChange: (e) => deboucedEmailCheck(e.target.value),
-                  })}
-                />
+                <div className="flex items-center gap-1">
+                  <input
+                    type="text"
+                    placeholder="user@kumoh.ac.kr"
+                    className={twMerge([
+                      "input w-full border border-base-300",
+                      errors.email && "input-error bg-error-content",
+                    ])}
+                    {...register("email", {
+                      required: true,
+                      pattern: {
+                        value: emailRegex,
+                        message: "메일 양식을 확인해주세요",
+                      },
+                      onChange: (e) => {
+                        deboucedEmailCheck(e.target.value);
+                        setAuthCodeSent(false);
+                      },
+                    })}
+                  />
+                  <button
+                    type="button"
+                    disabled={
+                      !emailRegex.test(getValues("email")) ||
+                      errors.hasOwnProperty("email")
+                    }
+                    onClick={onClickSendAuthCodeButton}
+                    className="btn-primary btn"
+                  >
+                    인증코드 받기
+                  </button>
+                </div>
                 <span className="pl-2 text-sm text-error">
                   {errors.email?.message}
                 </span>
+                {authCodeSent && (
+                  <span className="pl-2 text-sm text-info">
+                    인증코드가 발송되었습니다 3분안에 입력해주세요
+                  </span>
+                )}
+                <div className="flex flex-col gap-1">
+                  <input
+                    type="text"
+                    placeholder="인증코드"
+                    onChange={(e) => onChangeAuthCode(e)}
+                    className={twMerge(["input w-full border border-base-300"])}
+                  />
+                  <span
+                    className={twMerge([
+                      "pl-2 text-sm",
+                      authCodeVerified ? "text-info" : "text-error",
+                    ])}
+                  >
+                    {authCodeVerifyMessage}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={onClickVerifyAuthCodeButton}
+                    disabled={authCode === ""}
+                    className="btn-primary btn w-full"
+                  >
+                    인증코드 확인
+                  </button>
+                </div>
               </label>
+
               <label className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <span className="font-bold">아이디</span>
@@ -169,6 +235,7 @@ export const SignupPage = () => {
               </label>
             </div>
             <button
+              disabled={!isValid || !authCodeVerified}
               className={twMerge([
                 "btn-primary btn mt-8 w-full",
                 isLoading && "loading",
