@@ -40,31 +40,29 @@ export const KioskReservationPage = () => {
       const afterReservationList = reservationList
         .filter((reservation) => reservation.projectTableId === table.tableId)
         .filter((reservation) => {
-          if (reservation.returnedDateTime) {
-            if (isBefore(reservation.returnedDateTime, now)) {
+          if (reservation.returnedAt) {
+            if (isBefore(reservation.returnedAt, now)) {
               return false;
             } else {
               return true;
             }
           } else {
-            return isAfter(reservation.endDateTime, now);
+            return isAfter(reservation.endAt, now);
           }
         });
 
       // 첫시간부터 막히면
       if (
         afterReservationList.some((reservation) =>
-          isSameOrBefore(reservation.startDateTime, now),
+          isSameOrBefore(reservation.startAt, now),
         )
       ) {
         afterReservationList.sort(
           (a, b) =>
-            new Date(a.startDateTime).getTime() -
-            new Date(b.startDateTime).getTime(),
+            new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
         );
         const remainingTime =
-          (new Date(afterReservationList[0].endDateTime).getTime() -
-            now.getTime()) /
+          (new Date(afterReservationList[0].endAt).getTime() - now.getTime()) /
           (1000 * 60);
         props.remainingTime = Math.ceil(remainingTime);
         props.disabled = true;
@@ -78,7 +76,7 @@ export const KioskReservationPage = () => {
 
           if (
             afterReservationList.some((reservation) =>
-              isBefore(reservation.startDateTime, endTime),
+              isBefore(reservation.startAt, endTime),
             )
           ) {
             break;
