@@ -10,6 +10,7 @@ import {
   logout,
   tokenReissue,
   APIResponse,
+  sendAuthCodeToEmail,
 } from "@services";
 import { storageService } from "../storageService";
 import { useModal } from "@/hooks/useModal";
@@ -28,6 +29,16 @@ export const useSignup = () => {
   });
 
   return { mutate, isLoading };
+};
+
+export const useSendAuthCodeToEmail = (email: string) => {
+  return useQuery(
+    ["send-auth-code-email"],
+    () => {
+      sendAuthCodeToEmail(email);
+    },
+    { enabled: emailRegex.test(email) },
+  );
 };
 
 const emailRegex = /.+@kumoh.ac.kr$/;
