@@ -33,7 +33,7 @@ export const KioskReservation = async (data: KioskReservationRequestDTO) => {
 export const cancelReservation = async (reservationId: number) => {
   return _axios<void>({
     url: `/${versionURL}/${reservationURL}/${reservationId}`,
-    method: HTTP_METHOD.PATCH,
+    method: HTTP_METHOD.DELETE,
     headers: getJWTHeader(),
   });
 };

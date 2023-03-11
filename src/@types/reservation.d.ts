@@ -11,9 +11,9 @@ declare module "@types" {
   interface Reservation {
     tableName: string;
     projectTableId: number;
-    startDateTime: DateValue;
-    endDateTime: DateValue;
-    returnedDateTime: DateValue | null;
+    startAt: DateValue;
+    endAt: DateValue;
+    returnedAt: DateValue | null;
   }
 
   interface ReservationRequestDTO {

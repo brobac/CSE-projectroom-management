@@ -131,9 +131,7 @@ const isFullReservedTime = (
 ) => {
   return (
     reservationList.filter(
-      (v) =>
-        isSameOrBefore(v.startDateTime, time) &&
-        isSameOrAfter(v.endDateTime, time),
+      (v) => isSameOrBefore(v.startAt, time) && isSameOrAfter(v.endAt, time),
     ).length >= projectRoom.projectTableList.length
   );
 };
@@ -193,8 +191,7 @@ const generateEndTimeList = (
       result.push({ date: time, disabled: true });
     } else if (
       reservationList.filter(
-        (v) =>
-          isBefore(v.startDateTime, time) && isSameOrAfter(v.endDateTime, time),
+        (v) => isBefore(v.startAt, time) && isSameOrAfter(v.endAt, time),
       ).length === projectRoom.projectTableList.length
     ) {
       blocked = true;

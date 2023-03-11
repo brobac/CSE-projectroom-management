@@ -53,11 +53,8 @@ export const TableSelectSection = () => {
       const isReserved = (time: Date) => {
         return tableReservationList.some(
           (v) =>
-            isSameOrBefore(v.startDateTime, time) &&
-            isSameOrAfter(
-              v.endDateTime,
-              dayjs(time).add(30, "minute").toDate(),
-            ),
+            isSameOrBefore(v.startAt, time) &&
+            isSameOrAfter(v.endAt, dayjs(time).add(30, "minute").toDate()),
         );
       };
 
@@ -112,11 +109,11 @@ export const TableSelectSection = () => {
           <div className=" badge  border-none bg-base-200 text-base-content">
             예약 가능
           </div>
-          <div className=" badge badge-secondary">예약 불가</div>
+          <div className=" badge-secondary badge">예약 불가</div>
         </div>
         <div className="flex items-center gap-4">
-          <div className=" badge badge-primary">선택 시간</div>
-          <div className=" badge badge-warning">겹치는 시간</div>
+          <div className=" badge-primary badge">선택 시간</div>
+          <div className=" badge-warning badge">겹치는 시간</div>
         </div>
       </div>
       <div className="flex  w-full max-w-7xl flex-col">
