@@ -9,4 +9,5 @@ export const MODAL_TYPE = {
   RESERVATION_CONFIRM_RESULT: "modal-reservation-confirm-result",
   KIOSK_RESERVATION_RESULT: "modal-kiosk-reservation-result",
   ADMIN_RESERVATION: "modal-admin-reservation",
+  SEATING_PLAN: "modal-seating-plan",
 } as const;

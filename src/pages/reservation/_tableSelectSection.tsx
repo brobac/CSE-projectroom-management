@@ -18,6 +18,8 @@ import {
 } from "@utils";
 
 import { ProjectTable } from "@types";
+import { BsQuestionCircle } from "react-icons/bs";
+import { useModal } from "@/hooks/useModal";
 
 export const TableSelectSection = () => {
   const [reservationTableId, setReservationTableId] = useRecoilState(
@@ -35,6 +37,8 @@ export const TableSelectSection = () => {
 
   const { reservationList, isLoading: isReservationListLoading } =
     useReservationListState();
+
+  const { openModal } = useModal("modal-seating-plan");
 
   const onClickTable = (tableId: number) => {
     setReservationTableId(tableId);
@@ -103,7 +107,16 @@ export const TableSelectSection = () => {
 
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
-      <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
+      <div className="relative flex items-center gap-1 text-gray-600">
+        <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
+        <button
+          onClick={openModal}
+          className=" absolute right-[-24px] text-gray-400 hover:text-primary"
+        >
+          <span className="invisible absolute">배치도</span>
+          <BsQuestionCircle />
+        </button>
+      </div>
       <div className="flex flex-wrap justify-center gap-4 whitespace-nowrap p-4 ">
         <div className="flex items-center gap-4">
           <div className=" badge  border-none bg-base-200 text-base-content">
