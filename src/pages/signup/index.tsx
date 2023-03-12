@@ -87,7 +87,7 @@ export const SignupPage = () => {
 
   return (
     <div className="flex h-screen flex-col items-center justify-end  sm:justify-center">
-      <div className="card w-full border border-base-200 bg-base-100 shadow-xl sm:max-w-lg">
+      <div className="card w-full overflow-y-auto border border-base-200 bg-base-100 shadow-xl sm:max-w-lg">
         <div className="card-body">
           <h2 className=" card-title mb-8 self-center text-3xl">회원가입</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
