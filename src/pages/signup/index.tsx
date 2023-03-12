@@ -213,10 +213,10 @@ export const SignupPage = () => {
                 </span>
               </label>
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">비밀번호</span>
-                  <span className="text-sm text-info">
-                    {/* 8~16자리, 1개 이상의 특수문자 포함, 1개 이상의 영문자 포함 */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">비밀번호</span>
+                  <span className="whitespace-nowrap text-sm text-info">
+                    8~6자리, 특수문자,영문자,숫자 각 1개 이상 포함, 공백 불가
                   </span>
                 </div>
                 <input
@@ -228,8 +228,8 @@ export const SignupPage = () => {
                   ])}
                   {...register("password", {
                     required: true,
-                    // pattern:
-                    //   /^(?=.*[0-9])(?=.*[a-z])(?=.*[@#!~$%^&-+=()])(?=\\S+$).{8,16}$/,
+                    pattern:
+                      /^(?=.*[a-zA-Z])(?=.*[\W_])(?=.*\d)(?!.*\s).{8,16}$/,
                   })}
                 />
               </label>
