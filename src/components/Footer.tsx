@@ -1,15 +1,18 @@
+import { useLogout } from "@services";
+import { useUserState } from "@stores";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
+  const { mutate: logout } = useLogout();
+  const { hasAuth } = useUserState();
   return (
     <footer className="footer mt-auto bg-base-200 py-8 px-4">
       <div className="flex gap-6">
-        <Link to="/" className="link-hover link">
-          사용 규칙 • 이용 약관
-        </Link>
-        <Link to="/" className="link-hover link">
-          민원신고
-        </Link>
+        {hasAuth && (
+          <button onClick={() => logout()} className="link-hover link">
+            로그아웃
+          </button>
+        )}
       </div>
     </footer>
   );
