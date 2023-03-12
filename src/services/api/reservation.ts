@@ -43,7 +43,7 @@ export const reservationConfirmWithQR = async (
 ) => {
   return _axios<void>({
     url: `/${versionURL}/${reservationURL}/auth`,
-    method: HTTP_METHOD.PATCH,
+    method: HTTP_METHOD.POST,
     data,
   });
 };
