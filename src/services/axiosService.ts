@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { storageService } from "./storageService";
-
+import { useTokenReissue } from "./react-query/members";
+import { tokenReissue, userReissue } from "./api";
 export function getJWTHeader(): Record<string, string> {
   const tokens = storageService.getStoredToken();
   return { Authorization: tokens?.accessToken ?? "" };
@@ -35,7 +36,20 @@ instance.interceptors.response.use(
 
     return res;
   },
-  (error) => {
+  async (error) => {
+    console.log("에러");
+    console.error(error);
+
+    if (error.response.status === 401) {
+      const { result } = await tokenReissue(
+        storageService.getStoredToken()?.refreshToken!,
+      );
+      storageService.setStoredToken(result);
+      console.log(result);
+      error.config.headers = { ...error.config.headers, ...getJWTHeader() };
+      return instance(error.config);
+    }
+
     console.log(`[ Error ] ${error.message}`, error.config);
     return Promise.reject(error.response.data);
   },

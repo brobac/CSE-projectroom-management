@@ -85,7 +85,7 @@ export const tokenReissue = async (refreshToken: string) => {
   return _axios<Tokens>({
     url: `/${versionURL}/${membersURL}/token/reissue`,
     method: HTTP_METHOD.POST,
-    params: refreshToken,
+    params: { refreshToken },
   });
 };
 
