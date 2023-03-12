@@ -115,7 +115,11 @@ export const useLogout = () => {
 export const useTokenReissue = () => {
   const token = storageService.getStoredToken();
 
-  const { mutate } = useMutation(() => tokenReissue(token?.refreshToken!));
+  const { mutate } = useMutation(() => tokenReissue(token?.refreshToken!), {
+    onSuccess: (res) => {
+      storageService.setStoredToken(res.result);
+    },
+  });
 
   return { mutate };
 };
