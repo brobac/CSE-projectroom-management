@@ -116,9 +116,9 @@ export const SignupPage = () => {
                 </span>
               </label>
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">이메일</span>
-                  <span className="text-sm text-info">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">이메일</span>
+                  <span className="whitespace-nowrap text-sm text-info">
                     금오공과대학교 이메일만 사용할 수 있습니다
                   </span>
                 </div>
@@ -189,9 +189,9 @@ export const SignupPage = () => {
               </label>
 
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">아이디</span>
-                  <span className="text-sm text-info">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">아이디</span>
+                  <span className="whitespace-nowrap text-sm text-info">
                     아이디로는 학번이 사용됩니다
                   </span>
                 </div>
