@@ -4,4 +4,5 @@ export const queryKeys = {
   admin: "admin",
   projectRoom: "projectRoom",
   currentReservation: "currentReservation",
+  penalty: "penalty",
 };

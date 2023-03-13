@@ -3,6 +3,7 @@ import {
   FetchReservationPeriod,
   KioskReservationRequestDTO,
   PastResetvation,
+  PenaltyDTO,
   Reservation,
   ReservationConfirmWithQRRequestDTO,
   ReservationRequestDTO,
@@ -56,6 +57,7 @@ export const reservationReturn = async (
     method: HTTP_METHOD.POST,
     headers: {
       "Content-Type": "multipart/form-data",
+      ...getJWTHeader(),
     },
     params: {
       reservationId,
@@ -88,6 +90,14 @@ export const fetchCurrentReservationList = async () => {
 export const fetchPastResetvationList = async () => {
   return _axios<PastResetvation[]>({
     url: `/${API_VERSION.v2}/${reservationURL}/past`,
+    method: HTTP_METHOD.GET,
+    headers: getJWTHeader(),
+  });
+};
+
+export const fetchPenaltyList = async () => {
+  return _axios<PenaltyDTO[]>({
+    url: `/${API_VERSION.v2}/penalties`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
   });

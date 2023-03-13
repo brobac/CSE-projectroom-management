@@ -1,9 +1,8 @@
 declare module "@types" {
-  type PenaltyDTO = {
-    id: number;
-    userId: number;
-    startDate: DateValue;
-    endDate: DateValue;
+  interface PenaltyDTO {
     description: string;
-  };
+    startDt: string;
+    endDt: DateValue;
+    penaltyId: number;
+  }
 }
