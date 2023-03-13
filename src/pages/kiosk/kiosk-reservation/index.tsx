@@ -1,6 +1,5 @@
 import { RoomTable, RoomTableProps } from "./_roomTable";
 import {
-  chunkArray,
   isAfter,
   isBefore,
   isSameOrBefore,
@@ -15,6 +14,7 @@ import {
 import dayjs from "dayjs";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const KioskReservationPage = () => {
   const navigate = useNavigate();
@@ -111,20 +111,21 @@ export const KioskReservationPage = () => {
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
-      {/* tailwind grid-rows-2 가 적용안되서 2줄로 분리 */}
-      {chunkArray(tableProps, Math.ceil(tableProps.length / 2)).map(
-        (tables, i) => (
-          <div key={i} className="flex h-full w-full gap-4">
-            {tables.map((table) => (
-              <RoomTable
-                key={table.projectTableId}
-                {...table}
-                onClick={() => onClickTable(table)}
-              />
-            ))}
-          </div>
-        ),
-      )}
+      <div
+        className={twMerge([
+          "grid h-full w-full gap-4",
+          `grid-cols-3`,
+          tableProps.length > 6 && "grid grid-cols-4",
+        ])}
+      >
+        {tableProps.map((table) => (
+          <RoomTable
+            key={table.projectTableId}
+            {...table}
+            onClick={() => onClickTable(table)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
