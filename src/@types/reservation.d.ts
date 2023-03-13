@@ -20,7 +20,6 @@ declare module "@types" {
     endAt: DateValue;
     startAt: DateValue;
     projectTableId: number;
-    memberId: number;
   }
 
   interface KioskReservationRequestDTO {

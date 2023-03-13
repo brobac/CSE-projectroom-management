@@ -19,7 +19,6 @@ const getTitles = (path: string) => {
 export const MyPageHeader = () => {
   const location = useLocation();
 
-  useEffect(() => console.log(location), [location]);
   return (
     <Header
       title={getTitles(location.pathname) ?? ""}

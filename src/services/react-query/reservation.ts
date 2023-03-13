@@ -15,6 +15,7 @@ import {
   cancelReservation,
   fetchCurrentReservationList,
   fetchPastResetvationList,
+  fetchPenaltyList,
   KioskReservation,
   reservationConfirmWithQR,
   reservationReturn,
@@ -96,11 +97,11 @@ export const useReservationConfirmWithQR = () => {
 };
 
 export const useFetchCurrentReservationList = () => {
-  const { user, hasAuth } = useUserState();
+  const { hasAuth } = useUserState();
 
   const { data, isLoading } = useQuery(
     [queryKeys.reservation, queryKeys.currentReservation],
-    () => fetchCurrentReservationList(user?.memberId!),
+    () => fetchCurrentReservationList(),
     { enabled: hasAuth, select: (data) => data.result },
   );
 
@@ -108,11 +109,23 @@ export const useFetchCurrentReservationList = () => {
 };
 
 export const useFetchPastReservationList = () => {
-  const { user, hasAuth } = useUserState();
+  const { hasAuth } = useUserState();
 
   const { data, isLoading } = useQuery(
-    [queryKeys.user, user?.memberId],
-    () => fetchPastResetvationList(user?.memberId!),
+    [queryKeys.user],
+    () => fetchPastResetvationList(),
+    { enabled: hasAuth, select: (data) => data.result },
+  );
+
+  return { data, isLoading };
+};
+
+export const useFetchPenaltyList = () => {
+  const { hasAuth } = useUserState();
+
+  const { data, isLoading } = useQuery(
+    [queryKeys.user, queryKeys.penalty],
+    () => fetchPenaltyList(),
     { enabled: hasAuth, select: (data) => data.result },
   );
 

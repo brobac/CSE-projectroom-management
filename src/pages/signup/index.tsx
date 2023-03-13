@@ -87,7 +87,7 @@ export const SignupPage = () => {
 
   return (
     <div className="flex h-screen flex-col items-center justify-end  sm:justify-center">
-      <div className="card w-full border border-base-200 bg-base-100 shadow-xl sm:max-w-lg">
+      <div className="card w-full overflow-y-auto border border-base-200 bg-base-100 shadow-xl sm:max-w-lg">
         <div className="card-body">
           <h2 className=" card-title mb-8 self-center text-3xl">회원가입</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,9 +116,9 @@ export const SignupPage = () => {
                 </span>
               </label>
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">이메일</span>
-                  <span className="text-sm text-info">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">이메일</span>
+                  <span className="whitespace-nowrap text-sm text-info">
                     금오공과대학교 이메일만 사용할 수 있습니다
                   </span>
                 </div>
@@ -189,9 +189,9 @@ export const SignupPage = () => {
               </label>
 
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">아이디</span>
-                  <span className="text-sm text-info">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">아이디</span>
+                  <span className="whitespace-nowrap text-sm text-info">
                     아이디로는 학번이 사용됩니다
                   </span>
                 </div>
@@ -213,10 +213,10 @@ export const SignupPage = () => {
                 </span>
               </label>
               <label className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">비밀번호</span>
-                  <span className="text-sm text-info">
-                    {/* 8~16자리, 1개 이상의 특수문자 포함, 1개 이상의 영문자 포함 */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="whitespace-nowrap font-bold">비밀번호</span>
+                  <span className="whitespace-nowrap text-sm text-info">
+                    8~16자리, 특수문자,영문자,숫자 각 1개 이상 포함, 공백 불가
                   </span>
                 </div>
                 <input
@@ -228,8 +228,8 @@ export const SignupPage = () => {
                   ])}
                   {...register("password", {
                     required: true,
-                    // pattern:
-                    //   /^(?=.*[0-9])(?=.*[a-z])(?=.*[@#!~$%^&-+=()])(?=\\S+$).{8,16}$/,
+                    pattern:
+                      /^(?=.*[a-zA-Z])(?=.*[\W_])(?=.*\d)(?!.*\s).{8,16}$/,
                   })}
                 />
               </label>
