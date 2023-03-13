@@ -19,7 +19,10 @@ export const useUserState = () => {
         storageService.setStoredUser(res.result);
         setUser(res.result);
       })
-      .catch((err) => storageService.clearStoredToken());
+      .catch((err) => {
+        storageService.clearStoredUser();
+        storageService.clearStoredToken();
+      });
   };
 
   return { user, hasAuth: !!user, refreshUser };

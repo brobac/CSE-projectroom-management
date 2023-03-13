@@ -41,7 +41,7 @@ instance.interceptors.response.use(
       storageService.clearStoredToken();
       storageService.clearStoredUser();
       window.location.reload();
-    } else if (error.response.status === 401) {
+    } else if (error.response.data.code === "0210") {
       const { result } = await tokenReissue(
         storageService.getStoredToken()?.refreshToken!,
       );
