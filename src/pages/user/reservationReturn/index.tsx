@@ -2,18 +2,20 @@ import { useReservationReturn } from "@services";
 import { useState } from "react";
 import { BsPlusCircle } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-
+import imageCompression from "browser-image-compression";
 export const ReservationReturnPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string>();
   const { reservationId } = useParams();
 
-  const onChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
     if (!image) return;
 
-    encodeFileToBase64(image);
-    setImageFile(image);
+    compressImage(image).then((res) => {
+      encodeFileToBase64(res);
+      setImageFile(res);
+    });
   };
 
   const encodeFileToBase64 = (file: File) => {
@@ -24,6 +26,16 @@ export const ReservationReturnPage = () => {
         setImageSrc(reader.result as string);
       };
     });
+  };
+
+  const compressImage = async (image: File) => {
+    const options = {
+      maxSizeMB: 1, // 허용하는 최대 사이즈 지정
+      maxWidthOrHeight: 1920, // 허용하는 최대 width, height 값 지정
+      useWebWorker: true, // webworker 사용 여부
+    };
+    const compressedFile = await imageCompression(image!, options);
+    return compressedFile;
   };
 
   const { mutate: reservationReturn, isLoading } = useReservationReturn();
