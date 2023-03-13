@@ -107,7 +107,6 @@ export const KioskReservationPage = () => {
   useEffect(() => {
     const props = reservationListTransformToKioskTableProps();
     setTableProps(props);
-    console.log(props);
   }, [reservationProjectroom, reservationList]);
 
   return (

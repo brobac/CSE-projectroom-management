@@ -6,8 +6,6 @@ export const AdminLayout = () => {
   const { user } = useUserState();
 
   const isAdmin = user?.roleType === "ROLE_ADMIN";
-  console.log(isAdmin);
-  console.log(user?.roleType);
   return isAdmin ? (
     <div className="relative flex h-screen w-full bg-white">
       <SideBar />
