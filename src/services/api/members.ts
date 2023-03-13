@@ -82,9 +82,9 @@ export const logout = async (data: Tokens) => {
 
 export const tokenReissue = async (refreshToken: string) => {
   return _axios<Tokens>({
-    url: `/${API_VERSION.v1}/${membersURL}/token/reissue`,
+    url: `/${API_VERSION.v2}/${membersURL}/token/reissue`,
     method: HTTP_METHOD.POST,
-    params: { refreshToken },
+    headers: { Authorization: refreshToken },
   });
 };
 
