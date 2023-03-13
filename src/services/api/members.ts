@@ -7,11 +7,10 @@ import {
   VerifyEmailAuthCodeDTO,
 } from "@types";
 
-import { HTTP_METHOD } from ".";
+import { API_VERSION, HTTP_METHOD } from ".";
 import { getJWTHeader, _axios } from "../axiosService";
 
 const membersURL = "members";
-const versionURL = "v1";
 const signupURL = "signup";
 
 // <----- 회원가입 관련 API -----
@@ -19,7 +18,7 @@ const signupURL = "signup";
 //회원가입
 export const signup = async (data: SignupDTO) => {
   return _axios<boolean>({
-    url: `/${versionURL}/${membersURL}/${signupURL}`,
+    url: `/${API_VERSION.v1}/${membersURL}/${signupURL}`,
     method: HTTP_METHOD.POST,
     data,
   });
@@ -28,7 +27,7 @@ export const signup = async (data: SignupDTO) => {
 //이메일 중복 체크
 export const checkDuplicatedEmail = async (email: string) => {
   return _axios<boolean>({
-    url: `/${versionURL}/${membersURL}/${signupURL}/check-email`,
+    url: `/${API_VERSION.v1}/${membersURL}/${signupURL}/check-email`,
     method: HTTP_METHOD.GET,
     params: { email },
   });
@@ -37,7 +36,7 @@ export const checkDuplicatedEmail = async (email: string) => {
 //아이디 중복체크
 export const checkDuplicatedLoginId = async (loginId: string) => {
   return _axios<boolean>({
-    url: `/${versionURL}/${membersURL}/${signupURL}/check-id`,
+    url: `/${API_VERSION.v1}/${membersURL}/${signupURL}/check-id`,
     method: HTTP_METHOD.GET,
     params: { loginId },
   });
@@ -46,7 +45,7 @@ export const checkDuplicatedLoginId = async (loginId: string) => {
 //이메일로 인증코드 보내기
 export const sendAuthCodeToEmail = async (email: string) => {
   return _axios<boolean>({
-    url: `/${versionURL}/${membersURL}/${signupURL}/authcode`,
+    url: `/${API_VERSION.v1}/${membersURL}/${signupURL}/authcode`,
     method: HTTP_METHOD.GET,
     params: { email },
   });
@@ -55,7 +54,7 @@ export const sendAuthCodeToEmail = async (email: string) => {
 //이메일 인증코드 확인
 export const verifyEmailAuthCode = async (data: VerifyEmailAuthCodeDTO) => {
   return _axios<boolean>({
-    url: `/${versionURL}/${membersURL}/${signupURL}/authcode`,
+    url: `/${API_VERSION.v1}/${membersURL}/${signupURL}/authcode`,
     method: HTTP_METHOD.POST,
     data,
   });
@@ -67,7 +66,7 @@ export const verifyEmailAuthCode = async (data: VerifyEmailAuthCodeDTO) => {
 
 export const login = async (data: LoginDTO) => {
   return _axios<{ memberInfo: User; tokenInfo: Tokens }>({
-    url: `/${versionURL}/${membersURL}/login`,
+    url: `/${API_VERSION.v1}/${membersURL}/login`,
     method: HTTP_METHOD.POST,
     data,
   });
@@ -75,7 +74,7 @@ export const login = async (data: LoginDTO) => {
 
 export const logout = async (data: Tokens) => {
   return _axios<void>({
-    url: `/${versionURL}/${membersURL}/logout`,
+    url: `/${API_VERSION.v1}/${membersURL}/logout`,
     method: HTTP_METHOD.DELETE,
     data,
   });
@@ -83,7 +82,7 @@ export const logout = async (data: Tokens) => {
 
 export const tokenReissue = async (refreshToken: string) => {
   return _axios<Tokens>({
-    url: `/${versionURL}/${membersURL}/token/reissue`,
+    url: `/${API_VERSION.v1}/${membersURL}/token/reissue`,
     method: HTTP_METHOD.POST,
     params: { refreshToken },
   });
@@ -91,7 +90,7 @@ export const tokenReissue = async (refreshToken: string) => {
 
 export const userReissue = async () => {
   return _axios<User>({
-    url: `/${versionURL}/${membersURL}/reissue`,
+    url: `/${API_VERSION.v1}/${membersURL}/reissue`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
   });
@@ -101,7 +100,7 @@ export const userReissue = async () => {
 
 export const fetchMemberComplexInfo = async (userId: number) => {
   return _axios<MemberComplexInfo>({
-    url: `/${versionURL}/${membersURL}/${userId}`,
+    url: `/${API_VERSION.v1}/${membersURL}/${userId}`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
   });
