@@ -216,7 +216,7 @@ export const SignupPage = () => {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="whitespace-nowrap font-bold">비밀번호</span>
                   <span className="whitespace-nowrap text-sm text-info">
-                    8~6자리, 특수문자,영문자,숫자 각 1개 이상 포함, 공백 불가
+                    8~16자리, 특수문자,영문자,숫자 각 1개 이상 포함, 공백 불가
                   </span>
                 </div>
                 <input
