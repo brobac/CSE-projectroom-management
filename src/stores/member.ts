@@ -19,11 +19,11 @@ export const useMemberComplexInfoState = () => {
   const [memberComplexInfo, setMemberComplexInfo] = useRecoilState(
     memberComplexInfoState,
   );
-  const { user, hasAuth } = useUserState();
+  const { hasAuth } = useUserState();
 
   const { isLoading } = useQuery(
     [queryKeys.reservation, queryKeys.user],
-    () => fetchMemberComplexInfo(user?.memberId!),
+    () => fetchMemberComplexInfo(),
     {
       enabled: hasAuth,
       onSuccess: (res) => {

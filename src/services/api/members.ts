@@ -98,9 +98,9 @@ export const userReissue = async () => {
 
 // ----- 로그인 관련 API ----->
 
-export const fetchMemberComplexInfo = async (userId: number) => {
+export const fetchMemberComplexInfo = async () => {
   return _axios<MemberComplexInfo>({
-    url: `/${API_VERSION.v1}/${membersURL}/${userId}`,
+    url: `/${API_VERSION.v2}/${membersURL}`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
   });
