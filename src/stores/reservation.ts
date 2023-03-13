@@ -153,7 +153,6 @@ export const reservationTableState = atom<number>({
 export const useReservation = () => {
   const queryClient = useQueryClient();
 
-  const { user, hasAuth } = useUserState();
   const reservationTableId = useRecoilValue(reservationTableState);
   const { startTime, endTime } = useReservationTimeState();
 
@@ -163,7 +162,6 @@ export const useReservation = () => {
     endAt: toFullDateTime_SLASH(endTime!),
     startAt: toFullDateTime_SLASH(startTime!),
     projectTableId: reservationTableId,
-    memberId: user?.memberId!,
   };
 
   const { mutate, isLoading, isError } = useMutation<

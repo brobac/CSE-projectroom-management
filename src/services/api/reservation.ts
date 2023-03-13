@@ -14,7 +14,7 @@ const reservationURL = "reservations";
 
 export const reservation = async (data: ReservationRequestDTO) => {
   return _axios<void>({
-    url: `/${API_VERSION.v1}/${reservationURL}`,
+    url: `/${API_VERSION.v2}/${reservationURL}`,
     method: HTTP_METHOD.POST,
     headers: getJWTHeader(),
     data,
