@@ -77,21 +77,19 @@ export const fetchReservationListByProjectroomId = async (
 };
 
 //<----- 유저 예약 내역 조회 -----
-export const fetchCurrentReservationList = async (memberId: number) => {
+export const fetchCurrentReservationList = async () => {
   return _axios<CurrentResetvation[]>({
-    url: `/${API_VERSION.v1}/${reservationURL}/current`,
+    url: `/${API_VERSION.v2}/${reservationURL}/current`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
-    params: { memberId },
   });
 };
 
-export const fetchPastResetvationList = async (memberId: number) => {
+export const fetchPastResetvationList = async () => {
   return _axios<PastResetvation[]>({
-    url: `/${API_VERSION.v1}/${reservationURL}/past`,
+    url: `/${API_VERSION.v2}/${reservationURL}/past`,
     method: HTTP_METHOD.GET,
     headers: getJWTHeader(),
-    params: { memberId },
   });
 };
 
