@@ -91,10 +91,9 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const setUser = useSetRecoilState(userState);
-  const token = storageService.getStoredToken();
 
   const navigate = useNavigate();
-  const { mutate } = useMutation(() => logout(token!), {
+  const { mutate } = useMutation(() => logout(), {
     onSuccess: () => {
       storageService.clearStoredToken();
       storageService.clearStoredUser();

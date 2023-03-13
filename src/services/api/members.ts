@@ -72,11 +72,11 @@ export const login = async (data: LoginDTO) => {
   });
 };
 
-export const logout = async (data: Tokens) => {
+export const logout = async () => {
   return _axios<void>({
-    url: `/${API_VERSION.v1}/${membersURL}/logout`,
+    url: `/${API_VERSION.v2}/${membersURL}/logout`,
     method: HTTP_METHOD.DELETE,
-    data,
+    headers: getJWTHeader(),
   });
 };
 
