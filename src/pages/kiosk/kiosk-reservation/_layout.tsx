@@ -23,7 +23,6 @@ export const KioskReservationLayout = () => {
       (projectroom) =>
         projectroom.projectRoomId !== reservationProjectRoom?.projectRoomId,
     );
-    console.log(room);
     setUnSelectedProjectRoom(room);
   }, [projectRoomList, reservationProjectRoom]);
 

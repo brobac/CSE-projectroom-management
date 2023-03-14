@@ -77,7 +77,6 @@ export const SignupPage = () => {
     }
     checkDuplicatedLoginId(loginId)
       .then(() => {
-        console.log("사용가능한 아이디");
         clearErrors("loginId");
       })
       .catch((err) => {
