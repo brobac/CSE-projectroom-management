@@ -99,7 +99,7 @@ export const SignupPage = () => {
                 </div>
                 <input
                   type="text"
-                  placeholder="박형준"
+                  placeholder="이름"
                   className={twMerge([
                     "input w-full border border-base-300",
                     errors.name && "input-error bg-error-content",
