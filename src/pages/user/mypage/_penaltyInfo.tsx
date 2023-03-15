@@ -32,11 +32,11 @@ export const PenaltyInfo = () => {
             ) : (
               <p className="flex flex-col items-center">
                 <span>
-                  {toYYYYMD_KO_DAY_DOT(memberComplexInfo.penaltyInfo.startAt)}
+                  {toYYYYMD_KO_DAY_DOT(memberComplexInfo.penaltyInfo.startDt)}
                 </span>
                 <span>~</span>
                 <span>
-                  {toYYYYMD_KO_DAY_DOT(memberComplexInfo.penaltyInfo.endAt)}
+                  {toYYYYMD_KO_DAY_DOT(memberComplexInfo.penaltyInfo.endDt)}
                 </span>
               </p>
             )}

@@ -36,8 +36,8 @@ declare module "@types" {
   }
 
   interface PenaltyInfo {
-    endAt: string;
-    startAt: string;
+    endDt: string;
+    startDt: string;
   }
 
   interface QRImageInfo {
