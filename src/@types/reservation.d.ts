@@ -53,8 +53,8 @@ declare module "@types" {
     tableName;
   }
   interface PastResetvation {
-    startDateTime: DateValue;
-    endDateTime: DateValue;
+    startAt: DateValue;
+    endAt: DateValue;
     reservationId: number;
     reservationStatus: ReservationStatus;
     roomName: string;

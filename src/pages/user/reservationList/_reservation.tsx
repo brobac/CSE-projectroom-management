@@ -24,19 +24,19 @@ const getStatusColor = (status: string) => {
 };
 
 export const Reservation = ({
-  startDateTime,
-  endDateTime,
+  startAt,
+  endAt,
   roomName,
   tableName,
   reservationStatus,
 }: PastResetvation) => {
   return (
-    <div className="rounded-box w-full border border-base-300 bg-base-100 text-sm sm:text-base">
+    <div className="rounded-box w-full border border-base-300 bg-base-100 text-sm">
       <div className="divide-x-1 flex w-full divide-x-[1px] divide-base-300">
-        <div className="flex flex-col items-center p-4">
-          <span>{toYYYYMD_KO_DAY_DOT(startDateTime)}</span>
+        <div className="flex w-36 flex-col items-center p-4">
+          <span>{toYYYYMD_KO_DAY_DOT(startAt)}</span>
           <span className="font-bold">
-            {`${toHHMM(startDateTime)} ~ ${toHHMM(endDateTime)}`}
+            {`${toHHMM(startAt)} ~ ${toHHMM(endAt)}`}
           </span>
         </div>
         <div className="flex grow items-center justify-between gap-4">
