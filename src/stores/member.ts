@@ -9,6 +9,7 @@ export const memberComplexInfoState = atom<MemberComplexInfo>({
   key: "memberComplexInfoState",
   default: {
     pastReservationCount: 0,
+    penaltyCount: 0,
     penaltyInfo: null,
     qrImage: null,
     violationCount: 0,

@@ -29,6 +29,7 @@ declare module "@types" {
 
   interface MemberComplexInfo {
     pastReservationCount: number;
+    penaltyCount: number;
     penaltyInfo: PenaltyInfo | null;
     qrImage: QRImageInfo | null;
     violationCount: number;

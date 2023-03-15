@@ -19,7 +19,9 @@ export const History = () => {
         <div className=" group w-1/2 p-4 shadow">
           <Link to="penalty-list" className="flex flex-col items-center">
             <span className=" text-lg">예약 제한</span>
-            <span className="text-3xl font-bold group-hover:underline">0</span>
+            <span className="text-3xl font-bold group-hover:underline">
+              {memberComplexInfo.penaltyCount}
+            </span>
           </Link>
         </div>
       </div>
