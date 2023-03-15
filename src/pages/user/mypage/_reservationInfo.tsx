@@ -23,8 +23,8 @@ export type UnfinishedReservationProps = {
 };
 
 export const CurrentReservation = ({
-  startDateTime,
-  endDateTime,
+  startAt,
+  endAt,
   imageName,
   imageURL,
   reservationId,
@@ -57,9 +57,9 @@ export const CurrentReservation = ({
       <input type="checkbox" className="peer" />
       <div className="divide-x-21 collapse-title flex w-full divide-x-2 divide-base-300">
         <div className="flex flex-col items-center pr-4">
-          <span>{toYYYYMD_KO_DAY_DOT(startDateTime)}</span>
+          <span>{toYYYYMD_KO_DAY_DOT(startAt)}</span>
           <span className="font-bold">
-            {`${toHHMM(startDateTime)} ~ ${toHHMM(endDateTime)}`}
+            {`${toHHMM(startAt)} ~ ${toHHMM(endAt)}`}
           </span>
         </div>
         <div>

@@ -43,8 +43,8 @@ declare module "@types" {
     statusCode: string;
   }
   interface CurrentResetvation {
-    startDateTime: DateValue;
-    endDateTime: DateValue;
+    startAt: DateValue;
+    endAt: DateValue;
     imageName: string;
     imageURL: string;
     reservationId: number;
