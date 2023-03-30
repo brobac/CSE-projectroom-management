@@ -100,8 +100,8 @@ declare module "@types" {
   }
 
   interface ReservationReturnSimpleInfo {
-    cleanupPhoto: Image;
-    returnAt: string;
+    cleanUpPhoto: Image;
+    returnedAt: string;
     tableReturnId: number;
   }
 }

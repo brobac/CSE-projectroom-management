@@ -24,7 +24,7 @@ const columns = [
     header: "종료시간",
     cell: (v) => toYYMMDD_KO_DAY_DOT_hhmm(v.getValue()),
   }),
-  columnHelper.accessor("tableReturn.returnAt", {
+  columnHelper.accessor("tableReturn.returnedAt", {
     header: "반납시간",
     cell: (v) =>
       v.getValue() ? toYYMMDD_KO_DAY_DOT_hhmm(v.getValue()) : "-- : --",
