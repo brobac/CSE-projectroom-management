@@ -83,7 +83,6 @@ export const useLogin = () => {
       setUser(user);
       closeModal();
     },
-    onError: (err) => toast.error(err.message),
   });
 
   return { mutate, isLoading, isError, error };
