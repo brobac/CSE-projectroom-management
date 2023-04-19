@@ -22,7 +22,6 @@ import {
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-import { useUserState } from "./user";
 
 export const reservationListState = atom<Reservation[]>({
   key: "reservationListState",
@@ -52,6 +51,7 @@ export const useReservationListState = () => {
       ),
     {
       enabled: reservationProjectRoom !== undefined,
+      keepPreviousData: true,
       onSuccess: (res) => {
         setReservationList(res.result);
       },
