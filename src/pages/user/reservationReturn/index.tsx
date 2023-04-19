@@ -43,6 +43,7 @@ export const ReservationReturnPage = () => {
   const onSubmitReturn = (e: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData();
     formData.append("cleanupPhoto", imageFile!);
+
     e.preventDefault();
     reservationReturn({ reservationId: +reservationId!, data: formData });
   };

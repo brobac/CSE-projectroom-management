@@ -73,7 +73,7 @@ declare module "@types" {
   }
 
   interface FetchAdminReservationListOptions {
-    pageNumber?: number;
+    page?: number;
     size?: number;
     offset?: number;
     stardDt?: DateValue;
