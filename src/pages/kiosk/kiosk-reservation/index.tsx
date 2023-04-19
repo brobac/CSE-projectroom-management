@@ -110,22 +110,45 @@ export const KioskReservationPage = () => {
   }, [reservationProjectroom, reservationList]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-4">
-      <div
-        className={twMerge([
-          "grid h-full w-full gap-4",
-          `grid-cols-3`,
-          tableProps.length > 6 && "grid grid-cols-4",
-        ])}
-      >
-        {tableProps.map((table) => (
-          <RoomTable
-            key={table.projectTableId}
-            {...table}
-            onClick={() => onClickTable(table)}
-          />
-        ))}
-      </div>
+    <div className="flex h-full w-full flex-col">
+      {reservationProjectroom?.roomName === "D330" ? (
+        <div className="flex h-full flex-col items-center gap-4">
+          <div className="flex h-full w-full gap-4">
+            {tableProps.slice(0, 4).map((table) => (
+              <RoomTable
+                key={table.projectTableId}
+                {...table}
+                onClick={() => onClickTable(table)}
+              />
+            ))}
+          </div>
+          <div className="flex h-full w-1/2 gap-4">
+            {tableProps.slice(4).map((table) => (
+              <RoomTable
+                key={table.projectTableId}
+                {...table}
+                onClick={() => onClickTable(table)}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div
+          className={twMerge([
+            "grid h-full w-full gap-4",
+            `grid-cols-3`,
+            tableProps.length > 6 && "grid grid-cols-4",
+          ])}
+        >
+          {tableProps.map((table) => (
+            <RoomTable
+              key={table.projectTableId}
+              {...table}
+              onClick={() => onClickTable(table)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
