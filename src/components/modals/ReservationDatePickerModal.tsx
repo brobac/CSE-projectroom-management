@@ -25,7 +25,7 @@ export const ReservationDatepickerModal = () => {
           selectedDate={reservationDate}
           onClickDate={onClickDate}
           enableStartDate={
-            isBeforeHour(new Date(), 8)
+            isBefore(new Date(), dayjs().hour(7).minute(30).toDate())
               ? dayjs(new Date()).subtract(1, "day").toDate()
               : new Date()
           }

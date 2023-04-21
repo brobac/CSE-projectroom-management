@@ -16,6 +16,7 @@ import {
 import {
   getMinusOneDay,
   getPlusOneDay,
+  isBefore,
   isBeforeHour,
   toFullDateTime_SLASH,
 } from "@utils";
@@ -69,7 +70,7 @@ export const reservationProjectRoomState = atom<ProjectRoom | undefined>({
 
 export const reservationDateState = atom({
   key: "reservationDateState",
-  default: isBeforeHour(new Date(), 8)
+  default: isBefore(new Date(), dayjs().hour(7).minute(30).toDate())
     ? dayjs(new Date())
         .hour(8)
         .minute(0)
