@@ -1,5 +1,5 @@
 import { adminSelectedReservationState } from "@/stores/admin/reservation";
-import { toYYMMDD_KO_DAY_DOT_hhmm } from "@utils";
+import { toYYMMDD_KO_DAY_DOT_HHmm } from "@utils";
 import { useRecoilValue } from "recoil";
 import { Modal } from "./Modal";
 
@@ -33,11 +33,11 @@ export const AdminReservationModal = () => {
           </p>
           <p className="flex items-center gap-1">
             <span className="w-20 text-right">시작 시간 :</span>
-            <span>{toYYMMDD_KO_DAY_DOT_hhmm(reservation.startAt)}</span>
+            <span>{toYYMMDD_KO_DAY_DOT_HHmm(reservation.startAt)}</span>
           </p>
           <p className="flex items-center gap-1">
             <span className="w-20 text-right">종료시간 :</span>
-            <span>{toYYMMDD_KO_DAY_DOT_hhmm(reservation.endAt)}</span>
+            <span>{toYYMMDD_KO_DAY_DOT_HHmm(reservation.endAt)}</span>
           </p>
         </div>
         <div>
@@ -46,7 +46,7 @@ export const AdminReservationModal = () => {
             <div>
               <p className="flex items-center gap-1">
                 <span className="w-20 text-right">반납시간 :</span>
-                <span>{toYYMMDD_KO_DAY_DOT_hhmm(tableReturn.returnedAt)}</span>
+                <span>{toYYMMDD_KO_DAY_DOT_HHmm(tableReturn.returnedAt)}</span>
               </p>
               <div className="h-96  overflow-auto">
                 <img

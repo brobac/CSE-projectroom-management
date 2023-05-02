@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { AdminReservationDTO } from "@types";
-import { toYYMMDD_KO_DAY_DOT_hhmm } from "@utils";
+import { toYYMMDD_KO_DAY_DOT_HHmm } from "@utils";
 import { useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -41,16 +41,16 @@ const columns = [
   columnHelper.accessor("reservation.tableName", { header: "테이블" }),
   columnHelper.accessor("reservation.startAt", {
     header: "시작시간",
-    cell: (v) => toYYMMDD_KO_DAY_DOT_hhmm(v.getValue()),
+    cell: (v) => toYYMMDD_KO_DAY_DOT_HHmm(v.getValue()),
   }),
   columnHelper.accessor("reservation.endAt", {
     header: "종료시간",
-    cell: (v) => toYYMMDD_KO_DAY_DOT_hhmm(v.getValue()),
+    cell: (v) => toYYMMDD_KO_DAY_DOT_HHmm(v.getValue()),
   }),
   columnHelper.accessor("tableReturn.returnedAt", {
     header: "반납시간",
     cell: (v) =>
-      v.getValue() ? toYYMMDD_KO_DAY_DOT_hhmm(v.getValue()) : "-- : --",
+      v.getValue() ? toYYMMDD_KO_DAY_DOT_HHmm(v.getValue()) : "-- : --",
   }),
   columnHelper.accessor("member.name", { header: "예약자" }),
   columnHelper.accessor("reservation.reservationStatus.status", {

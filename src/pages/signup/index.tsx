@@ -8,7 +8,7 @@ import {
   useSignup,
   verifyEmailAuthCode,
 } from "@services";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type SignupInputs = {
   name: string;
