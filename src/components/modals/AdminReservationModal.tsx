@@ -49,11 +49,13 @@ export const AdminReservationModal = () => {
                 <span>{toYYMMDD_KO_DAY_DOT_HHmm(tableReturn.returnedAt)}</span>
               </p>
               <div className="h-96  overflow-auto">
-                <img
-                  src={`${process.env.REACT_APP_IMAGE_ENDPOINT}${tableReturn.cleanUpPhoto.fileUrl}${tableReturn.cleanUpPhoto.fileLocalName}`}
-                  alt="반납사진"
-                  className=" w-full object-contain"
-                />
+                {tableReturn.cleanUpPhoto && (
+                  <img
+                    src={`${process.env.REACT_APP_IMAGE_ENDPOINT}${tableReturn.cleanUpPhoto.fileUrl}${tableReturn.cleanUpPhoto.fileLocalName}`}
+                    alt="반납사진"
+                    className=" w-full object-contain"
+                  />
+                )}
               </div>
             </div>
           ) : (
