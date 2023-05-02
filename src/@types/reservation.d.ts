@@ -14,6 +14,7 @@ declare module "@types" {
     startAt: DateValue;
     endAt: DateValue;
     returnedAt: DateValue | null;
+    reservationStatus: ReservationStatus;
   }
 
   interface ReservationRequestDTO {

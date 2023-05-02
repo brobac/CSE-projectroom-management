@@ -2,6 +2,7 @@ import { RoomTable, RoomTableProps } from "./_roomTable";
 import {
   isAfter,
   isBefore,
+  isSame,
   isSameOrBefore,
   roundUp30MinuteIncrements,
 } from "@utils";
@@ -31,12 +32,15 @@ export const KioskReservationPage = () => {
 
     const now = new Date();
     const firstEndTime = roundUp30MinuteIncrements(now);
+
+    //테이블 마다 반복
     reservationProjectroom?.projectTableList.forEach((table) => {
       const props: RoomTableProps = {
         projectTableId: table.tableId,
         tableName: table.tableName,
         availableTime: 0,
       };
+      // 해당테이블에 종료시간이 현재 이후인 예약들만 필터링
       const afterReservationList = reservationList
         .filter((reservation) => reservation.projectTableId === table.tableId)
         .filter((reservation) => {
@@ -51,18 +55,30 @@ export const KioskReservationPage = () => {
           }
         });
 
-      // 첫시간부터 막히면
+      // 예약시작시간이 현재랑같거나 이전인 예약, 또는 체크인한 예약이 있으면
       if (
-        afterReservationList.some((reservation) =>
-          isSameOrBefore(reservation.startAt, now),
+        afterReservationList.some(
+          (reservation) =>
+            isSameOrBefore(reservation.startAt, now) ||
+            reservation.reservationStatus?.status === "사용중",
         )
       ) {
         afterReservationList.sort(
           (a, b) =>
             new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
         );
+        let i = 0;
+        for (; i < afterReservationList.length - 1; i++) {
+          if (
+            !isSame(
+              afterReservationList[i].endAt,
+              afterReservationList[i + 1].startAt,
+            )
+          )
+            break;
+        }
         const remainingTime =
-          (new Date(afterReservationList[0].endAt).getTime() - now.getTime()) /
+          (new Date(afterReservationList[i].endAt).getTime() - now.getTime()) /
           (1000 * 60);
         props.remainingTime = Math.ceil(remainingTime);
         props.disabled = true;
