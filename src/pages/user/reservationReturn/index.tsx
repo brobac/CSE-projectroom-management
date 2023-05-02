@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BsPlusCircle } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import imageCompression from "browser-image-compression";
+import { twMerge } from "tailwind-merge";
 export const ReservationReturnPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string>();
@@ -76,8 +77,11 @@ export const ReservationReturnPage = () => {
           />
         </label>
         <button
-          disabled={reservationId === null || imageFile === null}
-          className="btn-primary btn w-full font-bold"
+          disabled={reservationId === null || imageFile === null || isLoading}
+          className={twMerge([
+            "btn-primary btn w-full font-bold",
+            isLoading && "loading",
+          ])}
         >
           반납하기
         </button>
