@@ -41,7 +41,7 @@ export const CurrentReservation = ({
   };
 
   const ableToReturn = () => {
-    return ["사용중", "반납 대기중"].includes(reservationStatus.status);
+    return ["사용중", "반납대기중"].includes(reservationStatus.status);
   };
 
   const onClickReturnButton = () => {
