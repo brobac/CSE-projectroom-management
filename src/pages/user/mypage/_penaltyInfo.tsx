@@ -16,7 +16,7 @@ export const PenaltyInfo = () => {
           <strong className="text-error"> 3회 </strong>
           마다
           <strong className="text-error"> 3일간 </strong>
-          에약이 제한됩니다.
+          예약이 제한됩니다.
         </p>
         <div className="rounded-box flex w-full max-w-xs divide-x divide-base-200 overflow-hidden border border-base-300 bg-base-100">
           <div className="flex flex-col items-center p-4">
