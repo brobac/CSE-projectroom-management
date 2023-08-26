@@ -34,7 +34,7 @@ export const CurrentReservation = ({
 }: CurrentResetvation) => {
   const navigate = useNavigate();
   const setReturnReservationId = useSetRecoilState(returnReservationIdState);
-  const { mutate: cancleReservation } = useCancelReservation();
+  const { mutate: cancleReservation, isLoading } = useCancelReservation();
 
   const ableToCancel = () => {
     return reservationStatus.status === "예약완료";
@@ -73,8 +73,11 @@ export const CurrentReservation = ({
         <div className="flex gap-4">
           <button
             onClick={() => cancleReservation(reservationId)}
-            disabled={!ableToCancel()}
-            className="btn-outline btn-error btn-sm btn px-8"
+            disabled={!ableToCancel() || isLoading}
+            className={twMerge([
+              "btn-outline btn-error btn-sm btn px-8",
+              isLoading && "loading",
+            ])}
           >
             예약취소
           </button>
