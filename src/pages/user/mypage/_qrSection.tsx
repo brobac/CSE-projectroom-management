@@ -10,7 +10,7 @@ export const QRSection = () => {
         onClick={openModal}
         className="btn-outline btn-primary btn w-full"
       >
-        QR코드 확인
+        현장예약 QR코드 확인
       </button>
       <MyQRCodeModal />
     </div>
