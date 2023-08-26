@@ -14,6 +14,16 @@ declare module "@types" {
     startAt: DateValue;
     endAt: DateValue;
     returnedAt: DateValue | null;
+    reservationStatus: ReservationStatus;
+  }
+
+  interface TableDeactivation {
+    projectTableId: number;
+    roomName: string;
+    tableName: string;
+    reason: string;
+    startAt: DateValue;
+    endAt: DateValue;
   }
 
   interface ReservationRequestDTO {
@@ -73,7 +83,7 @@ declare module "@types" {
   }
 
   interface FetchAdminReservationListOptions {
-    pageNumber?: number;
+    page?: number;
     size?: number;
     offset?: number;
     stardDt?: DateValue;
@@ -100,8 +110,8 @@ declare module "@types" {
   }
 
   interface ReservationReturnSimpleInfo {
-    cleanupPhoto: Image;
-    returnAt: string;
+    cleanUpPhoto: Image;
+    returnedAt: string;
     tableReturnId: number;
   }
 }

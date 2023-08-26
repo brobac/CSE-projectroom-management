@@ -107,13 +107,13 @@ export const TableSelectSection = () => {
 
   return (
     <section className="flex flex-col items-center gap-4 px-4 py-8">
-      <div className="relative flex items-center gap-1 text-gray-600">
+      <div className="relative flex flex-col items-center gap-1 text-gray-600">
         <h2 className="text-3xl font-bold text-base-content">테이블 선택</h2>
         <button
           onClick={openModal}
-          className=" absolute right-[-24px] text-gray-400 hover:text-primary"
+          className="link-hover flex items-center gap-1 text-gray-500 hover:text-primary"
         >
-          <span className="invisible absolute">배치도</span>
+          <span>테이블 배치도</span>
           <BsQuestionCircle />
         </button>
       </div>

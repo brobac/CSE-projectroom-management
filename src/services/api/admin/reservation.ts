@@ -8,7 +8,7 @@ import { ADMIN_URL } from ".";
 import { HTTP_METHOD } from "..";
 
 export const fetchAdminReservationList = async (
-  options: FetchAdminReservationListOptions = { pageNumber: 0, size: 20 },
+  options: FetchAdminReservationListOptions = { page: 0, size: 20 },
 ) => {
   return _axios<Page<AdminReservationDTO>>({
     url: `${ADMIN_URL}/reservations`,

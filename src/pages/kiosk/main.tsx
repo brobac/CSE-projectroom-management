@@ -1,10 +1,16 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const KioskMainPage = () => {
   const navigate = useNavigate();
 
   const toReservation = () => navigate("reservation");
   const toReservationConfirm = () => navigate("reservation-confirm");
+
+  useEffect(() => {
+    toast.dismiss();
+  }, []);
 
   return (
     <div className="flex h-screen w-full items-center justify-center gap-20">

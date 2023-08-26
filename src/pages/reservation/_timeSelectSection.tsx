@@ -15,7 +15,6 @@ import {
   isBeforeNow,
   isSameOrAfter,
   isSameOrBefore,
-  roundUp30MinuteIncrements,
   toHMM,
 } from "@utils";
 

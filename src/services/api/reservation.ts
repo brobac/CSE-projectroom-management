@@ -7,6 +7,7 @@ import {
   Reservation,
   ReservationConfirmWithQRRequestDTO,
   ReservationRequestDTO,
+  TableDeactivation,
 } from "@types";
 import { API_VERSION, HTTP_METHOD } from ".";
 import { getJWTHeader, _axios } from "../axiosService";
@@ -71,7 +72,10 @@ export const fetchReservationListByProjectroomId = async (
   projectRoomId: number,
   period: FetchReservationPeriod,
 ) => {
-  return _axios<Reservation[]>({
+  return _axios<{
+    reservedList: Reservation[];
+    tableDeactivationList: TableDeactivation[];
+  }>({
     url: `/${API_VERSION.v1}/${reservationURL}`,
     method: HTTP_METHOD.GET,
     params: { projectRoomId, ...period },

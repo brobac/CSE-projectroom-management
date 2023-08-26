@@ -12,17 +12,18 @@ import {
   ProjectRoom,
   Reservation,
   ReservationRequestDTO,
+  TableDeactivation,
 } from "@types";
 import {
   getMinusOneDay,
   getPlusOneDay,
+  isBefore,
   isBeforeHour,
   toFullDateTime_SLASH,
 } from "@utils";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-import { useUserState } from "./user";
 
 export const reservationListState = atom<Reservation[]>({
   key: "reservationListState",
@@ -52,13 +53,36 @@ export const useReservationListState = () => {
       ),
     {
       enabled: reservationProjectRoom !== undefined,
+      keepPreviousData: true,
       onSuccess: (res) => {
-        setReservationList(res.result);
+        const { reservedList, tableDeactivationList } = res.result;
+        const list = [...reservedList];
+        tableDeactivationList.forEach((tableDeactivation) => {
+          list.push(convertTableDeactivationToReservation(tableDeactivation));
+        });
+
+        setReservationList(list);
       },
     },
   );
 
   return { reservationList, isLoading };
+};
+
+const convertTableDeactivationToReservation = (
+  data: TableDeactivation,
+): Reservation => {
+  return {
+    startAt: data.startAt,
+    endAt: data.endAt,
+    projectTableId: data.projectTableId,
+    reservationStatus: {
+      status: "",
+      statusCode: "",
+    },
+    returnedAt: null,
+    tableName: data.tableName,
+  };
 };
 
 // <----- 예약하기 위해 선택한 정보들 -----
@@ -69,7 +93,7 @@ export const reservationProjectRoomState = atom<ProjectRoom | undefined>({
 
 export const reservationDateState = atom({
   key: "reservationDateState",
-  default: isBeforeHour(new Date(), 8)
+  default: isBefore(new Date(), dayjs().hour(7).minute(30).toDate())
     ? dayjs(new Date())
         .hour(8)
         .minute(0)

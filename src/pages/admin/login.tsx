@@ -7,7 +7,7 @@ export const AdminLoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<LoginDTO>();
   const { mutate: login, isLoading, isError, error } = useAdminLogin();
 
@@ -28,7 +28,7 @@ export const AdminLoginPage = () => {
               type="text"
               placeholder="아이디를 입력해주세요"
               className="input-bordered input w-full"
-              {...register("loginId")}
+              {...register("loginId", { required: true })}
             />
           </label>
           <label className="input-group">
@@ -37,15 +37,12 @@ export const AdminLoginPage = () => {
               type="password"
               placeholder="비밀번호를 입력해주세요"
               className="input-bordered input w-full"
-              {...register("password")}
+              {...register("password", { required: true })}
             />
           </label>
-          {isError && (
-            <p className="text-center text-sm text-error">
-              아이디와 비밀번호를 확인해주세요
-            </p>
-          )}
+          <p className="text-center text-sm text-error">{error?.message}</p>
           <button
+            disabled={!isValid}
             className={twMerge([
               "btn-primary btn mb-4 text-lg font-bold text-primary-content",
               isLoading && "loading",

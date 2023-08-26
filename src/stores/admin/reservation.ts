@@ -14,8 +14,8 @@ export const adminSelectedReservationState = atom<AdminReservationDTO>({
       tableName: "",
     },
     tableReturn: {
-      returnAt: "",
-      cleanupPhoto: {
+      returnedAt: "",
+      cleanUpPhoto: {
         fileLocalName: "",
         fileOriName: "",
         fileUrl: "",

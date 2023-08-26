@@ -8,7 +8,7 @@ import {
   useSignup,
   verifyEmailAuthCode,
 } from "@services";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type SignupInputs = {
   name: string;
@@ -66,7 +66,7 @@ export const SignupPage = () => {
         clearErrors("email");
       })
       .catch((err) => {
-        setError("email", { message: "이미 사용중인 이메일입니다." });
+        setError("email", { message: err.message });
       });
   }, 1000);
 
@@ -80,7 +80,7 @@ export const SignupPage = () => {
         clearErrors("loginId");
       })
       .catch((err) => {
-        setError("loginId", { message: "이미 사용중인 아이디입니다." });
+        setError("loginId", { message: err.message });
       });
   }, 1000);
 

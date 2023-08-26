@@ -25,7 +25,6 @@ export const useAdminLogin = () => {
       setUser(user);
       navigate("/admin/reservations");
     },
-    onError: (err) => toast.error(err.message),
   });
 
   return { mutate, isLoading, isError, error };
