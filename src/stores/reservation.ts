@@ -12,6 +12,7 @@ import {
   ProjectRoom,
   Reservation,
   ReservationRequestDTO,
+  TableDeactivation,
 } from "@types";
 import {
   getMinusOneDay,
@@ -54,12 +55,34 @@ export const useReservationListState = () => {
       enabled: reservationProjectRoom !== undefined,
       keepPreviousData: true,
       onSuccess: (res) => {
-        setReservationList(res.result);
+        const { reservedList, tableDeactivationList } = res.result;
+        const list = [...reservedList];
+        tableDeactivationList.forEach((tableDeactivation) => {
+          list.push(convertTableDeactivationToReservation(tableDeactivation));
+        });
+
+        setReservationList(list);
       },
     },
   );
 
   return { reservationList, isLoading };
+};
+
+const convertTableDeactivationToReservation = (
+  data: TableDeactivation,
+): Reservation => {
+  return {
+    startAt: data.startAt,
+    endAt: data.endAt,
+    projectTableId: data.projectTableId,
+    reservationStatus: {
+      status: "",
+      statusCode: "",
+    },
+    returnedAt: null,
+    tableName: data.tableName,
+  };
 };
 
 // <----- 예약하기 위해 선택한 정보들 -----

@@ -17,6 +17,15 @@ declare module "@types" {
     reservationStatus: ReservationStatus;
   }
 
+  interface TableDeactivation {
+    projectTableId: number;
+    roomName: string;
+    tableName: string;
+    reason: string;
+    startAt: DateValue;
+    endAt: DateValue;
+  }
+
   interface ReservationRequestDTO {
     endAt: DateValue;
     startAt: DateValue;
